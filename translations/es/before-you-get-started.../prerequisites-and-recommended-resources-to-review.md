@@ -30,12 +30,14 @@ description: Stake pool operator resources.
 | Guild Operators     | [https://cardano-community.github.io/guild-operators/\#/basics](https://cardano-community.github.io/guild-operators/#/basics) |
 {% endtab %}
 
-{% tab title="Community Forums" %}
-|                                                                                                                           |  |
-|:------------------------------------------------------------------------------------------------------------------------- |: |
-| \[[https://forum.cardano.org/\]\(https://forum.cardano.org/](https://forum.cardano.org/]%28https://forum.cardano.org/) |  |
+{% tab title="RPi Community" %}
+|                                                                                                                            |  |
+|:-------------------------------------------------------------------------------------------------------------------------- |: |
+| [https://www.pidramble.com/wiki/benchmarks/power-consumption](https://www.pidramble.com/wiki/benchmarks/power-consumption) |  |
 
-\) \| \| \| \| [Arming Cardano Telegram ](https://github.com/rekuenkdr/master/tree/44e80aa783ef319f1f88f701f497d59f81d033cd/joinchat/FeKTCBu-pn5OUZUz4joF2w/README.md) \|
+[Arming Cardano Telegram ](https://github.com/rekuenkdr/master/tree/44e80aa783ef319f1f88f701f497d59f81d033cd/joinchat/FeKTCBu-pn5OUZUz4joF2w/README.md)
+
+[https://www.pidramble.com/wiki/benchmarks/external-usb-drives](https://www.pidramble.com/wiki/benchmarks/external-usb-drives)
 {% endtab %}
 {% endtabs %}
 
