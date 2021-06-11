@@ -88,9 +88,9 @@ addgroup cardano video
 
 3. Folge nun dem README.txt guide welches im $HOME directory ist.
 
-### If you plan on using prometheus and node exporter, do the following:
+### Bei benutzung von prometheus und node exporter sollte folgendes gemacht werden:
 
-1. Download prometheus and node-exporter into the home directory
+1. Prometheus und node-exporter in das Home-Verzeichnis herunterladen
 
    ```text
    wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.27.1/prometheus-2.27.1.linux-arm64.tar.gz
@@ -100,7 +100,7 @@ addgroup cardano video
    wget -O ~/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v1.1.2/node_exporter-1.1.2.linux-arm64.tar.gz
    ```
 
-2. Rename the folders with the following commands
+2. Ordner mit folgenden Befehlen umbenennen
 
    ```text
    mv prometheus-2.27.1.linux-arm64 prometheus
@@ -110,10 +110,10 @@ addgroup cardano video
    mv node_exporter-1.1.2.linux-arm64 node_exporter
    ```
 
-3. Follow the guide written in README.txt contained in the $HOME directory after installing cnode, scripts and services to start the services accordingly.
+3. Folge nun dem README.txt guide welches im $HOME directory ist um die node und Services zu starten.
 
 {% hint style="success" %}
-We would like to give a special shoutout to our [alliance member](https://armada-alliance.com) and operator of [\[SRN\] Pool](https://www.adasrn.com/) for providing this tutorial 🏴‍☠️ 🙏 😎
+Herzlichen Dank an unsere alliance members und Operators vom  [\[SRN\] Pool](https://www.adasrn.com/), die dieses Tutorial möglich gemacht haben! 🏴‍☠️ 🙏 😎
 {% endhint %}
 
 
