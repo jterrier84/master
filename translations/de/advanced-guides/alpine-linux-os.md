@@ -3,20 +3,20 @@
 ## Warum AlpineOS auf der Raspberry Pi benutzen? Hier sind einige Gründe:
 
 1. Sehr niedriger Speicherverbrauch \(~50MB im idle ~350MB für Ubuntu 20.04\).
-2. Lower CPU overhead \(27 tasks/ 31 threads active for Alpine vs 57 tasks / 111 threads for Ubuntu when cardano-node is running\).
-3. Cooler Pi😎 \(Literally, CPU runs cooler because of the lower CPU overhead\).
-4. And finally, why not? If you're gonna use static binaries, might as well take advantage of AlpineOS😜
+2. Weniger CPU nutzung \(27 tasks/ 31 Threads aktiv für Alpine vs 57 tasks / 111 Threads für Ubuntu, wenn cardano-node läuft\).
+3. Cooler Pi😎 \(Wortwörtlich, CPU ist kühler wegen der geringen last!\).
+4. Und zu guter Letzt, warum nicht? Wenn Du statische Binärdateien verwenden willst, dann gleich mit den Vorteilen von AlpineOS😜
 
-### Initial Setup for AlpineOS on Raspberry Pi 4B 8GB:
+### Initiales Setup für AlpineOS mit Raspberry Pi 4B 8GB:
 
-1. Download the AlpineOS for RPi 4 aarch64 here: [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
-2. Decompress the .tar.gz file and copy its contents into an SSD/SD card
-3. Plug in a keyboard and monitor.
-4. ~~Login with username 'root'. It should prompt you for a new password on the first login.~~
-5. Run the command `setup-disk` and create the partition. You may have to retry and erase the entire disk.
-6. Run the command `setup-alpine` and follow the instructions.
-7. Add a new user called cardano via the command `adduser cardano` and its password as instructed.
-8. Run the following commands to grant the new user root privileges
+1. AlpineOS für RPi 4 aarch64 herunterladen: [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
+2. Dekomprimiere die .tar.gz Datei und kopiere ihren Inhalt in eine SSD/SD-Karte
+3. Schließe eine Tastatur und einen Monitor an.
+4. ~Login mit Benutzername 'root'. Es sollte Dich bei der ersten Anmeldung nach einem neuen Passwort fragen. ~~
+5. Führen Sie den Befehl `setup-disk` aus und erstellen die Partition. Wenn das nicht klappt, probiere es erneut und lösche die ganze Festplatte.
+6. Führe den Befehl `setup-alpine` aus und folge den Anweisungen.
+7. Füge einen neuen Benutzer namens cardano über den Befehl `adduser cardano` und sein Passwort wie beschrieben hinzu.
+8. Führe die folgenden Befehle aus, um die neuen Benutzer root rechte zu geben
 
 ```text
 apk add sudo
@@ -34,21 +34,21 @@ addgroup cardano tape
 addgroup cardano video
 ```
 
-1. Either exit root via the command `exit` or reboot and login to cardano
-2. Install bash to ensure bash script compatibility
-3. Also, install git, we will need it later.
+1. Verlasse root über den Befehl `exit` oder starte den Pi neu und melde dich mit dem neuen Cardano user an
+2. bash installieren, um die Kompatibilität des Bash-Scripts sicherzustellen
+3. git auch gleich installieren, wird für später benötigt.
 
-## Installing the 'cardano-node' and 'cardano-cli' static binaries \(AlpineOS uses static binaries almost exclusively so you should avoid non-static builds\)
+## Installation der statischen Binärdateien 'cardano-node' und 'cardano-cli' \(AlpineOS verwendet statische Binärdateien - vermeide nicht statische!\)
 
-#### You can obtain the static binaries for version 1.27.0 via the link \[[https://ci.zw3rk.com/build/1758](https://ci.zw3rk.com/build/1758)\] courtesy of Moritz Angermann, the SPO of ZW3RK. You can follow the following commands to install the binaries into the correct folder:
+#### Die statischen Binärdateien für die Version 1.27.0 können über den Link \[[https://ci.zw3rk.com/build/1758](https://ci.zw3rk.com/build/1758)\] mit freundlicher Genehmigung von Moritz Angermann, dem SPO von ZW3RK, heruntergeladen werden. Führe folgende Befehle aus um die Binaries im korrekten Order zu installieren:
 
-1. Download the binaries
+1. Die Binärdateien herunterladen
 
    ```text
    wget -O https://ci.zw3rk.com/build/1758/download/1/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
    ```
 
-2. Unzip and install the binaries via the commands
+2. Entpacke installiere die Binärdateien über die Befehle
 
    ```text
    unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
@@ -56,17 +56,17 @@ addgroup cardano video
    sudo mv ~/cardano-node/* /usr/local/bin/
    ```
 
-## If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of script and services useful.
+## Wenn du AlpineOs für einen stake-pool verwendest, findest du im folgenden einige nützliche Tools.
 
-### To install the scripts and services correctly:
+### Skripte und Dienste korrekt installieren:
 
-1. Clone this repo to obtain the neccessary folder and scripts to quickly start your cardano node. Use the command:
+1. Klone dieses Repo mit den notwendigen Ordner und Skripte für die cardano-node. Befehl verwenden:
 
    ```text
    git clone https://github.com/armada-alliance/alpine-rpi-os
    ```
 
-2. Run the following commands to then install the cnode folder, scripts and services into the correct folders. The **cnode** folder contains everything a cardano-node needs to start as a functional relay node:
+2. Führe die folgenden Befehle aus, um dann den cnode Ordner, Skripte und Dienste in die richtigen Ordner zu installieren. Der **cnode** Ordner enthält alles, was eine cardano-node braucht um als relay zu fungieren:
 
    ```text
    cd alpine-rpi-os
@@ -86,7 +86,7 @@ addgroup cardano video
    sudo chmod +x /etc/init.d/cardano-node /etc/init.d/prometheus /etc/init.d/node-exporter
    ```
 
-3. Follow the guide written in README.txt contained in the $HOME directory after installing cnode, scripts and services.
+3. Folge nun dem README.txt guide welches im $HOME directory ist.
 
 ### If you plan on using prometheus and node exporter, do the following:
 
