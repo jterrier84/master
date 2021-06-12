@@ -3,7 +3,7 @@ description: >-
   Collection of tutorials focused for the beginner Raspberry Pi Stake Pool Operator
 ---
 
-# Raspberry Pi OS Tutorials
+# Raspberry Pi OS Tutorials🍓
 
 ## What hardware you'll need for these lessons
 
