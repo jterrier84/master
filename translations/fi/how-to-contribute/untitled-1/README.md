@@ -6,7 +6,7 @@ description: Ohjeita osallistumiseen tämän sivuston kehittämiseen.
 
 _**Mitä odotamme osallistujilta?**_
 
-Ensinnäkin, me Armada-Allianssissa olemme onnellisia kiinnostuksestasi projektiamme kohtaan ja halustasi osallistua sen kehittämistyöhön! We can't wait to hear your ideas and experiences. However, we do have some guidelines that we all must be familiar with and adhere to before submitting your contributions.
+Ensinnäkin, me Armada-Allianssissa olemme onnellisia kiinnostuksestasi projektiamme kohtaan ja halustasi osallistua sen kehittämistyöhön! Odotamme innolla jotta pääsemme kuulemaan kehitysideoitasi. Malta kuitenkin hetki ja ennen kuin lähetät ideasi, ole hyvä ja tutustu tähän ohjeeseen.
 
 ## Sisällys
 
