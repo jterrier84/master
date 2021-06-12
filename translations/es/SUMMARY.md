@@ -42,5 +42,5 @@
 
 ## Guías avanzadas
 
-* [Alpine Linux OS \(COMING-SOON\)](advanced-guides/alpine-linux-os.md)
+* [Alpine Linux OS](advanced-guides/alpine-linux-os.md)
 
