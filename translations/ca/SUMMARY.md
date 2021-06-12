@@ -1,7 +1,7 @@
 # Table of contents
 
-* [Welcome Pi Operators](README.md)
-* [Delegate](delegate/README.md)
+* [Welcome ARM Operators 🦾🏴‍☠️](README.md)
+* [Delegate🤗](delegate/README.md)
   * [How to delegate ADA](delegate/how-to-delegate-ada.md)
 * [Contribute](how-to-contribute/README.md)
   * [Contributing Guide](how-to-contribute/untitled-1/README.md)
@@ -15,13 +15,13 @@
 
 ## Beginner Guides <a id="beginner-guide-1"></a>
 
-* [Raspberry Pi OS Tutorials](beginner-guide-1/beginner-guide/README.md)
+* [Raspberry Pi OS Tutorials🍓](beginner-guide-1/beginner-guide/README.md)
   * [Setting up the Raspberry Pi](beginner-guide-1/beginner-guide/setup.md)
   * [Set up a Relay Node](beginner-guide-1/beginner-guide/tutorial-2-relaynode.md)
 
 ## Intermediate Guides <a id="intermediate-guide"></a>
 
-* [Pi-Node Image & Guides](intermediate-guide/pi-pool-tutorial/README.md)
+* [Pi-Node Image & Guides🍰](intermediate-guide/pi-pool-tutorial/README.md)
   * [Pi-Node \(quick start\)](intermediate-guide/pi-pool-tutorial/pi-node/README.md)
     * [Download & Flash](intermediate-guide/pi-pool-tutorial/pi-node/download-and-write-it.md)
     * [Logging in Securely](intermediate-guide/pi-pool-tutorial/pi-node/logging-in-securely.md)
@@ -37,10 +37,10 @@
 
 ## Cardano Developer Guides
 
-* [Cardano Native Asset and NFT Tutorial](cardano-developer-guides/nft-native-assets.md)
-* [Cardano NFT Collection Tutorial](cardano-developer-guides/cardano-nft-collection-tutorial-coming-soon.md)
+* [Cardano Native Asset and NFT Tutorial💰](cardano-developer-guides/nft-native-assets.md)
+* [Cardano NFT Collection Tutorial👛](cardano-developer-guides/cardano-nft-collection-tutorial-coming-soon.md)
 
 ## ADVANCED GUIDES
 
-* [Alpine Linux OS](advanced-guides/alpine-linux-os.md)
+* [Alpine Linux OS 🗻](advanced-guides/alpine-linux-os.md)
 
