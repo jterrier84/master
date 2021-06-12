@@ -1,4 +1,4 @@
-# Alpine Linux OS \(COMING-SOON\)
+# Alpine Linux OS
 
 ![](../.gitbook/assets/image%20%281%29.png)
 
@@ -9,7 +9,7 @@
 * **Cooler Pi 😎 \(Literally, CPU runs cooler because of the lower CPU overhead\).**
 * **And finally, why not? If you're gonna use static binaries, might as well take advantage of AlpineOS 😜**
 
-#### Initial Setup for AlpineOS on Raspberry Pi 4B 8GB:
+## Initial Setup for AlpineOS on Raspberry Pi 4B 8GB:
 
 1\) Download the AlpineOS for RPi 4 aarch64 here: [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
 
@@ -61,15 +61,19 @@ addgroup cardano video
 
 ### Installing the 'cardano-node' and 'cardano-cli' static binaries \(AlpineOS uses static binaries almost exclusively so you should avoid non-static builds\)
 
-**You can obtain the static binaries for version 1.27.0 via the link \[https://ci.zw3rk.com/build/1758\] courtesy of Moritz Angermann, the SPO of ZW3RK. You can follow the following commands to install the binaries into the correct folder:**
+{% hint style="info" %}
+**You can obtain the static binaries for version 1.27.0 via this** [**link**](https://ci.zw3rk.com/build/1758) **courtesy of Moritz Angermann, the SPO of ZW3RK pool 🙏**
+{% endhint %}
 
-1\) Download the binaries
+**Run the following commands to install the binaries and place them into the correct directory.**
+
+* Download the binaries
 
 ```text
     wget -O ~/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip https://ci.zw3rk.com/build/1758/download/1/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
 ```
 
-2\) Unzip and install the binaries via the commands
+* Unzip and install the binaries via the commands
 
 ```text
     unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
@@ -77,9 +81,15 @@ addgroup cardano video
     sudo mv ~/cardano-node/* /usr/local/bin/
 ```
 
-### If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of script and services useful.
+## Install the Armada Alliance Alpine Linux Cardano node service
 
-#### To install the scripts and services correctly:
+{% hint style="success" %}
+#### If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of scripts and services useful.
+{% endhint %}
+
+{% hint style="info" %}
+#### To install the scripts and services correctly don't skip steps 🏴‍☠️😎
+{% endhint %}
 
 1\) Clone this repo to obtain the necessary folder and scripts to quickly start your Cardano node. Use the command:
 
@@ -117,9 +127,9 @@ addgroup cardano video
     more ~/README.txt
 ```
 
-#### If you plan on using prometheus and node exporter, do the following:
+## Setup prometheus and node exporter
 
-1\) Download prometheus and node-exporter into the home directory
+1\) Download Prometheus and node-exporter into the home directory
 
 ```text
     wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.27.1/prometheus-2.27.1.linux-arm64.tar.gz
@@ -155,9 +165,9 @@ addgroup cardano video
     more ~/README.txt
 ```
 
-#### General Troubleshooting
+## General Troubleshooting
 
-1\) If you happen to use a \ other than cardano, do use the following commands and replace \ with your chosen username.
+* If you happen to use another than username other than cardano, do use the following commands and replace `username` with your chosen username.
 
 ```text
     sed -i 's@/home/cardano@/home/<username>@g' ~/cnode_env
@@ -176,7 +186,7 @@ addgroup cardano video
 ```
 
 {% hint style="success" %}
-We would like to give a special shoutout to our [alliance member](https://armada-alliance.com) and operator of [\[SRN\] Pool](https://www.adasrn.com/) for providing this tutorial 🏴‍☠️ 🙏 😎
+We would like to give a special shoutout to our [alliance member](https://armada-alliance.com) Sayshar, operator of [\[SRN\] Pool](https://www.adasrn.com/), for providing this tutorial 🏴‍☠️ 🙏 😎
 {% endhint %}
 
 
