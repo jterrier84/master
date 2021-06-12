@@ -2,7 +2,7 @@
 description: Let's make some native assets on Cardano ❤️✨
 ---
 
-# Cardano Native Asset and NFT Tutorial
+# Cardano Native Asset and NFT Tutorial💰
 
 ## Who is this guide for?
 
