@@ -1,22 +1,33 @@
 # Alpine Linux OS \(COMING-SOON\)
 
-## Warum AlpineOS auf der Raspberry Pi benutzen? Hier sind einige Gründe:
+![](../.gitbook/assets/image%20%281%29.png)
 
-1. Sehr niedriger Speicherverbrauch \(~50MB im idle ~350MB für Ubuntu 20.04\).
-2. Weniger CPU nutzung \(27 tasks/ 31 Threads aktiv für Alpine vs 57 tasks / 111 Threads für Ubuntu, wenn cardano-node läuft\).
-3. Cooler Pi😎 \(Wortwörtlich, CPU ist kühler wegen der geringen last!\).
-4. Und zu guter Letzt, warum nicht? Wenn Du statische Binärdateien verwenden willst, dann gleich mit den Vorteilen von AlpineOS😜
+### Why use AlpineOS on the Raspberry Pi? Here are some reasons:
 
-### Initiales Setup für AlpineOS mit Raspberry Pi 4B 8GB:
+* **Very low memory consumption \(~50MB utilized during idle vs ~350MB for Ubuntu 20.04\).**
+* **Lower CPU overhead** **\(27 tasks/ 31 threads active for Alpine vs 57 tasks / 111 threads for Ubuntu when cardano-node is running\).**
+* **Cooler Pi 😎 \(Literally, CPU runs cooler because of the lower CPU overhead\).**
+* **And finally, why not? If you're gonna use static binaries, might as well take advantage of AlpineOS 😜**
 
-1. AlpineOS für RPi 4 aarch64 herunterladen: [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
-2. Dekomprimiere die .tar.gz Datei und kopiere ihren Inhalt in eine SSD/SD-Karte
-3. Schließe eine Tastatur und einen Monitor an.
-4. ~Login mit Benutzername 'root'. Es sollte Dich bei der ersten Anmeldung nach einem neuen Passwort fragen. ~~
-5. Führen Sie den Befehl `setup-disk` aus und erstellen die Partition. Wenn das nicht klappt, probiere es erneut und lösche die ganze Festplatte.
-6. Führe den Befehl `setup-alpine` aus und folge den Anweisungen.
-7. Füge einen neuen Benutzer namens cardano über den Befehl `adduser cardano` und sein Passwort wie beschrieben hinzu.
-8. Führe die folgenden Befehle aus, um die neuen Benutzer root rechte zu geben
+#### Initial Setup for AlpineOS on Raspberry Pi 4B 8GB:
+
+1\) Download the AlpineOS for RPi 4 aarch64 here: [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
+
+2\) Decompress the .tar.gz file and copy it's contents into an SSD/SD card
+
+3\) Plug in a keyboard and monitor.
+
+4\) Login with username 'root'.
+
+5\) Run the command `setup-alpine` and follow the instructions.
+
+6\) Run the command `setup-disk` and create the partition. You may have to retry and erase the entire disk.
+
+7\) Reboot.
+
+8\) Add a new user called cardano via the command `adduser cardano` and its password as instructed. \(For username other than **cardano**, refer to **General Troubleshooting**\)
+
+9\) Run the following commands to grant the new user root privileges
 
 ```text
 apk add sudo
@@ -34,86 +45,138 @@ addgroup cardano tape
 addgroup cardano video
 ```
 
-1. Verlasse root über den Befehl `exit` oder starte den Pi neu und melde dich mit dem neuen Cardano user an
-2. bash installieren, um die Kompatibilität des Bash-Scripts sicherzustellen
-3. git auch gleich installieren, wird für später benötigt.
+10\) Either exit root via the command `exit` or reboot and login to cardano
 
-## Installation der statischen Binärdateien 'cardano-node' und 'cardano-cli' \(AlpineOS verwendet statische Binärdateien - vermeide nicht statische!\)
+11\) Install bash to ensure bash script compatibility
 
-#### Die statischen Binärdateien für die Version 1.27.0 können über den Link \[[https://ci.zw3rk.com/build/1758](https://ci.zw3rk.com/build/1758)\] mit freundlicher Genehmigung von Moritz Angermann, dem SPO von ZW3RK, heruntergeladen werden. Führe folgende Befehle aus um die Binaries im korrekten Order zu installieren:
+```text
+    sudo apk add bash
+```
 
-1. Die Binärdateien herunterladen
+11\) Also install git and wget, we will need it later.
 
-   ```text
-   wget -O https://ci.zw3rk.com/build/1758/download/1/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
-   ```
+```text
+    sudo apk add git wget
+```
 
-2. Entpacke installiere die Binärdateien über die Befehle
+### Installing the 'cardano-node' and 'cardano-cli' static binaries \(AlpineOS uses static binaries almost exclusively so you should avoid non-static builds\)
 
-   ```text
-   unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
+**You can obtain the static binaries for version 1.27.0 via the link \[https://ci.zw3rk.com/build/1758\] courtesy of Moritz Angermann, the SPO of ZW3RK. You can follow the following commands to install the binaries into the correct folder:**
 
-   sudo mv ~/cardano-node/* /usr/local/bin/
-   ```
+1\) Download the binaries
 
-## Wenn du AlpineOs für einen stake-pool verwendest, findest du im folgenden einige nützliche Tools.
+```text
+    wget -O ~/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip https://ci.zw3rk.com/build/1758/download/1/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
+```
 
-### Skripte und Dienste korrekt installieren:
+2\) Unzip and install the binaries via the commands
 
-1. Klone dieses Repo mit den notwendigen Ordner und Skripte für die cardano-node. Befehl verwenden:
+```text
+    unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
 
-   ```text
-   git clone https://github.com/armada-alliance/alpine-rpi-os
-   ```
+    sudo mv ~/cardano-node/* /usr/local/bin/
+```
 
-2. Führe die folgenden Befehle aus, um dann den cnode Ordner, Skripte und Dienste in die richtigen Ordner zu installieren. Der **cnode** Ordner enthält alles, was eine cardano-node braucht um als relay zu fungieren:
+### If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of script and services useful.
 
-   ```text
-   cd alpine-rpi-os
+#### To install the scripts and services correctly:
 
-   sudo cp alpine_cnode_scripts_and_services/home/cardano/* ~/
-   ```
+1\) Clone this repo to obtain the necessary folder and scripts to quickly start your Cardano node. Use the command:
 
-   ```text
-   sudo cp alpine_cnode_scripts_and_services/etc/init.d/* /etc/init.d/
-   ```
+```text
+    git clone https://github.com/armada-alliance/alpine-rpi-os
+```
 
-   ```text
-   chmod +x start_stop_cnode_service.sh cnode/autorestart_cnode.sh
-   ```
+2\) Run the following commands to then install the **cnode** folder, scripts, and services into the correct folders. The **cnode** folder contains everything a **Cardano node** needs to start as a functional relay node:
 
-   ```text
-   sudo chmod +x /etc/init.d/cardano-node /etc/init.d/prometheus /etc/init.d/node-exporter
-   ```
+```text
+    cp -r alpine-rpi-os/alpine_cnode_scripts_and_services/home/cardano/* ~/
+```
 
-3. Folge nun dem README.txt guide welches im $HOME directory ist.
+```text
+    sudo cp alpine-rpi-os/alpine_cnode_scripts_and_services/etc/init.d/* /etc/init.d/
+```
 
-### Bei benutzung von prometheus und node exporter sollte folgendes gemacht werden:
+```text
+    chmod +x ~/start_stop_cnode_service.sh ~/cnode/autorestart_cnode.sh
+```
 
-1. Prometheus und node-exporter in das Home-Verzeichnis herunterladen
+```text
+    sudo chmod +x /etc/init.d/cardano-node /etc/init.d/prometheus /etc/init.d/node-exporter
+```
 
-   ```text
-   wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.27.1/prometheus-2.27.1.linux-arm64.tar.gz
-   ```
+3\) For faster syncing, consider this optional command for downloading the latest db folder hosted by one of our Alliance members.
 
-   ```text
-   wget -O ~/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v1.1.2/node_exporter-1.1.2.linux-arm64.tar.gz
-   ```
+```text
+    wget -r -np -nH -R "index.html*" -e robots=off https://db.adamantium.online/db/ -P ~/cnode
+```
 
-2. Ordner mit folgenden Befehlen umbenennen
+4\) Follow the guide written in **README.txt** contained in the **$HOME** directory after installing **cnode**, scripts, and services.
 
-   ```text
-   mv prometheus-2.27.1.linux-arm64 prometheus
-   ```
+```text
+    more ~/README.txt
+```
 
-   ```text
-   mv node_exporter-1.1.2.linux-arm64 node_exporter
-   ```
+#### If you plan on using prometheus and node exporter, do the following:
 
-3. Folge nun dem README.txt guide welches im $HOME directory ist um die node und Services zu starten.
+1\) Download prometheus and node-exporter into the home directory
+
+```text
+    wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.27.1/prometheus-2.27.1.linux-arm64.tar.gz
+```
+
+```text
+    wget -O ~/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v1.1.2/node_exporter-1.1.2.linux-arm64.tar.gz
+```
+
+2\) Extract the tarballs
+
+```text
+    tar -xzvf prometheus-2.27.1.linux-arm64.tar.gz
+```
+
+```text
+    tar -xzvf node_exporter-1.1.2.linux-arm64.tar.gz
+```
+
+3\) Rename the folders with the following commands
+
+```text
+    mv prometheus-2.27.1.linux-arm64 prometheus
+```
+
+```text
+    mv node_exporter-1.1.2.linux-arm64 node_exporter
+```
+
+4\) Follow the guide written in README.txt contained in the $HOME directory after installing cnode, scripts and services to start the services accordingly.
+
+```text
+    more ~/README.txt
+```
+
+#### General Troubleshooting
+
+1\) If you happen to use a \ other than cardano, do use the following commands and replace \ with your chosen username.
+
+```text
+    sed -i 's@/home/cardano@/home/<username>@g' ~/cnode_env
+```
+
+```text
+    sudo sed -i 's@/home/cardano@/home/<username>@g' /etc/init.d/cardano-node
+```
+
+```text
+    sudo sed -i 's@/home/cardano@/home/<username>@g' /etc/init.d/prometheus
+```
+
+```text
+    sudo sed -i 's@/home/cardano@/home/<username>@g' /etc/init.d/node-export
+```
 
 {% hint style="success" %}
-Herzlichen Dank an unsere alliance members und Operators vom  [\[SRN\] Pool](https://www.adasrn.com/), die dieses Tutorial möglich gemacht haben! 🏴‍☠️ 🙏 😎
+We would like to give a special shoutout to our [alliance member](https://armada-alliance.com) and operator of [\[SRN\] Pool](https://www.adasrn.com/) for providing this tutorial 🏴‍☠️ 🙏 😎
 {% endhint %}
 
 
