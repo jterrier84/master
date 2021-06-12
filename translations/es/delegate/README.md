@@ -2,7 +2,7 @@
 description: Apoya la Descentralización
 ---
 
-# Delegar
+# Delegate🤗
 
 ## Please consider delegating to any of our alliance members if you enjoy these tutorials and resources. Thank You! 🙏 😊 🙏 😊 🙏 😊
 
