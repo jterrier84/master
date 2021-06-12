@@ -2,18 +2,18 @@
 description: Ohjeita osallistumiseen tämän sivuston kehittämiseen.
 ---
 
-# Contributing Guide
+# Osallistumisohje
 
 _**Mitä odotamme osallistujilta?**_
 
-Firstly, we at Armada-Alliance would like to thank you for your consideration in contributing to us! We can't wait to hear your ideas and experiences. However, we do have some guidelines that we all must be familiar with and adhere to before submitting your contributions.
+Ensinnäkin, me Armada-Allianssissa olemme onnellisia kiinnostuksestasi projektiamme kohtaan ja halustasi osallistua sen kehittämistyöhön! We can't wait to hear your ideas and experiences. However, we do have some guidelines that we all must be familiar with and adhere to before submitting your contributions.
 
 ## Sisällys
 
 1. Mitä etsimme
 2. Säännöt ja odotukset
 3. Kuinka osallistua
-4. Style Guide
+4. Tyyliohjeet
 5. Yhteisö
 
 **Mitä etsimme**
@@ -40,7 +40,7 @@ _Ensiksi, lue projekti huolella läpi ja mieti millä tasolla haluat projektiin 
 * Pieni työ, kuten tekstien kielentarkastus, avaa vetopyyntö \(pull request\).
 * For a major contribution, such as a new tutorial, start by ordering an issue first. This way the community can assess and discuss your idea before you start working on it.
 
-_**Style Guide**_
+_**Tyyliohje**_
 
 _Jos aiot laatia ohjeistuksen tutustu erilleseen_ Tyyliohjeeseen _ja pitäydy siinä, jotta ohjeesi sulautuu saumattomasti muuhun materiaaliin._
 
