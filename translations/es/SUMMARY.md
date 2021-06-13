@@ -1,6 +1,6 @@
 # Sumario
 
-* [Welcome ARM Operators 🦾🏴‍☠️](README.md)
+* [Welcome ARM Operators 🦾](README.md)
 * [Delegate🤗](delegate/README.md)
   * [Cómo delegar ADA](delegate/how-to-delegate-ada.md)
 * [Contribuir](how-to-contribute/README.md)
@@ -8,14 +8,14 @@
     * [Guía de Estilo](how-to-contribute/untitled-1/style-guide.md)
     * [Código de conducta](how-to-contribute/untitled-1/code-of-conduct.md)
 
-## Qué se necesita <a id="before-you-get-started..."></a>
+## Resources <a id="before-you-get-started..."></a>
 
 * [Biblioteca de recursos](before-you-get-started.../prerequisites-and-recommended-resources-to-review.md)
 * [Enlaces de compra de hardware](before-you-get-started.../hardware.md)
 
-## Guías de principiantes <a id="beginner-guide-1"></a>
+## Cardano Node <a id="beginner-guide-1"></a>
 
-* [Raspberry Pi OS Tutorials🍓](beginner-guide-1/beginner-guide/README.md)
+* [Raspberry Pi OS 🍓](beginner-guide-1/beginner-guide/README.md)
   * [Configurando el Raspberry Pi](beginner-guide-1/beginner-guide/setup.md)
   * [Configurar nodo Relay](beginner-guide-1/beginner-guide/tutorial-2-relaynode.md)
 
