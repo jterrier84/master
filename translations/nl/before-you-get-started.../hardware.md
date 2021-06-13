@@ -3,7 +3,7 @@ description: >-
   This is the current list of hardware that can be used to build the Raspberry Pi stake pool, not including a separate laptop or PC for administration.
 ---
 
-# Hardware Purchase Links
+# Hardware Purchase Links🏪
 
 ![GeeekPi Cluster Case](../.gitbook/assets/photo_2021-03-09-13.42.42.jpeg)
 
