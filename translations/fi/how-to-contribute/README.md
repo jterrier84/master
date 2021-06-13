@@ -2,7 +2,7 @@
 description: Kuinka osallistua tämän oppaan laatimiseen?
 ---
 
-# Contribute
+# Contribute🐱‍🚀
 
 ## Loistavaa, että olet täällä!
 
