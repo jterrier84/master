@@ -4,9 +4,9 @@
 
 ![](.gitbook/assets/download-6-.jpeg)
 
-### **Bienvenido a la sección de información y tutoriales de la Alianza Armada. Somos una comunidad de Operadores de Stake Pools con RPi-ARM que tienen como objetivo** brindar apoyo y recursos educativos gratuitos a los futuros Operadores de Stake Pools.
+### **Welcome to the Armada Alliance's information and tutorials section.** We are a community of ARM-based Cardano Stake Pool Operators who aim to provide support and free educational resources to future Stake Pool Operators.
 
-### Aunque nuestro foco está en las operaciones de los Pools RPi-ARM, también proporcionamos una amplia gama de información, tutoriales y recursos para el desarrollo en Cardano. Si quieres saber más sobre este proyecto y nuestras metas, por favor revisa nuestra propuesta de Fund4 del _Proyecto Catalyst_, donde encontrarás más detalles o entra a nuestro _Discord_.
+### Although our focus is ARM stake pool operations, we will provide a wide range of information, tutorials, and resources for developing on the Cardano blockchain. Si quieres saber más sobre este proyecto y nuestras metas, por favor revisa nuestra propuesta de Fund4 del _Proyecto Catalyst_, donde encontrarás más detalles o entra a nuestro _Discord_.
 
 | Contacta con nosotros                                                                                   |
 |:------------------------------------------------------------------------------------------------------- |
