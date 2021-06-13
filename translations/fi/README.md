@@ -1,4 +1,4 @@
-# Welcome ARM Operators 🦾🏴‍☠️
+# Welcome ARM Operators 🦾
 
 ## You want to become a Raspberry Pi Stake Pool Operator on Cardano...but where should you start!?  😳
 
