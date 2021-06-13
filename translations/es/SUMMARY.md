@@ -1,12 +1,12 @@
 # Sumario
 
 * [Welcome ARM Operators 🦾](README.md)
-* [Delegate🤗](delegate/README.md)
-  * [Cómo delegar ADA](delegate/how-to-delegate-ada.md)
 * [Contribute🐱‍🚀](how-to-contribute/README.md)
   * [Guía de Contribución](how-to-contribute/untitled-1/README.md)
     * [Guía de Estilo](how-to-contribute/untitled-1/style-guide.md)
     * [Código de conducta](how-to-contribute/untitled-1/code-of-conduct.md)
+* [Delegate🤗](delegate/README.md)
+  * [Cómo delegar ADA](delegate/how-to-delegate-ada.md)
 
 ## Resources <a id="before-you-get-started..."></a>
 
