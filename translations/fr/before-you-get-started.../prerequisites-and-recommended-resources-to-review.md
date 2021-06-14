@@ -22,13 +22,13 @@ description: Stake pool operator resources.
 {% endtab %}
 
 {% tab title="Community Tutorials/GitHubs" %}
-| Author              | Link to Tutorial                                                                                                                |
-|:------------------- |:------------------------------------------------------------------------------------------------------------------------------- |
-| \[Berry\] Pool    | [https://github.com/alessandrokonrad/Pi-Pool](https://github.com/alessandrokonrad/Pi-Pool)                                      |
-| \[Easy 1\] Pool   | [https://github.com/speedwing/cardano-staking-pool-edu](https://github.com/speedwing/cardano-staking-pool-edu)                  |
-| \[OTG\] Sun Forge | [https://github.com/wcatz/pi-pool](https://github.com/wcatz/pi-pool)                                                            |
-| Guild Operators     | [https://cardano-community.github.io/guild-operators/\#/basics](https://cardano-community.github.io/guild-operators/#/basics) |
-| \[SRN\] Pool      | [https://github.com/sayshar/alpine-rpi-os](https://github.com/sayshar/alpine-rpi-os)                                            |
+| Author               | Link to Tutorial                                                                                                                |
+|:-------------------- |:------------------------------------------------------------------------------------------------------------------------------- |
+| \[Berry\] Pool     | [https://github.com/alessandrokonrad/Pi-Pool](https://github.com/alessandrokonrad/Pi-Pool)                                      |
+| \[Easy 1\] Pool    | [https://github.com/speedwing/cardano-staking-pool-edu](https://github.com/speedwing/cardano-staking-pool-edu)                  |
+| \[OTG\] Star Forge | [https://github.com/wcatz/pi-pool](https://github.com/wcatz/pi-pool)                                                            |
+| Guild Operators      | [https://cardano-community.github.io/guild-operators/\#/basics](https://cardano-community.github.io/guild-operators/#/basics) |
+| \[SRN\] Pool       | [https://github.com/sayshar/alpine-rpi-os](https://github.com/sayshar/alpine-rpi-os)                                            |
 {% endtab %}
 
 {% tab title="RPi Community" %}
