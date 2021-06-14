@@ -82,5 +82,5 @@ http://<YOUR GRAFANA NODE IP>:9100/metrics
 There are other methods you could use to implement this approach. Basically, if you can create a text file with key/value pairs and put it into this new directory, the node exporter should pull the data into Grafana. It opens up a vast array of possibilities. Just ensure you prefix the label names with a unique value \(the **adapools\_** \_\_part in the adapools.prom file above\) per file.
 {% endhint %}
 
-Was this information helpful? Earn rewards with us! Earn rewards with us! [Consider delegating some ADA](../delegate/).
+Was this information helpful? Earn rewards with us! [Consider delegating some ADA](../cardano-developer-guides/delegate.md).
 
