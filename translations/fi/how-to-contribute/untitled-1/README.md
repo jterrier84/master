@@ -28,8 +28,8 @@ _Arvostamme kaikkea panostusta projektiimme, mutta meillä on muutamia projektii
 
 _Koska tämä on avoin projekti, odotamme sinulta pitäytymistä muutamiin normeihin ja säännöksiin:_
 
-* Be respectful and open-minded to others' opinions and conversations around this project. Understand that as a community we should all be working together. Take into consideration the way in which another contributor is helping may be different from your own and that it is more productive to help each other out rather than argue about which way is "correct".
-* Armada-Alliance's tutorials are released with a Contributors Code of Conduct. Through partaking in this project you agreed to abide by these terms.
+* Ole kunnioittava ja ennakkoluuloton muiden, projektin parissa työskentelevien mielipiteille ja keskusteluille. Sinun on ymmärrettävä, että meidän kaikkien pitäisi tehdä yhteistyötä yhteisönä ja työskennellä samojen tavoitteiden eteen. Muista ottaa huomioon, että tapa jolla toinen edesauttaa yhteisömme tavoitteita, voi poiketa omastasi. On paljon hedelmällisempää työskennellä yhdessä kuin kiistellä "oikeasta" työtavasta.
+* Armada-Alliancen tutoriaalit julkaistaan osallistujien toimintaohjeiden avulla. Osallistumalla tähän projektiin suostutte noudattamaan näitä ehtoja.
 * Mikäli avaat pull requestin, varmista että työsi läpäisee kaikki testit, sillä virheet voivat rikkoa projektin ja projekti on jälleen korjattava, mikä tietenkin lisää tarvittavaa työtä.
 * Content that is to be added should be relevant to the project and not include self-promotion or the promotion of sponsors. Understand that what is submitted here will be considered open source and will be shared freely amongst everyone.
 
