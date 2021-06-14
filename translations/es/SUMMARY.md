@@ -1,12 +1,6 @@
 # Sumario
 
 * [Welcome ARM Operators 🦾](README.md)
-* [Contribute🐱‍🚀](how-to-contribute/README.md)
-  * [Guía de Contribución](how-to-contribute/untitled-1/README.md)
-    * [Guía de Estilo](how-to-contribute/untitled-1/style-guide.md)
-    * [Código de conducta](how-to-contribute/untitled-1/code-of-conduct.md)
-* [Delegate🤗](delegate/README.md)
-  * [Cómo delegar ADA](delegate/how-to-delegate-ada.md)
 
 ## Resources <a id="before-you-get-started..."></a>
 
@@ -38,6 +32,12 @@
 
 ## Other Cardano Guides <a id="cardano-developer-guides"></a>
 
-* [Cardano Native Asset and NFT Tutorial💰](cardano-developer-guides/nft-native-assets.md)
+* [Cardano Native Asset \(NFT\)💰](cardano-developer-guides/nft-native-assets.md)
 * [Cardano NFT Collection Tutorial👛](cardano-developer-guides/cardano-nft-collection-tutorial-coming-soon.md)
+* [Staking Guide🚀](cardano-developer-guides/how-to-delegate-ada.md)
+* [Delegate🤗](cardano-developer-guides/delegate.md)
+* [Contribute🐱‍🚀](cardano-developer-guides/how-to-contribute/README.md)
+  * [Guía de Contribución](cardano-developer-guides/how-to-contribute/untitled-1/README.md)
+    * [Guía de Estilo](cardano-developer-guides/how-to-contribute/untitled-1/style-guide.md)
+    * [Código de conducta](cardano-developer-guides/how-to-contribute/untitled-1/code-of-conduct.md)
 
