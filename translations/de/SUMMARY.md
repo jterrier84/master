@@ -2,11 +2,6 @@
 
 * [Welcome ARM Operators 🦾](README.md)
 
-## Resources <a id="before-you-get-started..."></a>
-
-* [Resource Library🏫](before-you-get-started.../prerequisites-and-recommended-resources-to-review.md)
-* [Hardware Purchase Links🏪](before-you-get-started.../hardware.md)
-
 ## Cardano Node <a id="beginner-guide-1"></a>
 
 * [Raspberry Pi OS 🍓](beginner-guide-1/beginner-guide/README.md)
@@ -40,4 +35,9 @@
   * [Contributing Guide](cardano-developer-guides/how-to-contribute/untitled-1/README.md)
     * [Style Guide](cardano-developer-guides/how-to-contribute/untitled-1/style-guide.md)
     * [Code of Conduct](cardano-developer-guides/how-to-contribute/untitled-1/code-of-conduct.md)
+
+## Resources <a id="before-you-get-started..."></a>
+
+* [Resource Library🏫](before-you-get-started.../prerequisites-and-recommended-resources-to-review.md)
+* [Hardware Purchase Links🏪](before-you-get-started.../hardware.md)
 
