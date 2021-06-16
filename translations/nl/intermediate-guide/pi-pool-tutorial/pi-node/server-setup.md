@@ -84,18 +84,6 @@ disable-wifi
 disable-bt
 ```
 
-Enable memory accounting \(cgroups\).
-
-```text
-sudo nano /boot/firmware/cmdline.txt
-```
-
-Replace contents with below.
-
-```text
-cgroup_enable=memory cgroup_memory=1 dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=LABEL=writable rootfstype=ext4 elevator=deadline rootwait fixrtc quiet splash
-```
-
 Save and reboot.
 
 ```text
@@ -141,7 +129,7 @@ ada hard nofile 1048576
 
 ### Optimize performance & security
 
-Open /etc/default/irqbalance and add to the bottom. Save and exit.
+Add the following to the bottom of /etc/sysctl.conf. Save and exit.
 
 {% hint style="info" %}
 [https://gist.github.com/lokhman/cc716d2e2d373dd696b2d9264c0287a3](https://gist.github.com/lokhman/cc716d2e2d373dd696b2d9264c0287a3)
