@@ -1,4 +1,4 @@
-# Alpine Linux OS 🗻
+# Linux Alpine OS 🗻
 
 ![](../.gitbook/assets/image%20%281%29.png)
 
@@ -51,33 +51,33 @@ addgroup cardano video
 
 9\) Quitter l'utilisateur "root" via la commande `exit` ou redémarrer et se reconnecter en tant que "cardano"
 
-10\) Install bash to ensure bash script compatibility
+10\) Installez bash pour assurer la compatibilité avec les scripts bash
 
 ```text
     sudo apk add bash
 ```
 
-11\) Also install git and wget, we will need it later.
+11\) Installez également git et wget, nous en aurons besoin plus tard.
 
 ```text
     sudo apk add git wget
 ```
 
-### Installing the 'cardano-node' and 'cardano-cli' static binaries \(AlpineOS uses static binaries almost exclusively so you should avoid non-static builds\)
+### Installer les exécutables statiques 'cardano-node' et 'cardano-cli' \\(AlpineOS utilise presque exclusivement des exécutables statiques, donc vous devriez éviter les compilations non statiques\\)
 
 {% hint style="info" %}
-**You can obtain the static binaries for version 1.27.0 via this** [**link**](https://ci.zw3rk.com/build/1758) **courtesy of Moritz Angermann, the SPO of ZW3RK pool 🙏**
+**Vous pouvez obtenir les exécutables statiques pour la version 1.27. via ce lien** [****](https://ci.zw3rk.com/build/1758) **grâce à la courtoisie de Moritz Angermann, le SPO du pool ZW3RK 🙏**
 {% endhint %}
 
-**Run the following commands to install the binaries and place them into the correct directory.**
+**Exécutez les commandes suivantes pour installer les exécutables et les placer dans le bon répertoire.**
 
-* Download the binaries
+* Télécharger les exécutables
 
 ```text
     wget -O ~/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip https://ci.zw3rk.com/build/1758/download/1/aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
 ```
 
-* Unzip and install the binaries via the commands
+* Décompressez et installez les exécutables via les commandes
 
 ```text
     unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.27.0.zip
@@ -85,17 +85,17 @@ addgroup cardano video
     sudo mv ~/cardano-node/* /usr/local/bin/
 ```
 
-## Install the Armada Alliance Alpine Linux Cardano node service
+## Installer le service de l'Alliance Armada pour Alpine Linux Cardano Node
 
 {% hint style="success" %}
-#### If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of scripts and services useful.
+#### Si vous avez décidé d'utiliser AlpineOS pour vos opérations de stake pool Cardano, vous trouverez peut-être cette collection de scripts et de services utiles.
 {% endhint %}
 
 {% hint style="info" %}
-#### To install the scripts and services correctly don't skip steps 🏴‍☠️😎
+#### Pour installer correctement les scripts et les services, ne sautez pas les étapes 🏴‍☠️😎
 {% endhint %}
 
-1\) Clone this repo to obtain the necessary folder and scripts to quickly start your Cardano node. Use the command:
+1\) Clonez ce dépôt pour obtenir le dossier et les scripts nécessaires pour démarrer rapidement votre noeud Cardano. Utilisez la commande :
 
 ```text
     git clone https://github.com/armada-alliance/alpine-rpi-os
