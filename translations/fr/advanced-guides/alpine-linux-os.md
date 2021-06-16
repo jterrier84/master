@@ -6,32 +6,32 @@
 
 * **Très faible consommation de mémoire \(~50Mo utilisés pendant l'inactivité vs ~350Mo pour Ubuntu 20.04\\).**
 * **Diminuer la surcharge CPU** **\(27 tâches/ 31 threads actifs pour Alpine vs 57 tâches / 111 threads pour Ubuntu lorsque cardano-node est en cours d'exécution\).**
-* **Cooler Pi 😎 \(Literally, CPU runs cooler because of the lower CPU overhead\).**
-* **And finally, why not? If you're gonna use static binaries, might as well take advantage of AlpineOS 😜**
+* **Pi plus cool 😎 \(Litéralement, la réduction de la surcharge garde le Processeur plus frais\\).**
+* **Et finalement, pourquoi pas? Si vous planifiez d'utiliser des exécutables statiques, vous pourriez aussi tirer parti de AlpineOS 😜**
 
-## Initial Setup for AlpineOS on Raspberry Pi 4B 8GB:
+## Configuration initiale pour AlpineOS sur Raspberry Pi 4B 8GB :
 
-1\) Download the AlpineOS for RPi 4 aarch64 here: [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
+1\) Téléchargez AlpineOS pour RPi 4 aarch64 ici : [https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.13/releases/aarch64/alpine-rpi-3.13.5-aarch64.tar.gz)
 
-2\) Decompress the .tar.gz file and copy it's contents into an SSD/SD card
+2\) Décompresser le fichier .tar.gz et copier son contenu sur une carte SSD/SD
 
-3\) Plug in a keyboard and monitor.
+3\) Branchez un clavier et un moniteur.
 
-4\) Login with username 'root'.
+4\) Connectez-vous avec le nom d'utilisateur 'root'.
 
-5\) Run the command `setup-alpine` and follow the instructions.
+5\) Exécutez la commande `setup-alpine` et suivez les instructions.
 
 {% hint style="info" %}
-When you are in `setup-alpine`  you will be prompted to choose the system disk. Once you are at this point, enter, `y`, to setup disk and create the partition for `sys`.
+Lorsque vous êtes dans `setup-alpine`  vous serez invité à choisir le disque système. Une fois que vous êtes à ce stade, saisissez, `y`, pour configurer le disque et créer la partition pour `sys`.
 {% endhint %}
 
 
 
-6\) Reboot.
+6\) Redémarrez.
 
-7\) Add a new user called cardano via the command `adduser cardano` and its password as instructed. \(For username other than **cardano**, refer to **General Troubleshooting**\)
+7\) Ajouter un nouvel utilisateur appelé cardano via la commande `adduser cardano` et son mot de passe comme indiqué. \(Pour un nom d'utilisateur autre que **cardano**, reportez-vous au **Dépannage général**\)
 
-8\) Run the following commands to grant the new user root privileges
+8\) Exécutez les commandes suivantes pour accorder au nouvel utilisateur les privilèges "root"
 
 ```text
 apk add sudo
@@ -49,7 +49,7 @@ addgroup cardano tape
 addgroup cardano video
 ```
 
-9\) Either exit root via the command `exit` or reboot and login to cardano
+9\) Quitter l'utilisateur "root" via la commande `exit` ou redémarrer et se reconnecter en tant que "cardano"
 
 10\) Install bash to ensure bash script compatibility
 
