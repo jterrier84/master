@@ -38,7 +38,7 @@ _**Kuinka osallistua**_
 _Ensiksi, lue projekti huolella läpi ja mieti millä tasolla haluat projektiin osallistua._
 
 * Pieni työ, kuten tekstien kielentarkastus, avaa vetopyyntö \(pull request\).
-* For a major contribution, such as a new tutorial, start by ordering an issue first. This way the community can assess and discuss your idea before you start working on it.
+* Suuremmille sisällöntuotto ideoille, kuten uusille tutoriaaleille, aloita avaamalla ensin kysymys (issue) aiheesta. Tällä tavoin koko yhteisö voi arvioida ja keskustella aiheesta, ennen kuin aloitat työn.
 
 _**Tyyliohjeet**_
 
@@ -46,11 +46,11 @@ _Jos aiot laatia ohjeistuksen tutustu erilleseen_ Tyyliohjeeseen _ja pitäydy si
 
 _**Yhteisö**_
 
-Discussions about the Open Source Guides take place on this repository's Issues and Pull Requests sections. Anybody is welcome to join these conversations.
+Keskustelut avoimen lähdekoodin oppaista käydään tämän arkiston ongelmien ja Pull Requests -osioissa. Kaikki ovat tervetulleita liittymään näihin keskusteluihin.
 
-Wherever possible, do not take these conversations to private channels, including contacting the maintainers directly. Keeping communication public means everyone can benefit and learn from the conversation.
+Aina kun se on mahdollista, älkää viekö näitä keskusteluja yksityisiin kanaviin, mukaanlukien suora yhteydenpito ylläpitäjiin. Viestinnän pitäminen julkisena tarkoittaa, että kaikki voivat hyötyä ja oppia keskustelusta.
 
-Attribution
+Lähde
 
 Tämä osallistumisohje on muunneltu lähteestä: [open-source-guide](https://github.com/github/opensource.guide)
 
