@@ -31,7 +31,7 @@ _Koska tämä on avoin projekti, odotamme sinulta pitäytymistä muutamiin norme
 * Ole kunnioittava ja ennakkoluuloton muiden, projektin parissa työskentelevien mielipiteille ja keskusteluille. Sinun on ymmärrettävä, että meidän kaikkien pitäisi tehdä yhteistyötä yhteisönä ja työskennellä samojen tavoitteiden eteen. Muista ottaa huomioon, että tapa jolla toinen edesauttaa yhteisömme tavoitteita, voi poiketa omastasi. On paljon hedelmällisempää työskennellä yhdessä kuin kiistellä "oikeasta" työtavasta.
 * Armada-Alliancen tutoriaalit julkaistaan osallistujien toimintaohjeiden avulla. Osallistumalla tähän projektiin suostutte noudattamaan näitä ehtoja.
 * Mikäli avaat pull requestin, varmista että työsi läpäisee kaikki testit, sillä virheet voivat rikkoa projektin ja projekti on jälleen korjattava, mikä tietenkin lisää tarvittavaa työtä.
-* Content that is to be added should be relevant to the project and not include self-promotion or the promotion of sponsors. Understand that what is submitted here will be considered open source and will be shared freely amongst everyone.
+* Lisättävän sisällön tulee olla projektille oleellista, eikä sisältää itsen tai sponsoreiden mainontaa. Ymmärrä, että mitä täällä esitetään, pidetään avoimena lähteenä ja jaetaan vapaasti kaikkien kesken.
 
 _**Kuinka osallistua**_
 
