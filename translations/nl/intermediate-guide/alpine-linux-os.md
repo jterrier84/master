@@ -63,6 +63,33 @@ addgroup cardano video
     sudo apk add git wget
 ```
 
+12\) By default, AlpineOS uses the powersave governor which sets CPU frequency at the lowest. To use the ondemand governor which scales CPU frequency according to system load, `cpufreq.start` is included in this repo which should be added to /etc/local.d/. You may run the following commands to do this for you.
+
+```text
+    cd ~
+```
+
+```text
+    git clone https://github.com/armada-alliance/alpine-rpi-os
+```
+
+```text
+    cd alpine-rpi-os
+```
+
+```text
+    sudo cp alpine-rpi-os/alpine_cnode_scripts_and_services/etc/local.d/cpufreq.start /etc/local.d/
+```
+
+```text
+    sudo chmod +x /etc/local.d/cpufreq.start
+```
+
+```text
+    sudo rc-update add local default
+```
+Then reboot the system.
+
 ### Installing the 'cardano-node' and 'cardano-cli' static binaries \(AlpineOS uses static binaries almost exclusively so you should avoid non-static builds\)
 
 {% hint style="info" %}
@@ -95,13 +122,21 @@ addgroup cardano video
 #### To install the scripts and services correctly don't skip steps 🏴‍☠️😎
 {% endhint %}
 
-1\) Clone this repo to obtain the necessary folder and scripts to quickly start your Cardano node. Use the command:
+1\) Clone this repo to obtain the neccessary folder and scripts to quickly start your cardano node. You may skip this step if you have already clonned this repo from step 12 when setting up AlpineOS.
+
+```text
+    cd ~
+```
 
 ```text
     git clone https://github.com/armada-alliance/alpine-rpi-os
 ```
 
-2\) Run the following commands to then install the **cnode** folder, scripts, and services into the correct folders. The **cnode** folder contains everything a **Cardano node** needs to start as a functional relay node:
+2\) Run the following commands to then install the **cnode** folder, scripts, and services into the correct folders. The **cnode** folder contains everything a **Cardano node** needs to start as a functional relay node.
+
+```text
+    cd ~
+```
 
 ```text
     cp -r alpine-rpi-os/alpine_cnode_scripts_and_services/home/cardano/* ~/
