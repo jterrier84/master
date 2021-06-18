@@ -101,7 +101,7 @@ addgroup cardano video
     git clone https://github.com/armada-alliance/alpine-rpi-os
 ```
 
-2\) Run the following commands to then install the **cnode** folder, scripts, and services into the correct folders. The **cnode** folder contains everything a **Cardano node** needs to start as a functional relay node:
+2\) Exécutez les commandes suivantes pour installer le dossier **cnode** , les scripts et les services dans les bons dossiers. Le dossier **cnode** contient tout ce que **cardano-node** a besoin pour démarrer un relais fonctionnel :
 
 ```text
     cp -r alpine-rpi-os/alpine_cnode_scripts_and_services/home/cardano/* ~/
@@ -119,21 +119,21 @@ addgroup cardano video
     sudo chmod +x /etc/init.d/cardano-node /etc/init.d/prometheus /etc/init.d/node-exporter
 ```
 
-3\) For faster syncing, consider this optional command for downloading the latest db folder hosted by one of our Alliance members.
+3\) Pour une synchronisation plus rapide, considérez cette commande optionnelle pour télécharger la dernière base de données hébergée par l'un des membres de l'Alliance.
 
 ```text
     wget -r -np -nH -R "index.html*" -e robots=off https://db.adamantium.online/db/ -P ~/cnode
 ```
 
-4\) Follow the guide written in **README.txt** contained in the **$HOME** directory after installing **cnode**, scripts, and services.
+4\) Suivez le guide **README.txt** contenu dans le répertoire **$HOME** après avoir installé **cnode**, scripts et services.
 
 ```text
     more ~/README.txt
 ```
 
-## Setup prometheus and node exporter
+## Configuration de Prometheus et de Node-Exporter
 
-1\) Download Prometheus and node-exporter into the home directory
+1\) Téléchargez Prometheus et node-exporter dans le répertoire personnel
 
 ```text
     wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.27.1/prometheus-2.27.1.linux-arm64.tar.gz
@@ -143,7 +143,7 @@ addgroup cardano video
     wget -O ~/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v1.1.2/node_exporter-1.1.2.linux-arm64.tar.gz
 ```
 
-2\) Extract the tarballs
+2\) Extraire les archives tarballs
 
 ```text
 tar -xzvf prometheus.tar.gz
@@ -153,7 +153,7 @@ tar -xzvf prometheus.tar.gz
 tar -xzvf node_exporter.tar.gz
 ```
 
-3\) Rename the folders with the following commands
+3\) Renommer les dossiers avec les commandes suivantes
 
 ```text
     mv prometheus-2.27.1.linux-arm64 prometheus
@@ -163,15 +163,15 @@ tar -xzvf node_exporter.tar.gz
     mv node_exporter-1.1.2.linux-arm64 node_exporter
 ```
 
-4\) Follow the guide written in README.txt contained in the $HOME directory after installing cnode, scripts and services to start the services accordingly.
+4\) Suivez le guide README.txt contenu dans le répertoire $HOME après avoir installé cnode, scripts et services.
 
 ```text
     more ~/README.txt
 ```
 
-## General Troubleshooting
+## Dépannage général
 
-* If you happen to use another than username other than cardano, do use the following commands and replace `username` with your chosen username.
+* Si vous utilisez un autre nom d'utilisateur que celui de cardano, utilisez les commandes suivantes et remplacez `nom d'utilisateur` par le nom d'utilisateur que vous avez choisi.
 
 ```text
     sed -i 's@/home/cardano@/home/<username>@g' ~/cnode_env
