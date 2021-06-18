@@ -224,20 +224,20 @@ tar -xzvf node_exporter.tar.gz
     sudo sed -i 's@/home/cardano@/home/<username>@g' /etc/init.d/node-export
 ```
 
-* If you have trouble with port forwarding via SSH, run the following command
+* Si vous avez des problèmes avec la redirection de port via SSH, exécutez la commande suivante
 
 ```text
 sudo nano /etc/ssh/sshd_config
 ```
 
-* Edit the line `AllowTcpForwarding no` to `AllowTcpForwarding yes`
+* Modifier la ligne `AllowTcpForwarding no` pour `AllowTcpForwarding yes`
 
 {% hint style="info" %}
-  Make sure this line is not commented out with a`#`
+  Assurez-vous que cette ligne n'est pas commentée avec un`#`
 {% endhint %}
 
 {% hint style="success" %}
-We would like to give a special shoutout to our [alliance member](https://armada-alliance.com) Sayshar, operator of [\[SRN\] Pool](https://www.adasrn.com/), for providing this tutorial 🏴‍☠️ 🙏 😎
+Nous aimerions souligner spécialement notre [membre d'alliance](https://armada-alliance.com) Sayshar, opérateur de [\[SRN\] Pool](https://www.adasrn.com/), pour fournir ce tutoriel 🏴‍☠️ 🙏 😎
 {% endhint %}
 
 
