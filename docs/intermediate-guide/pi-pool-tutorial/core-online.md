@@ -18,6 +18,8 @@ Refer to the Pi-Relay guide and update these settings accordingly for a Core ser
 - Set hostname in /etc/hosts & /etc/hostname
 - Static IP (192.168.1.150 or whatever works for you on your LAN)
 - Port to 3000
+- Topology file pointed to relay(s)
+- Changes to .adaenv and cardano-service to point to pool files
 
 ```bash
 sudo reboot
