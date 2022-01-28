@@ -129,10 +129,10 @@ sed -i ${NODE_CONFIG}-config.json \
 **Tip for relay nodes**: It's possible to reduce memory and cpu usage by setting "TraceMemPool" to "false" in **{NODE_CONFIG}-config.json.** This will turn off mempool data in Grafana and gLiveView.sh.
 {% endhint %}
 
-### Retrieve aarch64 1.33.0 binaries
+### Retrieve aarch64 1.33.1 and cardano-submit-api binaries
 
 {% hint style="info" %}
-The **unofficial** cardano-node, cardano-cli and cardano-submit-api binaries available to us are being built by an IOHK engineer in his **spare time**. Please visit the '[Arming Cardano](https://t.me/joinchat/wvTcCSpdjGllMmFk)' Telegram group for more information.
+The **unofficial** cardano-node, cardano-cli and cardano-submit-api binaries available to us are being built by an IOHK engineer in his **spare time**. Consider delegating to zw3rk pool to support mobile Haskel development.
 {% endhint %}
 
 ```bash
@@ -190,7 +190,7 @@ Avaa /etc/systemd/system/cardano-node.service.
 sudo nano /etc/systemd/system/cardano-node.service
 ```
 
-Paste the following, You will need to edit the username here if you chose to not use ada. save & exit.
+Paste the following, You will need to edit the username here if you chose to not use ada. Tallenna & poistu.
 
 ```bash
 # The Cardano Node Service (part of systemd)
