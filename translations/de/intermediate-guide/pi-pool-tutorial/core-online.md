@@ -103,7 +103,6 @@ sed -i common.inc \
     -e 's#genesisfile_byron="configuration-mainnet/mainnet-byron-genesis.json"#genesisfile_byron="'${NODE_FILES}'/'${NODE_CONFIG}'-byron-genesis.json"#' \
     -e 's#cardanocli="./cardano-cli"#cardanocli="cardano-cli"#' \
     -e 's#cardanonode="./cardano-node"#cardanonode="cardano-node"#' \
-    -e 's#bech32_bin="./bech32"#bech32_bin="bech32"#' \
     -e 's#offlineFile="./offlineTransfer.json"#offlineFile="${HOME}/usb-transfer/offlineTransfer.json"#' \
     -e 's#byronToShelleyEpochs=208#byronToShelleyEpochs='${BYRON_SHELLEY_EPOCHS}'#' \
     -e 's#magicparam="--mainnet"#magicparam="--${CONFIG_NET}"#' \
@@ -300,10 +299,9 @@ The Pi-Node has a static(portable) binary that can be transfered to the cold mac
 
 {% embed url="https://github.com/stedolan/jq" %}
 
-Locate and copy this systems jq binary to our $HOME directory.
+Locate and copy the static jq binary we built earlier to our $HOME directory.
 
 ```bash
-which jq
 sudo cp /usr/local/bin/jq $HOME
 ```
 
