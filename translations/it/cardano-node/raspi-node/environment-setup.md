@@ -10,7 +10,7 @@ Install the packages we will need.
 sudo apt install build-essential libssl-dev tcptraceroute python3-pip \
          make automake unzip net-tools nginx ssl-cert pkg-config \
          libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev \
-         zlib1g-dev g++ libncursesw5 libtool autoconf flex bison -y
+         zlib1g-dev g++ libncursesw5 libtool autoconf jq -y
 ```
 
 ## Environment
