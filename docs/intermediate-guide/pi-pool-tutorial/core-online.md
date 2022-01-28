@@ -103,7 +103,6 @@ sed -i common.inc \
     -e 's#genesisfile_byron="configuration-mainnet/mainnet-byron-genesis.json"#genesisfile_byron="'${NODE_FILES}'/'${NODE_CONFIG}'-byron-genesis.json"#' \
     -e 's#cardanocli="./cardano-cli"#cardanocli="cardano-cli"#' \
     -e 's#cardanonode="./cardano-node"#cardanonode="cardano-node"#' \
-    -e 's#bech32_bin="./bech32"#bech32_bin="bech32"#' \
     -e 's#offlineFile="./offlineTransfer.json"#offlineFile="${HOME}/usb-transfer/offlineTransfer.json"#' \
     -e 's#byronToShelleyEpochs=208#byronToShelleyEpochs='${BYRON_SHELLEY_EPOCHS}'#' \
     -e 's#magicparam="--mainnet"#magicparam="--${CONFIG_NET}"#' \
