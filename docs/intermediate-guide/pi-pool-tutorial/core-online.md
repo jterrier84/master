@@ -1,5 +1,7 @@
 # Pi-Core
 
+Create another Pi-Node from the guide or burn the Armada Alliance Pi-Node.img.gz to a new drive.
+
 ## Core server setup
 
 We will be using Martin Lang's [ATADA](https://cardanoscan.io/pool/00000036d515e12e18cd3c88c74f09a67984c2c279a5296aa96efe89) StakePool Operator Scripts to manage our pool and interact with the blockchain. These scripts not only handle pool creation & operations. They can be used with a hardware wallet, send ada, create NFT's and more. 
@@ -85,7 +87,7 @@ if [[ ${NODE_CONFIG} = 'testnet' ]]; then echo export BYRON_SHELLEY_EPOCHS=74; e
 if [[ ${NODE_CONFIG} = 'testnet' ]]; then echo export CONFIG_NET='testnet-magic\ "${MAGIC}"'; else echo export CONFIG_NET=mainnet; fi >> ${HOME}/.adaenv; . ${HOME}/.adaenv
 ```
 
-Copy the top portion of the 00\_common.sh file into a new file named common.inc. This will hold the variable paths needed to connect these scripts to our running node.
+Copy the top portion of the 00_common.sh file into a new file named common.inc. This will hold the variable paths needed to connect these scripts to our running node.
 
 ```bash
 cd $HOME/stakepoolscripts/bin/
@@ -121,7 +123,17 @@ cd; 00_common.sh
 Should see this on testnet or similar for mainnet. If something went wrong Martin presents you with a nice mushroom cloud ascii drawing and a hint as to what failed. If you are not synced to the tip of the chain it will warn you that the socket does not exist!
 
 ```bash
-Version-Info: cli 1.33.0 / node 1.33.0		Scripts-Mode: online		Testnet-Magic: 1097911063
+Version-Info: cli 1.33.1 / node 1.33.1		Scripts-Mode: online		Testnet-Magic: 1097911063
+```
+
+Martin ships a few binaries that are built for x86. These are useless on ARM64 so keep in mind that the token registration and catalyst registration scripts will not work until we can build these binaries for ARM. Lets delete them to save any confusion.
+
+```bash
+cd
+rm stakepoolscripts/bin/catalyst-toolbox
+rm stakepoolscripts/bin/jcli
+rm stakepoolscripts/bin/token-metadata-creator
+rm stakepoolscripts/bin/voter-registration
 ```
 
 **You need a fully synced node to continue.**
@@ -284,7 +296,7 @@ Lets copy this environment to the offline machine. We want the environment ident
 
 ### Grab jq on your way out
 
-We need an arm64 binary of jq we can move to our offline machine. Why build from source when there is already an arm64 binary on the core?
+The Pi-Node has a static(portable) binary that can be transfered to the cold machine. Build instructions can be found in the environment section of the guide.
 
 {% embed url="https://github.com/stedolan/jq" %}
 
@@ -324,8 +336,6 @@ pi-pool/logs
 usb-transfer
 exclude-list.txt
 ```
-
-If your drive is over 20gb you can remove the pi-pool/db entry and grab a copy of the db/ folder. You should shutdown cardano-node first. This will give you a copy of the chain that can be transferred to other machines to save first sync time.
 
 ### Download the guide markdown files
 
