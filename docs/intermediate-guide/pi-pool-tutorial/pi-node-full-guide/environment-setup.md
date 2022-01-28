@@ -97,6 +97,15 @@ make check
 sudo make install
 ```
 
+Confirm.
+
+```bash
+jq -V
+# jq-1.6-145-ga9f97e9-dirty
+which jq
+# /usr/local/bin/jq
+```
+
 ### Retrieve node files
 
 ```bash
@@ -176,30 +185,6 @@ Allow execution of our new cardano-node service file.
 chmod +x ${HOME}/.local/bin/cardano-service
 ```
 
-Create the systemd unit file and startup script so systemd can manage cardano-submit-api.
-
-```bash
-nano ${HOME}/.local/bin/cardano-submit-service file.
-```
-
-```bash
-#!/bin/bash
-. /home/ada/.adaenv
-
-cardano-submit-api \
-  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
-  --port 8090 \
-  --config /home/ada/pi-pool/files/tx-submit-mainnet-config.yaml \
-  --listen-address 0.0.0.0 \
-  --mainnet
-```
-
-Allow execution of our new cardano-submit-api service script.
-
-```bash
-chmod +x ${HOME}/.local/bin/cardano-submit-service
-```
-
 Open /etc/systemd/system/cardano-node.service.
 
 ```bash
@@ -234,7 +219,31 @@ EnvironmentFile=-/home/ada/.adaenv
 WantedBy= multi-user.target
 ```
 
-Open /etc/systemd/system/cardano-submit.service.
+Create the systemd unit file and startup script so systemd can manage cardano-submit-api.
+
+```bash
+nano ${HOME}/.local/bin/cardano-submit-service
+```
+
+```bash
+#!/bin/bash
+. /home/ada/.adaenv
+
+cardano-submit-api \
+  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
+  --port 8090 \
+  --config /home/ada/pi-pool/files/tx-submit-mainnet-config.yaml \
+  --listen-address 0.0.0.0 \
+  --mainnet
+```
+
+Allow execution of our new cardano-submit-api service script.
+
+```bash
+chmod +x ${HOME}/.local/bin/cardano-submit-service
+```
+
+Create /etc/systemd/system/cardano-submit.service.
 
 ```bash
 sudo nano /etc/systemd/system/cardano-submit.service
@@ -298,7 +307,7 @@ Save & exit.
 source ${HOME}/.adaenv
 ```
 
-What we just did there was add a function to control our cardano-service and cardano-submit without having to type out
+What we just did there was add a couple functions to control our cardano-service and cardano-submit without having to type out
 
 > > sudo systemctl enable cardano-node.service
 > >
@@ -314,6 +323,19 @@ Now we just have to:
 - cardano-service start (starts cardano-node.service)
 - cardano-service stop (stops cardano-node.service)
 - cardano-service status (shows the status of cardano-node.service)
+
+Or
+
+- cardano-submit enable (enables cardano-submit.service auto start at boot)
+- cardano-submit start (starts cardano-submit.service)
+- cardano-submit stop (stops cardano-submit.service)
+- cardano-submit status (shows the status of cardano-submit.service)
+
+The submit service listens on port 8090. You can connect your Nami wallet like below to submit tx's yourself in Nami's settings.
+
+```bash
+http://<node lan ip>:8090/api/submit/tx
+```
 
 ## ⛓ Syncing the chain ⛓
 
