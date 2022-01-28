@@ -7,10 +7,11 @@ description: Configure the environment for Cardano Node
 ## Choose testnet or mainnet.
 
 {% hint style="danger" %}
-There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet or ask Alliance members in Telegram. Try not to lose it please.
+There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs to start a pool on mainnet. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet.
+[tada faucet link](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/)
 {% endhint %}
 
-Make some directories.
+Create the directories for our project.
 
 ```bash
 mkdir -p ${HOME}/.local/bin
@@ -66,14 +67,13 @@ make
 sudo make install
 ```
 
-Add the following to your .bashrc file and source it.
+Echo library paths .bashrc file and source it.
 
 ```bash
 echo "export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"" >> ~/.bashrc
 echo "export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"" >> ~/.bashrc
 . ~/.bashrc
 ```
-
 
 Update link cache for shared libraries and confirm.
 
