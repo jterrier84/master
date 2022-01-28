@@ -300,10 +300,9 @@ The Pi-Node has a static(portable) binary that can be transfered to the cold mac
 
 {% embed url="https://github.com/stedolan/jq" %}
 
-Locate and copy this systems jq binary to our $HOME directory.
+Locate and copy the static jq binary we built earlier to our $HOME directory.
 
 ```bash
-which jq
 sudo cp /usr/local/bin/jq $HOME
 ```
 
