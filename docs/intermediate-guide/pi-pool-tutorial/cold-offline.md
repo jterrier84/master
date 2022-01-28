@@ -6,7 +6,7 @@ This can be any 64 bit capable Raspi. Any Raspberry Pi 4, Raspberry Pi 3b+ or a 
 
 #### Ubuntu or Raspbian
 
-Raspberry Pi OS desktop is a lot faster and more stable than the gnome desktop in Ubuntu. There is now a 64bit image you can install, it is not available in rapi-imager selection, IDK why. Check out the images in the link below grab the latest version. It is a zip file so we have to unzip it.
+Raspberry Pi OS desktop is a lot faster and more stable than the gnome desktop in Ubuntu. There is now a 64bit image you can install, it is not available in raspi-imager selection, IDK why. Check out the images in the link below grab the latest version. It is a zip file so we have to unzip it.
 
 {% embed url="https://downloads.raspberrypi.org/raspios_arm64" %}
 
