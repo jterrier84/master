@@ -30,10 +30,6 @@
 
 ## Other Cardano Guides <a href="#cardano-developer-guides" id="cardano-developer-guides"></a>
 
-* [RasPi-Node🍓](cardano-developer-guides/raspi-node/README.md)
-  * [Download & Flash](cardano-developer-guides/raspi-node/download-and-flash.md)
-  * [Server Setup](cardano-developer-guides/raspi-node/server-setup.md)
-  * [Environment Setup](cardano-developer-guides/raspi-node/environment-setup.md)
 * [Cardano Native Asset (NFT) 💰](cardano-developer-guides/nft-native-assets.md)
 * [Cardano NFT Collection Tutorial 👛](cardano-developer-guides/cardano-nft-collection-tutorial-coming-soon.md)
 * [Cardano Submit Transaction API Tutorial 📦](cardano-developer-guides/cardano-submit-tx-api-tutorial.md)
