@@ -38,7 +38,7 @@ Todo lo que realmente necesitamos hacer aquí es desactivar el inicio de sesión
 
 ## Create the ada user
 
-This guide strives to be user agnostic so you can choose a different username and you should be ok. When creating the systemd services whoever you will have to edit the user. Pay attention!
+This guide strives to be user agnostic so you can choose a different username and you should be ok. When creating the systemd services however you will have to edit the user. Pay attention!
 
 Open terminal and create a new user and add it to the sudo group.
 
