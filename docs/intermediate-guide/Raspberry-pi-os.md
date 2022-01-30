@@ -6,7 +6,9 @@ description: Flash image
 
 ![](<../../.gitbook/assets/download-10- (1) (3).jpeg>)
 
-You must use the Raspberry Pi 4 with 8gb of ram!
+{% hint style="info" %}
+**You must use the Raspberry Pi 4 with 8GB of RAM!**
+{% endhint %}
 
 ## Download & Flash
 
@@ -20,20 +22,20 @@ There is now a 64bit image you can install, it is not available in raspi-imager 
 
 {% embed url="https://downloads.raspberrypi.org/raspios_arm64" %}
 
-Unzip the img file and flash it with Raspi-imager. Plug it into your Raspberry Pi 4 and go through the initial setup. Default username=pi and the password=raspberrypi.
+Unzip the img file and flash it with Raspi-imager. Plug it into your Raspberry Pi 4 and go through the initial setup. Default username=`pi` and the password=`raspberrypi`
 
 You can find documentation here [https://www.raspberrypi.com/documentation/](https://www.raspberrypi.com/documentation/)
 
-Insert the SSD into one of the blue usb3 ports. Then insert the HDMI, Keyboard, Mouse, Ethernet and power supply.
+Insert the SSD into one of the blue usb3 ports. Then insert the HDMI, Keyboard, Mouse, Ethernet, and power supply.
 
 {% hint style="danger" %}
-The first Pi4's to ship do not boot from USB3 by default, nowadays they do. If your image does not boot the two most common issues are older firmware on your Pi or an incompatible USB3 adaptor.
+The first Pi4's to ship did not boot from USB3 by default, nowadays they do. If your image does not boot the two most common issues are older firmware on your Pi or an incompatible USB3 adaptor.
 {% endhint %}
 
 ![](../../.gitbook/assets/pi4.jpeg)
 
 {% hint style="info" %}
-All we really need to do here is disable auto login & create the ada user with sudo privileges. After we log back in we will delete the default Pi user and configure the server & environment for cardan-node & cardano-cli.
+All we really need to do here is disable auto-login & create the ada user with sudo privileges. After we log back in we will delete the default Pi user and configure the server & environment for cardano-node & cardano-cli.
 {% endhint %}
 
 ![Open the Raspberry Pi Configuration utility.](../../.gitbook/assets/raspberrypi-configuration.png)
@@ -44,13 +46,13 @@ All we really need to do here is disable auto login & create the ada user with s
 
 This guide strives to be user agnostic so you can choose a different username and you should be ok. When creating the systemd services however you will have to edit the user. Pay attention!
 
-Open terminal and create a new user and add it to the sudo group.
+Open a terminal then create a new user and add it to the sudo group.
 
 ```bash
 sudo adduser ada; sudo adduser ada sudo
 ```
 
-Update Raspbery Pi OS and reboot the server to make sure you are on the latest kernel. Reboot and login as your new user.
+Update Raspbery Pi OS and reboot the server to make sure you are on the latest kernel. Reboot and log in as your new user.
 
 ```bash
 sudo apt update; sudo apt upgrade
