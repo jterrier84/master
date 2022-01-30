@@ -2,15 +2,19 @@
 description: Flash image
 ---
 
+# Raspi-Node Guide
+
+![](<../../.gitbook/assets/download-10- (1) (3).jpeg>)
+
 You must use the Raspberry Pi 4 with 8gb of ram!
 
-# Download & Flash
+## Download & Flash
 
-## Install Raspi-Imager
+### Install Raspi-Imager
 
 Download, install & open [Raspberry Pi Imager](https://github.com/raspberrypi/rpi-imager/releases/latest). Plug in your target USB drive.
 
-#### 64 bit Raspberry Pi OS desktop
+**64 bit Raspberry Pi OS desktop**
 
 There is now a 64bit image you can install, it is not available in raspi-imager selection, IDK why. Check out the images in the link below grab the latest version. It is a zip file so we have to unzip it before flashing.
 
@@ -36,7 +40,7 @@ All we really need to do here is disable auto login & create the ada user with s
 
 ![Set Auto Login to Disabled](../../.gitbook/assets/disable-auto-login.png)
 
-## Create the ada user
+### Create the ada user
 
 This guide strives to be user agnostic so you can choose a different username and you should be ok. When creating the systemd services however you will have to edit the user. Pay attention!
 
@@ -45,13 +49,14 @@ Open terminal and create a new user and add it to the sudo group.
 ```bash
 sudo adduser ada; sudo adduser ada sudo
 ```
+
 Update Raspbery Pi OS and reboot the server to make sure you are on the latest kernel. Reboot and login as your new user.
 
 ```bash
 sudo apt update; sudo apt upgrade
 ```
 
-### Change password
+#### Change password
 
 You can change the users password at anytime with.
 
@@ -63,7 +68,7 @@ passwd
 Careful where you use sudo. For example issuing 'sudo passwd' would change the root password. This seems to be a place where new users get confused.
 {% endhint %}
 
-### Delete the pi user
+#### Delete the pi user
 
 The pi user is set to auto login and does not require a password for sudo commands. Best to just trash it to avoid any potential security issues.
 
@@ -71,22 +76,21 @@ The pi user is set to auto login and does not require a password for sudo comman
 sudo deluser --remove-home pi
 ```
 
-## Server setup
+### Server setup
 
-## Configure Hardware
+### Configure Hardware
 
 Let's save some power, raise the governor on the CPU a bit, and set GPU ram as low as we can.
 
-{% hint style="warning" %}
 Here are some links for overclocking and testing your drive speeds. If you have heat sinks you can safely go to 2000. Just pay attention to over volt recommendations to go with your chosen clock speed.
 
-- [https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md](https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md)
-- [https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/](https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/)
-- [https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock](https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock)
-- [https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/](https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/)
-- [Legendary Technology: New Raspberry Pi 4 Bootloader USB](https://jamesachambers.com/new-raspberry-pi-4-bootloader-usb-network-boot-guide/)
+* [https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md](https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md)
+* [https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/](https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/)
+* [https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock](https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock)
+* [https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/](https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/)
+* [Legendary Technology: New Raspberry Pi 4 Bootloader USB](https://jamesachambers.com/new-raspberry-pi-4-bootloader-usb-network-boot-guide/)
 
-#### Overclock, memory & radios
+**Overclock, memory & radios**
 
 Edit /boot/config.txt. Just paste Pi Pool additions in at the bottom. CTRL+x to save and y to confirm and exit.
 
@@ -102,19 +106,19 @@ arm_freq=2000
 
 Save and reboot.
 
-```text
+```
 sudo reboot
 ```
 
-## Configure Ubuntu
+### Configure Ubuntu
 
-### Disable the root user
+#### Disable the root user
 
 ```
 sudo passwd -l root
 ```
 
-### Secure shared memory
+#### Secure shared memory
 
 Mount shared memory as read only. Open /etc/fstab.
 
@@ -128,7 +132,7 @@ Add this line at the bottom, save & exit.
 tmpfs    /run/shm    tmpfs    ro,noexec,nosuid    0 0
 ```
 
-### Increase open file limit for $USER
+#### Increase open file limit for $USER
 
 Add a couple lines to the bottom of /etc/security/limits.conf
 
@@ -142,7 +146,7 @@ Confirm it was added to the bottom.
 cat /etc/security/limits.conf
 ```
 
-### Optimize performance & security
+#### Optimize performance & security
 
 {% hint style="info" %}
 [https://gist.github.com/lokhman/cc716d2e2d373dd696b2d9264c0287a3](https://gist.github.com/lokhman/cc716d2e2d373dd696b2d9264c0287a3)
@@ -199,7 +203,7 @@ net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 ```
 
-#### Load our changes after boot
+**Load our changes after boot**
 
 Create a new file. Paste, save & close.
 
@@ -233,7 +237,7 @@ sysctl -p /etc/sysctl.conf
 exit 0
 ```
 
-### Chrony
+#### Chrony
 
 We need to get our time synchronization as accurate as possible. Open /etc/chrony/chrony.conf
 
@@ -284,30 +288,32 @@ leapsectz right/UTC
 # Serve time even if not synchronized to a time source.
 local stratum 10
 ```
+
 Save & exit.
 
 ```bash
 sudo service chrony restart
 ```
-### Zram swap
+
+#### Zram swap
 
 {% hint style="info" %}
 We have found that cardano-node can safely use this compressed swap in ram essentially giving us around 20gb of ram. We already set kernel parameters for zram in /etc/sysctl.conf
 {% endhint %}
 
-Swapping to disk is slow, swapping to compressed ram space is faster and gives us some overhead before out of memory \(oom\).
+Swapping to disk is slow, swapping to compressed ram space is faster and gives us some overhead before out of memory (oom).
 
-{% embed url="https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/" caption="" %}
+{% embed url="https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/" %}
 
-{% embed url="https://lists.ubuntu.com/archives/lubuntu-users/2013-October/005831.html" caption="" %}
+{% embed url="https://lists.ubuntu.com/archives/lubuntu-users/2013-October/005831.html" %}
 
 Disable Raspbian swapfile.
 
-```text
+```
 sudo systemctl disable dphys-swapfile.service
 ```
 
-```text
+```
 sudo apt install zram-tools
 ```
 
@@ -346,7 +352,7 @@ Save and reboot.
 sudo reboot
 ```
 
-## Install packages
+### Install packages
 
 Install the packages we will need.
 
@@ -360,7 +366,8 @@ sudo apt install build-essential libssl-dev tcptraceroute python3-pip \
 ```
 sudo reboot
 ```
-## Automatic security updates
+
+### Automatic security updates
 
 Enable automatic security updates.
 
@@ -368,17 +375,16 @@ Enable automatic security updates.
 sudo dpkg-reconfigure -plow unattended-upgrades
 ```
 
-# Environment Setup
+## Environment Setup
 
----
-description: Configure the environment for Cardano Node
----
+***
 
-## Choose testnet or mainnet.
+### description: Configure the environment for Cardano Node
+
+### Choose testnet or mainnet.
 
 {% hint style="danger" %}
-There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs to start a pool on mainnet. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet.
-[tada faucet link](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/)
+There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs to start a pool on mainnet. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet. [tada faucet link](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/)
 {% endhint %}
 
 Create the directories for our project.
@@ -398,7 +404,7 @@ Create an .adaenv file, choose which network you want to be on and source the fi
 echo -e NODE_CONFIG=testnet >> ${HOME}/.adaenv; source ${HOME}/.adaenv
 ```
 
-### Create bash variables & add \~/.local/bin to our $PATH 🏃
+#### Create bash variables & add \~/.local/bin to our $PATH 🏃
 
 {% hint style="info" %}
 [Environment Variables in Linux/Unix](https://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells/247769#247769).
@@ -422,7 +428,7 @@ echo export CARDANO_NODE_SOCKET_PATH="${HOME}/pi-pool/db/socket" >> ${HOME}/.ada
 source ${HOME}/.bashrc; source ${HOME}/.adaenv
 ```
 
-## Build Libsodium
+### Build Libsodium
 
 This is IOHK's fork of Libsodium. It is needed for the dynamic build binary of cardano-node.
 
@@ -451,7 +457,7 @@ Update link cache for shared libraries and confirm.
 sudo ldconfig; ldconfig -p | grep libsodium
 ```
 
-### Retrieve node files
+#### Retrieve node files
 
 ```bash
 cd $NODE_FILES
@@ -463,7 +469,7 @@ wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-
 wget -N https://raw.githubusercontent.com/input-output-hk/cardano-node/master/cardano-submit-api/config/tx-submit-mainnet-config.yaml
 ```
 
-Run the following to modify ${NODE_CONFIG}-config.json and update TraceBlockFetchDecisions to "true" & listen on all interfaces with Prometheus Node Exporter.
+Run the following to modify ${NODE\_CONFIG}-config.json and update TraceBlockFetchDecisions to "true" & listen on all interfaces with Prometheus Node Exporter.
 
 ```bash
 sed -i ${NODE_CONFIG}-config.json \
@@ -472,10 +478,10 @@ sed -i ${NODE_CONFIG}-config.json \
 ```
 
 {% hint style="info" %}
-**Tip for relay nodes**: It's possible to reduce memory and cpu usage by setting "TraceMemPool" to "false" in **{NODE_CONFIG}-config.json.** This will turn off mempool data in Grafana and gLiveView.sh.
+**Tip for relay nodes**: It's possible to reduce memory and cpu usage by setting "TraceMemPool" to "false" in **{NODE\_CONFIG}-config.json.** This will turn off mempool data in Grafana and gLiveView.sh.
 {% endhint %}
 
-### Retrieve aarch64 1.33.1 and cardano-submit-api binaries
+#### Retrieve aarch64 1.33.1 and cardano-submit-api binaries
 
 {% hint style="info" %}
 The **unofficial** cardano-node, cardano-cli and cardano-submit-api binaries available to us are being built by an IOHK engineer in his **spare time**. Consider delegating to zw3rk pool to support mobile Haskel development.
@@ -502,7 +508,7 @@ cardano-cli version
 which cardano-submit-api
 ```
 
-### Systemd unit startup scripts
+#### Systemd unit startup scripts
 
 Create the systemd unit file and startup script so systemd can manage cardano-node.
 
@@ -665,17 +671,17 @@ What we just did there was add a couple functions to control our cardano-service
 
 Now we just have to:
 
-- cardano-service enable (enables cardano-node.service auto start at boot)
-- cardano-service start (starts cardano-node.service)
-- cardano-service stop (stops cardano-node.service)
-- cardano-service status (shows the status of cardano-node.service)
+* cardano-service enable (enables cardano-node.service auto start at boot)
+* cardano-service start (starts cardano-node.service)
+* cardano-service stop (stops cardano-node.service)
+* cardano-service status (shows the status of cardano-node.service)
 
 Or
 
-- cardano-submit enable (enables cardano-submit.service auto start at boot)
-- cardano-submit start (starts cardano-submit.service)
-- cardano-submit stop (stops cardano-submit.service)
-- cardano-submit status (shows the status of cardano-submit.service)
+* cardano-submit enable (enables cardano-submit.service auto start at boot)
+* cardano-submit start (starts cardano-submit.service)
+* cardano-submit stop (stops cardano-submit.service)
+* cardano-submit status (shows the status of cardano-submit.service)
 
 The submit service listens on port 8090. You can connect your Nami wallet like below to submit tx's yourself in Nami's settings.
 
@@ -683,11 +689,11 @@ The submit service listens on port 8090. You can connect your Nami wallet like b
 http://<node lan ip>:8090/api/submit/tx
 ```
 
-## ⛓ Syncing the chain ⛓
+### ⛓ Syncing the chain ⛓
 
 You are now ready to start cardano-node. Doing so will start the process of 'syncing the chain'. This is going to take about 48 hours and the db folder is about 13GB in size right now. We used to have to sync it to one node and copy it from that node to our new ones to save time. However...
 
-### Download snapshot
+#### Download snapshot
 
 I have started taking snapshots of my backup nodes db folder and hosting it in a web directory. With this service it takes around 20 minutes to pull the latest snapshot and maybe another hour to sync up to the tip of the chain. This service is provided as is. It is up to you. If you want to sync the chain on your own simply:
 
@@ -705,7 +711,7 @@ cd $NODE_HOME
 rm -r db/
 ```
 
-#### Download Database
+**Download Database**
 
 ```bash
 wget -r -np -nH -R "index.html*" -e robots=off https://$NODE_CONFIG.adamantium.online/db/
@@ -719,7 +725,7 @@ cardano-service start
 cardano-service status
 ```
 
-## gLiveView.sh
+### gLiveView.sh
 
 Guild operators scripts has a couple useful tools for operating a pool. We do not want the project as a whole, though there are a couple scripts we are going to use.
 
@@ -739,7 +745,6 @@ nano /home/ada/.adaenv
 source /home/ada/.adaenv
 cardano-service restart
 ```
-
 {% endhint %}
 
 Add a line sourcing our .adaenv file to the top of the env file and adjust some paths.
@@ -760,9 +765,9 @@ Allow execution of gLiveView.sh.
 chmod +x gLiveView.sh
 ```
 
-## topologyUpdater.sh
+### topologyUpdater.sh
 
-Until peer to peer is enabled on the network operators need a way to get a list of relays/peers to connect to. The topology updater service runs in the background with cron. Every hour the script will run and tell the service you are a relay and want to be a part of the network. It will add your relay to it's directory after four hours you should see in connections in gLiveView. &#x20;
+Until peer to peer is enabled on the network operators need a way to get a list of relays/peers to connect to. The topology updater service runs in the background with cron. Every hour the script will run and tell the service you are a relay and want to be a part of the network. It will add your relay to it's directory after four hours you should see in connections in gLiveView.
 
 {% hint style="info" %}
 The list generated will show you the distance & a clue as to where the relay is located.
@@ -774,7 +779,7 @@ Download the topologyUpdater script and have a look at it. Lower the number of p
 wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/topologyUpdater.sh
 ```
 
-Lower the number of MX_PEERS to 10.
+Lower the number of MX\_PEERS to 10.
 
 ```bash
 nano topologyUpdater.sh
@@ -812,14 +817,14 @@ PATH=/home/ada/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 33 * * * * . $HOME/.adaenv; $HOME/pi-pool/scripts/topologyUpdater.sh
 ```
 
-After four hours you can open ${NODE_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
+After four hours you can open ${NODE\_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
 
 ```bash
 nano $NODE_FILES/${NODE_CONFIG}-topology.json
 ```
 
 {% hint style="info" %}
-You can use gLiveView.sh to view ping times in relation to the peers in your {NODE_CONFIG}-topology file. Use Ping to resolve hostnames to IP's.
+You can use gLiveView.sh to view ping times in relation to the peers in your {NODE\_CONFIG}-topology file. Use Ping to resolve hostnames to IP's.
 {% endhint %}
 
 Changes to this file will take affect upon restarting the cardano-service.
@@ -841,9 +846,9 @@ cd $NODE_HOME/scripts
 ./gLiveView.sh
 ```
 
-![](<../../../../.gitbook/assets/pi-node-glive (7).png>)
+![](<../../.gitbook/assets/pi-node-glive (7).png>)
 
-## Prometheus, Node Exporter & Grafana
+### Prometheus, Node Exporter & Grafana
 
 Prometheus connects to cardano-nodes backend and serves metrics over http. Grafana in turn can use that data to display graphs and create alerts. Our Grafana dashboard will be made up of data from our Ubuntu system & cardano-node. Grafana can display data from other sources as well, like [adapools.org](https://adapools.org).
 
@@ -853,9 +858,9 @@ You can connect a [Telegram bot](https://docs.armada-alliance.com/learn/intermed
 
 {% embed url="https://github.com/prometheus" %}
 
-![](<../../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (7).png>)
+![](<../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (7).png>)
 
-### Install Prometheus & Node Exporter.
+#### Install Prometheus & Node Exporter.
 
 {% hint style="info" %}
 Prometheus can scrape the http endpoints of other servers running node exporter. Meaning Grafana and Prometheus does not have to be installed on your core and relays. Only the package prometheus-node-exporter is required if you would like to build a central Grafana dashboard for the pool, freeing up resources and having a single dashboard to monitor everything.
@@ -872,7 +877,7 @@ sudo systemctl disable prometheus.service
 sudo systemctl disable prometheus-node-exporter.service
 ```
 
-### Configure Prometheus
+#### Configure Prometheus
 
 Open prometheus.yml.
 
@@ -937,7 +942,7 @@ Start Prometheus.
 sudo systemctl start prometheus.service
 ```
 
-### Install Grafana
+#### Install Grafana
 
 {% embed url="https://github.com/grafana/grafana" %}
 
@@ -973,7 +978,7 @@ Start Grafana
 sudo systemctl start grafana-server.service
 ```
 
-### cardano-monitor bash function
+#### cardano-monitor bash function
 
 Open .adaenv.
 
@@ -1009,7 +1014,7 @@ cardano-monitor start
 At this point you may want to start cardano-service and get synced up before we continue to configure Grafana. Go to the syncing the chain section. Choose whether you want to wait 30 hours or download the latest chain snapshot. Return here once gLiveView.sh shows you are at the tip of the chain.
 {% endhint %}
 
-## Grafana, Nginx proxy_pass & snakeoil
+### Grafana, Nginx proxy\_pass & snakeoil
 
 Let's put Grafana behind Nginx with self signed(snakeoil) certificate. The certificate was generated when we installed the ssl-cert package.
 
@@ -1065,19 +1070,19 @@ sudo service nginx restart
 
 You can now visit your pi-nodes ip address without any port specification, the connection will be upgraded to SSL/TLS and you will get a scary message(not really scary at all). Continue through to your dashboard.
 
-![](../../../../.gitbook/assets/snakeoil.png)
+![](../../.gitbook/assets/snakeoil.png)
 
-### Configure Grafana
+#### Configure Grafana
 
 On your local machine open your browser and enter your nodes private ip address.
 
 Log in and set a new password. Default username and password is **admin:admin**.
 
-#### Configure data source
+**Configure data source**
 
 In the left hand vertical menu go to **Configure** > **Datasources** and click to **Add data source**. Choose Prometheus. Enter [http://localhost:9090](http://localhost:9090) where it is grayed out, everything else can be left default. At the bottom save & test. You should get the green "Data source is working" if cardano-monitor has been started. If for some reason those services failed to start issue **cardano-service restart**.
 
-#### Import dashboards
+**Import dashboards**
 
 Save the dashboard json files to your local machine.
 
@@ -1085,9 +1090,9 @@ Save the dashboard json files to your local machine.
 
 In the left hand vertical menu go to **Dashboards** > **Manage** and click on **Import**. Select the file you just downloaded/created and save. Head back to **Dashboards** > **Manage** and click on your new dashboard.
 
-![](<../../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (5).png>)
+![](<../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (5).png>)
 
-### Configure poolDataLive
+#### Configure poolDataLive
 
 Here you can use the poolData api to bring extra pool data into Grafana like stake & price.
 
@@ -1100,14 +1105,12 @@ sudo grafana-cli plugins install simpod-json-datasource
 cardano-monitor restart
 ```
 
-## Useful Commands
+### Useful Commands
 
 {% hint style="info" %}
-
 View how much zram swap cardano-node is using.
 
 ```bash
-
 CNZRAM=$(pidof cardano-node)
 grep --color VmSwap /proc/$CNZRAM/status
 ```
@@ -1129,7 +1132,6 @@ View network connections with netstat.
 ```bash
 sudo netstat -puntw
 ```
-
 {% endhint %}
 
 From here you have a Pi-Node with tools to build an active relay or a stake pool from the following pages. Best of luck and please join the [armada-alliance](https://armada-alliance.com), together we are stronger! :muscle:
