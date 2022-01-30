@@ -17,7 +17,7 @@
   * [Pi-Cold](intermediate-guide/pi-pool-tutorial/cold-offline.md)
   * [Rotate KES](intermediate-guide/pi-pool-tutorial/rotate-kes.md)
   * [Update Registration](intermediate-guide/pi-pool-tutorial/update-registration-cert.md)
-* [Raspi-Node Guide](cardano-developer-guides/Raspberry-pi-os.md)
+* [Raspi-Node Guide](intermediate-guide/Raspberry-pi-os.md)
 * [Alpine Linux OS 🗻](intermediate-guide/alpine-linux-os.md)
 * [Basic Stake Pool Networking 💫](intermediate-guide/basic-stake-pool-networking.md)
 * [Add adapools Metrics to Grafana 📊](intermediate-guide/add-adapools-info-to-grafana.md)
