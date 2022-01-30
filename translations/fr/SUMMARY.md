@@ -17,7 +17,7 @@
   * [Pi-Cold](intermediate-guide/pi-pool-tutorial/cold-offline.md)
   * [Rotate KES](intermediate-guide/pi-pool-tutorial/rotate-kes.md)
   * [Update Registration](intermediate-guide/pi-pool-tutorial/update-registration-cert.md)
-* [Raspi-Node Guide](cardano-developer-guides/Raspberry-pi-os.md)
+* [Raspi-Node Guide](intermediate-guide/Raspberry-pi-os.md)
 * [Linux Alpine OS 🗻](intermediate-guide/alpine-linux-os.md)
 * [Basic Stake Pool Networking 💫](intermediate-guide/basic-stake-pool-networking.md)
 * [Add adapools Metrics to Grafana 📊](intermediate-guide/add-adapools-info-to-grafana.md)
@@ -30,10 +30,6 @@
 
 ## Other Cardano Guides <a href="#cardano-developer-guides" id="cardano-developer-guides"></a>
 
-* [RasPi-Node🍓](cardano-developer-guides/raspi-node/README.md)
-  * [Download & Flash](cardano-developer-guides/raspi-node/download-and-flash.md)
-  * [Server Setup](cardano-developer-guides/raspi-node/server-setup.md)
-  * [Configuration de l'environnement](cardano-developer-guides/raspi-node/environment-setup.md)
 * [Cardano Native Asset (NFT) 💰](cardano-developer-guides/nft-native-assets.md)
 * [Cardano NFT Collection Tutorial 👛](cardano-developer-guides/cardano-nft-collection-tutorial-coming-soon.md)
 * [Cardano Submit Transaction API Tutorial 📦](cardano-developer-guides/cardano-submit-tx-api-tutorial.md)
