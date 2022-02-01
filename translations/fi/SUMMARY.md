@@ -40,9 +40,6 @@
 
 * [Kirjasto 🏫](before-you-get-started.../library.md)
 * [Hyödyllisiä linkkeja laitteiston hankintaan 🏪](before-you-get-started.../hardware.md)
-
-***
-
 * [Delegoi 🤗](delegate.md)
 * [Ota osaa 🐱 🚀](how-to-contribute/README.md)
   * [Osallistumisohje](how-to-contribute/untitled-1/README.md)
