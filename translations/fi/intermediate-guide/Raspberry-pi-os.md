@@ -6,8 +6,12 @@ description: Flash image
 
 ![](../../.gitbook/assets/download-10- (1) (3).jpeg)
 
-{% hint style="info" %}
-**You must use the Raspberry Pi 4 with 8GB of RAM!**
+## Miksi tämä opas?
+
+This guide is intended for people who wants to get a Raspberry-pi 4 with full desktop Raspberry Pi OS installed along with all the required software to get a Cardano Node up and running on the blockchain. This can be a nice setup for those seeking to just do some lightweight develerpment on the blockchain like making NFTs for example.
+
+{% hint style="Huomaa" %}
+**You'll need a monitor (at least for initial setup as SSH is disabled and ufw is up) and you must use the Raspberry Pi 4 with 8GB of RAM!**
 {% endhint %}
 
 ## Lataa & Polta
@@ -28,7 +32,7 @@ You can find documentation here [https://www.raspberrypi.com/documentation/](htt
 
 Aseta SSD yhteen sinisestä usb3-porteista. Then insert the HDMI, Keyboard, Mouse, Ethernet, and power supply.
 
-{% hint style="danger" %}
+{% hint style="Huomaa" %}
 The first Pi4's to ship did not boot from USB3 by default, nowadays they do. Jos imagesi ei käynnisty kaksi yleisintä ongelmaa ovat vanhemmat laiteohjelmistot Pi:ssäsi tai yhteensopimaton USB3 sovitin.
 {% endhint %}
 
@@ -44,7 +48,7 @@ All we really need to do here is disable auto-login & create the ada user with s
 
 ### Luo ada käyttäjä
 
-This guide strives to be user agnostic so you can choose a different username and you should be ok. When creating the systemd services however you will have to edit the user. Pay attention!
+This guide strives to be user agnostic so you can choose a different username and you should be ok. When creating the systemd services however you will have to edit the user. **Pay attention!**
 
 Open a terminal then create a new user and add it to the sudo group.
 
@@ -60,7 +64,7 @@ sudo apt update; sudo apt upgrade
 
 #### Vaihda salasana
 
-You can change the users password at anytime with.
+You can change the users password at anytime with the following command.
 
 ```bash
 passwd
@@ -94,17 +98,19 @@ Tässä muutamia linkkejä ylikellotukseen ja aseman nopeuksien testaamiseen. Jo
 
 **Ylikellotus, muisti & radiot**
 
-Edit /boot/config.txt. Liitä Pi Pool lisäykset tiedoston loppuun. CTRL+x to save and y to confirm and exit.
+Edit /boot/config.txt.
 
 ```bash
 sudo nano /boot/firmware/config.txt
 ```
+Just paste the Pi Pool additions in at the bottom.
 
 ```bash
 ## Pi Pool ##
 over_voltage=6
 arm_freq=2000
 ```
+use `CTRL + x` to save and `y` to confirm and exit.
 
 Tallenna ja käynnistä uudelleen.
 
@@ -112,7 +118,7 @@ Tallenna ja käynnistä uudelleen.
 sudo reboot
 ```
 
-### Määritä Ubuntu
+### Configure Raspbian
 
 #### Poista root käyttäjä käytöstä
 
