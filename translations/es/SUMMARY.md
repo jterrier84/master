@@ -40,9 +40,6 @@
 
 * [Librería](before-you-get-started.../library.md)
 * [Enlaces de compra de hardware 🏪](before-you-get-started.../hardware.md)
-
-***
-
 * [Delegar 🤗](delegate.md)
 * [Contribuir 🐱‍🚀](how-to-contribute/README.md)
   * [Guía de Contribución](how-to-contribute/untitled-1/README.md)
