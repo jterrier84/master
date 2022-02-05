@@ -157,6 +157,9 @@ read -ra proc_data <<<"$(ps -p ${CNODE_PID} -o pcpu= -o rss=)"
 ##############################################################
 nano ~/pi-pool/scripts/env
 
+# Change the shebang line to this so we use the new shell:
+#!/usr/bin/env bash
+
 # Replace all sha256sum instances with sha3sum
 
 # Comment out the following 3 lines for this gdate block:
