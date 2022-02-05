@@ -7,7 +7,7 @@ description: >-
 
 # M1: Native macOS 11 Build
 
-Disclaimer: I'm not a Mac expert - in fact I'm not even a Mac user. This was the first real exposure to the macOS I've ever had. Working from notes, so if something is slightly off the solution should be nearby. This was a proof of concept to see if I could shift from a Raspberry Pi 4 mainnet block producer to an M1. Go big or go home, right? Let's do this.
+Disclaimer: I'm not a Mac expert. This was the first real exposure to the macOS I've ever had. Working from notes, so if something is slightly off the solution should be nearby. This was a proof of concept to see if I could shift from a Raspberry Pi 4 mainnet block producer to an M1. Go big or go home, right? Let's do this.
 
 #### Assumptions
 
@@ -41,7 +41,7 @@ Fire up the M1 to the desktop. We need to do a few tasks while we're on the desk
   * Prevent computer from sleeping is checked
   * Put disks to sleep is not checked
   * Start up automatically is checked
-* Close System Preferences and log out
+* Close System Preferences
 * I didn't mess around with the firewall, left it off (default I think). If you turn it on or it's on just make sure you have Remote Login access for now.
 * Install Xcode from the Mac App Store
   * After it finishes, install Xcode command line tools
