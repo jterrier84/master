@@ -52,7 +52,7 @@ brew install wireguard-tools
 
 ### Build the Node
 
-I followed the guide below word for word. Once finished you should have the necessary packages installed and a working 1.33 (or newer) version of cardano-node and cardano-cli.
+I followed the guide below word for word. You've already installed XCode and Homebrew so skip that. Once finished you should have the necessary packages installed and a working 1.33 (or newer) version of cardano-node and cardano-cli.
 
 {% hint style="warning" %}
 Take note of the callouts for the M1 and use the references for $HOME/.bashrc not $HOME/.zshrc.
