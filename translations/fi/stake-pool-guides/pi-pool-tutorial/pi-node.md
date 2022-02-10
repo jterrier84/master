@@ -35,11 +35,9 @@ cardano-node version
 ## Valitse testnet tai mainnet. **Defaults to testnet**.
 Vaihda testnetin & mainnetin välillä, mainnetiä varten anna issue. Config tiedoston polku /home/ada/.adaenv
 ```bash
-sed -i .adaenv -e "s/NODE_CONFIG=testnet/NODE_CONFIG=mainnet/g"
+sed -i .adaenv -e "s/NODE_CONFIG=testnet/NODE_CONFIG=mainnet/g"; source .adaenv
 ```
-```bash
-source .adaenv
-```
+
 ### Nouda palvelintiedostot
 
 ```bash
