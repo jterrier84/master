@@ -12,7 +12,7 @@ The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opc
 
 
 The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, which should also work automated.
-If not mount it with ```bash sudo mount ~/usb_transfer```
+If not mount it with ```sudo mount ~/usb_transfer```
 
 
 
