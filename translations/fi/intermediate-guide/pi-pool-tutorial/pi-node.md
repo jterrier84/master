@@ -32,7 +32,7 @@ cardano-node version
 ```
 {% endhint %}
 
-## Valitse testnet tai mainnet. Oletusarvona on testnet.
+## Valitse testnet tai mainnet. **Defaults to testnet**.
 Vaihda testnetin & mainnetin välillä, mainnetiä varten anna issue. Config tiedoston polku /home/ada/.adaenv
 ```bash
 sed -i .adaenv -e "s/NODE_CONFIG=testnet/NODE_CONFIG=mainnet/g"
@@ -70,9 +70,6 @@ cd /home/ada/pi-pool
 ```bash
 wget -r -np -nH -R "index.html*" -e robots=off https://$NODE_CONFIG.adamantium.online/db/
 ```
-```bash
-touch /home/ada/pi-pool/db/clean
-```
 
 ### 5. Ota käyttöön & aloita cardano-palvelu.
 
@@ -95,7 +92,7 @@ cardano-service status
 cardano-monitor status
 ```
 
-Seuraa päiväkirjan tulostetta tai syslogia
+Follow journal output or syslog
 
 ```
 sudo journalctl --unit=cardano-node --follow
@@ -103,7 +100,7 @@ sudo tail -f /var/log/syslog
 ```
 
 ### 8. gliveview.sh
-anna näiden tiedostojen päivittää itsensä, jos ne haluavat.
+allow these files to update if they wish to.
 
 ```bash
 cd $NODE_HOME/scripts
@@ -112,9 +109,9 @@ cd $NODE_HOME/scripts
 
 ### 9. Grafana.
 
-Syötä Node:n IPv4 -osoite selaimesi osoitekenttään.
+Enter your Node's IPv4 address in your browser.
 
-Oletus käyttäjätunnus ja salasana = **admin:admin**
+Default credentials = **admin:admin**
 
 #### Kojelaudat löytyvät täältä.
 
@@ -123,5 +120,5 @@ Oletus käyttäjätunnus ja salasana = **admin:admin**
 {% embed url="https://api.pooldata.live/" %}
 
 {% hint style="info" %}
-Seuraava opas rakentaa imagen, käytä sitä viitteenä ja voit vapaasti pyytää selvennystä Telegram kanavassamme. [https://t.me/armada\_alli](https://t.me/armada\_alli)
+The following guide builds out the image, use it as a reference and please feel free to ask for clarification in our Telegram channel. [https://t.me/armada\_alli](https://t.me/armada\_alli)
 {% endhint %}

@@ -1,4 +1,8 @@
-# Tervetuloa ARM-operaattorit
+- - -
+cover: .gitbook/assets/banner-armada copy.png coverY: 0
+- - -
+
+# 🏴☠ Welcome ARM Operators
 
 ## Haluat aloittaa urasi Cardano lohkoketjun Stake Pool operaattorina käyttäen Raspberry Pi:tä ...mutta mistä aloittaa!?  😳
 

@@ -5,6 +5,8 @@ description: >-
 
 # Pi-Node Image & Guide
 
+The guide builds the image from a fresh install of Ubuntu. If you flashed the image you only need the guide as a reference. Head over to the quickstart to get synced up. The relay, core and cold guides will configure the the Pi-Node further.
+
 The [Pi-Node.img.gz](https://mainnet.adamantium.online/Pi-Node.img.gz) is a pre configured Cardano node that can be used for minting NFT's, submitting transactions and can be further configured into a relay or core node for stake pool creation. It is configured with everything you need to quickly bootstrap a synced node with Nginx proxypass of Grafana for TLS encryption with a self signed certificate, working topology updater and gLiveView.
 
 ![](../../../.gitbook/assets/photo\_2021-03-09-13.40.29.jpeg)
@@ -27,10 +29,6 @@ The most popular guides out there are aimed at x86 architecture and '_knowing wh
 
 ## Hardware
 
-{% hint style="warning" %}
-The cardano-node & cardano-cli binaries linked to in this guide require aarch64 architecture to run. You **must** use Pi4B 8GB for the Core & Relays, you can use the Pi3B+ or PI4B 4GB or 8GB version with a micro sd card for your cold offline machine.
-{% endhint %}
-
 {% hint style="info" %}
 [Here is a list of working adapters.](https://jamesachambers.com/raspberry-pi-4-usb-boot-config-guide-for-ssd-flash-drives/)
 {% endhint %}
@@ -38,10 +36,10 @@ The cardano-node & cardano-cli binaries linked to in this guide require aarch64 
 ### Shopping list
 
 * 2 [Pi4B 8GB](https://thepihut.com/products/raspberry-pi-4-model-b?variant=31994565689406) version.
-* 2 Drives : (NVMe **low power**, form & speed).
-* M.2 key to USB3.1 adapter or whatever works with your drive.
+* 2 Drives : SSD of some sort. Check your drive for compatability.
+* M.2 or other scsi to USB3 adapter or whatever works with your drive.
 * A 3'rd 64bit capable Pi as an offline machine(Cold).
-* Class 10 micro sd card 8GB or larger.
+* Class 10 micro sd card 16GB or larger.
 * Extra USB flash drives for backing up keys and configurations.
 * Consider a single 50+ watt power supply
 * Consider a 5 volt gigabit switch
@@ -53,9 +51,10 @@ The cardano-node & cardano-cli binaries linked to in this guide require aarch64 
 * Moritz Angermann | [zw3rk](https://adapools.org/pool/e2c17915148f698723cb234f3cd89e9325f40b89af9fd6e1f9d1701a) (@zw3rk)
 * [CoinCashew: guide-how-to-build-a-haskell-stakepool-node](https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node)
 * [Chris-Graffagnino](https://github.com/Chris-Graffagnino)/[Setup Cardano Shelley staking node](https://github.com/Chris-Graffagnino/Jormungandr-for-Newbs/blob/master/docs/jormungandr_node_setup_guide.md)
-* [Arming Cardano](https://t.me/joinchat/FeKTCBu-pn5OUZUz4joF2w) Telegram Group
+* [Arming Cardano](https://t.me/joinchat/wvTcCSpdjGllMmFk) Telegram Group
 * [Berry Pool](https://t.me/berry_pool) Telegram group
 * [Legendary Technology: New Raspberry Pi 4 Bootloader USB](https://jamesachambers.com/new-raspberry-pi-4-bootloader-usb-network-boot-guide/)
+* [StakePool Operator Scripts (SPOS)](https://github.com/gitmachtl/scripts/)
 
 ## Downloads
 

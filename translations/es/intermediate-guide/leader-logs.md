@@ -2,6 +2,13 @@
 description: How to get your Stake Pools Slot Assignments for next Epoch
 ---
 
+{% hint style="info" %}
+CNCLI method still works, but before you start building, take a look at [this method](https://github.com/asnakep/ScheduledBlocks) by [ADA Snake Pool](https://www.adasnakepool.com/).
+
+"Lightweight and Portable Scheduled Blocks Checker for Next, Current and Previous Epochs. No cardano-node Required, data is taken from blockfrost.io and armada-alliance.com."
+{% endhint %}
+
+
 # CNCLI Leader Logs📑
 
 ## Build CNCLI \(thanks to [@AndrewWestberg](https://github.com/AndrewWestberg)\)

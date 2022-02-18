@@ -1,49 +1,50 @@
 # Table of contents
 
-* [Welcome ARM Operators](README.md)
+* [Welcome ARMada Operators 🏴‍☠️](README.md)
 
-## Cardano Node
+## Stake Pool Guides <a href="#stake-pool-guides" id="stake-pool-guides"></a>
 
-* [RasPi-Node🍓](cardano-node/raspi-node/README.md)
-  * [Download & Flash](cardano-node/raspi-node/download-and-flash.md)
-  * [Server Setup](cardano-node/raspi-node/server-setup.md)
-  * [Environment Setup](cardano-node/raspi-node/environment-setup.md)
+* [Pi-Node/Pi-Pool Guide 🥧](stake-pool-guides/pi-pool-tutorial/README.md)
+  * [Pi-Node (Full Guide)](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/README.md)
+    * [Download & Flash](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/download-and-write-it.md)
+    * [Logging in Securely](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/logging-in-securely.md)
+    * [User Setup](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/user-setup.md)
+    * [Server Setup](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/server-setup.md)
+    * [Environment Setup](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/environment-setup.md)
+  * [Pi-Node (img quick start)](stake-pool-guides/pi-pool-tutorial/pi-node.md)
+  * [Pi-Relay](stake-pool-guides/pi-pool-tutorial/pi-relay.md)
+  * [Pi-Core](stake-pool-guides/pi-pool-tutorial/core-online.md)
+  * [Pi-Cold](stake-pool-guides/pi-pool-tutorial/cold-offline.md)
+  * [Rotate KES](stake-pool-guides/pi-pool-tutorial/rotate-kes.md)
+  * [Update Registration](stake-pool-guides/pi-pool-tutorial/update-registration-cert.md)
+* [Raspi-Node Guide 🍓](stake-pool-guides/Raspberry-pi-os.md)
+* [Alpine Linux OS 🗻](stake-pool-guides/alpine-linux-os.md)
+* [Apple M1 macOS 🍏](stake-pool-guides/m1-native-macos-11-build/README.md)
+  * [Setup the Node](stake-pool-guides/m1-native-macos-11-build/node-build.md)
+  * [Finishing the build](stake-pool-guides/m1-native-macos-11-build/finishing-up.md)
+* [Basic Stake Pool Networking 💫](stake-pool-guides/basic-stake-pool-networking.md)
+* [Add adapools Metrics to Grafana 📊](stake-pool-guides/add-adapools-info-to-grafana.md)
+* [Updating a Cardano Node](stake-pool-guides/updating-a-cardano-node/README.md)
+  * [Dynamic Build](stake-pool-guides/updating-a-cardano-node/using-dynamic-build.md)
+  * [Static Build](stake-pool-guides/updating-a-cardano-node/static-build.md)
+* [CNCLI Leader Logs📑](stake-pool-guides/leader-logs.md)
+* [Wireguard Guide](stake-pool-guides/wireguard-guide.md)
+* [Grafana Alerts with Telegram](stake-pool-guides/grafana-alerts-with-telegram.md)
 
-## Stake Pool Guides <a href="intermediate-guide" id="intermediate-guide"></a>
-
-* [Pi-Node Image & Guide](intermediate-guide/pi-pool-tutorial/README.md)
-  * [Pi-Node (Full Guide)](intermediate-guide/pi-pool-tutorial/pi-node-full-guide/README.md)
-    * [Download & Flash](intermediate-guide/pi-pool-tutorial/pi-node-full-guide/download-and-write-it.md)
-    * [User Setup](intermediate-guide/pi-pool-tutorial/pi-node-full-guide/user-setup.md)
-    * [Logging in Securely](intermediate-guide/pi-pool-tutorial/pi-node-full-guide/logging-in-securely.md)
-    * [Server Setup](intermediate-guide/pi-pool-tutorial/pi-node-full-guide/server-setup.md)
-    * [Environment Setup](intermediate-guide/pi-pool-tutorial/pi-node-full-guide/environment-setup.md)
-  * [Pi-Node (quick start)](intermediate-guide/pi-pool-tutorial/pi-node.md)
-  * [Pi-Relay](intermediate-guide/pi-pool-tutorial/pi-relay.md)
-  * [Pi-Core/Cold](intermediate-guide/pi-pool-tutorial/pi-core-and-pi-cold.md)
-  * [Rotate KES](intermediate-guide/pi-pool-tutorial/rotate-kes.md)
-* [Alpine Linux OS 🗻](intermediate-guide/alpine-linux-os.md)
-* [Basic Stake Pool Networking 💫](intermediate-guide/basic-stake-pool-networking.md)
-* [Add adapools Metrics to Grafana 📊](intermediate-guide/add-adapools-info-to-grafana.md)
-* [Updating a Cardano Node](intermediate-guide/updating-a-cardano-node/README.md)
-  * [Dynamic Build](intermediate-guide/updating-a-cardano-node/using-dynamic-build.md)
-  * [Static Build](intermediate-guide/updating-a-cardano-node/static-build.md)
-* [CNCLI Leader Logs📑](intermediate-guide/leader-logs.md)
-* [Wireguard Guide](intermediate-guide/wireguard-guide.md)
-
-## Other Cardano Guides <a href="cardano-developer-guides" id="cardano-developer-guides"></a>
+## Other Cardano Guides <a href="#cardano-developer-guides" id="cardano-developer-guides"></a>
 
 * [Cardano Native Asset (NFT) 💰](cardano-developer-guides/nft-native-assets.md)
 * [Cardano NFT Collection Tutorial 👛](cardano-developer-guides/cardano-nft-collection-tutorial-coming-soon.md)
+* [Cardano Submit Transaction API Tutorial 📦](cardano-developer-guides/cardano-submit-tx-api-tutorial.md)
 * [Create .img file](cardano-developer-guides/create-.img-file.md)
 * [Staking Guide 🚀](cardano-developer-guides/how-to-delegate-ada.md)
-* [Delegate 🤗](cardano-developer-guides/delegate.md)
-* [Contribute 🐱‍🚀](cardano-developer-guides/how-to-contribute/README.md)
-  * [Contributing Guide](cardano-developer-guides/how-to-contribute/untitled-1/README.md)
-    * [Style Guide](cardano-developer-guides/how-to-contribute/untitled-1/style-guide.md)
-    * [Code of Conduct](cardano-developer-guides/how-to-contribute/untitled-1/code-of-conduct.md)
 
-## Resources <a href="before-you-get-started..." id="before-you-get-started..."></a>
+## Resources <a href="#before-you-get-started..." id="before-you-get-started..."></a>
 
 * [Library 🏫](before-you-get-started.../library.md)
 * [Hardware Purchase Links 🏪](before-you-get-started.../hardware.md)
+* [Delegate 🤗](delegate.md)
+* [Contribute 🐱‍🚀](how-to-contribute/README.md)
+  * [Contributing Guide](how-to-contribute/untitled-1/README.md)
+    * [Style Guide](how-to-contribute/untitled-1/style-guide.md)
+    * [Code of Conduct](how-to-contribute/untitled-1/code-of-conduct.md)

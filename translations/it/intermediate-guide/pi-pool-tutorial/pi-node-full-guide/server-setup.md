@@ -11,28 +11,14 @@ Let's save some power, raise the governor on the CPU a bit, and set GPU ram as l
 {% hint style="warning" %}
 Here are some links for overclocking and testing your drive speeds. If you have heat sinks you can safely go to 2000. Just pay attention to over volt recommendations to go with your chosen clock speed.
 
-* [https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md](https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md)
-* [https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/](https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/)
-* [https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock](https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock)
-* [https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/](https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/)
-* [Legendary Technology: New Raspberry Pi 4 Bootloader USB](https://jamesachambers.com/new-raspberry-pi-4-bootloader-usb-network-boot-guide/)
+- [https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md](https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md)
+- [https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/](https://www.seeedstudio.com/blog/2020/02/12/how-to-safely-overclock-your-raspberry-pi-4-to-2-147ghz/)
+- [https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock](https://www.tomshardware.com/how-to/raspberry-pi-4-23-ghz-overclock)
+- [https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/](https://dopedesi.com/2020/11/24/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-by-alex-ellis-nov-2020/)
+- [Legendary Technology: New Raspberry Pi 4 Bootloader USB](https://jamesachambers.com/new-raspberry-pi-4-bootloader-usb-network-boot-guide/)
 
 Take note that Ubuntu stores config.txt in a different location than Raspbian.
 {% endhint %}
-
-### Test drive speed
-
-#### Write speed
-
-```
-sudo dd if=/dev/zero of=/tmp/output conv=fdatasync bs=384k count=1k; sudo rm -f /tmp/output
-```
-
-#### Read speed
-
-```
-sudo hdparm -Tt /dev/sda
-```
 
 ### Overclock, memory & radios
 
@@ -47,8 +33,8 @@ sudo nano /boot/firmware/config.txt
 over_voltage=6
 arm_freq=2000
 gpu_mem=16
-disable-wifi
-disable-bt
+dtoverlay=disable-wifi
+dtoverlay=disable-bt
 ```
 
 Save and reboot.
@@ -67,7 +53,7 @@ sudo passwd -l root
 
 ### Secure shared memory
 
-Open /etc/fstab.
+Mount shared memory as read only. Open /etc/fstab.
 
 ```
 sudo nano /etc/fstab
@@ -79,24 +65,21 @@ Add this line at the bottom, save & exit.
 tmpfs    /run/shm    tmpfs    ro,noexec,nosuid    0 0
 ```
 
-### Increase open file limit
+### Increase open file limit for $USER
 
-Open /etc/security/limits.conf.
+Add a couple lines to the bottom of /etc/security/limits.conf
 
+```bash
+sudo bash -c "echo -e '${USER} soft nofile 800000\n${USER} hard nofile 1048576\n' >> /etc/security/limits.conf"
 ```
-sudo nano /etc/security/limits.conf
-```
 
-Add the following to the bottom, save & exit.
+Confirm it was added to the bottom.
 
-```
-ada soft nofile 800000
-ada hard nofile 1048576
+```bash
+cat /etc/security/limits.conf
 ```
 
 ### Optimize performance & security
-
-Add the following to the bottom of /etc/sysctl.conf. Save and exit.
 
 {% hint style="info" %}
 [https://gist.github.com/lokhman/cc716d2e2d373dd696b2d9264c0287a3](https://gist.github.com/lokhman/cc716d2e2d373dd696b2d9264c0287a3)
@@ -106,14 +89,16 @@ Add the following to the bottom of /etc/sysctl.conf. Save and exit.
 If you would like to disable ipv6 or turn on forwarding you can below.
 {% endhint %}
 
-```
+Add the following to the bottom of /etc/sysctl.conf. Save and exit.
+
+```bash
 sudo nano /etc/sysctl.conf
 ```
 
 ```
 ## Pi Node ##
 
-# swap more to zram                     
+# swap more to zram
 vm.vfs_cache_pressure=500
 vm.swappiness=100
 vm.dirty_background_ratio=1
@@ -263,7 +248,7 @@ Swapping to disk is slow, swapping to compressed ram space is faster and gives u
 {% embed url="https://lists.ubuntu.com/archives/lubuntu-users/2013-October/005831.html" %}
 
 ```
-sudo apt install linux-modules-extra-raspi zram-config
+sudo apt install zram-config linux-modules-extra-raspi
 ```
 
 ```bash
@@ -273,42 +258,24 @@ sudo nano /usr/bin/init-zram-swapping
 Multiply default config by 3. This will give you 11.5GB of virtual compressed swap in ram.
 
 {% hint style="info" %}
-mem=$(((totalmem / 2 / ${NRDEVICES}) \* 1024 \* 3))
+mem=$((totalmem / 2 _ 1024 _ 3))
 {% endhint %}
 
 ```bash
 #!/bin/sh
-# load dependency modules
-NRDEVICES=$(grep -c ^processor /proc/cpuinfo | sed 's/^0$/1/')
-if modinfo zram | grep -q ' zram_num_devices:' 2>/dev/null; then
-  MODPROBE_ARGS="zram_num_devices=${NRDEVICES}"
-elif modinfo zram | grep -q ' num_devices:' 2>/dev/null; then
-  MODPROBE_ARGS="num_devices=${NRDEVICES}"
-else
-  exit 1
-fi
-modprobe zram $MODPROBE_ARGS
+
+modprobe zram
+
 # Calculate memory to use for zram (1/2 of ram)
 totalmem=`LC_ALL=C free | grep -e "^Mem:" | sed -e 's/^Mem: *//' -e 's/  *.*//'`
-mem=$(((totalmem / 2 / ${NRDEVICES}) * 1024 * 3))
+mem=$((totalmem / 2 * 1024 * 3))
+
 # initialize the devices
-for i in $(seq ${NRDEVICES}); do
-  DEVNUMBER=$((i - 1))
-  echo zstd > /sys/block/zram${DEVNUMBER}/comp_algorithm
-  echo $mem > /sys/block/zram${DEVNUMBER}/disksize
-  mkswap /dev/zram${DEVNUMBER}
-  swapon -p 5 /dev/zram${DEVNUMBER}
-done
-```
-
-{% hint style="info" %}
-View how much zram swap cardano-node is using.
+echo $mem > /sys/block/zram0/disksize
+mkswap /dev/zram0
+swapon -p 5 /dev/zram0
 
 ```
-CNZRAM=$(pidof cardano-node)
-grep --color VmSwap /proc/$CNZRAM/status
-```
-{% endhint %}
 
 ### Raspberry Pi & entropy
 
@@ -320,7 +287,7 @@ Before we start generating keys with a headless server we should have a safe amo
 [https://github.com/nhorman/rng-tools](https://github.com/nhorman/rng-tools)
 {% endhint %}
 
-> But consider the fate of a standalone, headless server (or a micro controller for that matter) with no human typing or mousing around, and no spinning iron drive providing mechanical irregularity. Where does _it_ get entropy after it starts up? What if an attacker, or bad luck, forces periodic reboots? This is a [real problem](http://www.theregister.co.uk/2015/12/02/raspberry\_pi\_weak\_ssh\_keys/).
+> But consider the fate of a standalone, headless server (or a micro controller for that matter) with no human typing or mousing around, and no spinning iron drive providing mechanical irregularity. Where does _it_ get entropy after it starts up? What if an attacker, or bad luck, forces periodic reboots? This is a [real problem](http://www.theregister.co.uk/2015/12/02/raspberry_pi_weak_ssh_keys/).
 
 ```
 sudo apt-get install rng-tools
@@ -333,16 +300,32 @@ Enable automatic security updates.
 ```bash
 sudo dpkg-reconfigure -plow unattended-upgrades
 ```
+
 ## Install packages
+
 Install the packages we will need.
 
 ```bash
 sudo apt install build-essential libssl-dev tcptraceroute python3-pip \
-         jq make automake unzip net-tools nginx ssl-cert pkg-config \
+         make automake unzip net-tools nginx ssl-cert pkg-config \
          libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev \
-         zlib1g-dev g++ libncursesw5 libtool autoconf bc -y
+         zlib1g-dev g++ libncursesw5 libtool autoconf flex bison -y
 ```
 
 ```
 sudo reboot
+```
+
+### Optionally test drive speed
+
+#### Write speed
+
+```
+sudo dd if=/dev/zero of=/tmp/output conv=fdatasync bs=384k count=1k; sudo rm -f /tmp/output
+```
+
+#### Read speed
+
+```
+sudo hdparm -Tt /dev/sda
 ```

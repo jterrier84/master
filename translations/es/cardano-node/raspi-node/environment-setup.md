@@ -1,10 +1,6 @@
----
-description: Instalar los paquetes necesarios para ejecutar cardano-node y configurar nuestro entorno
----
-
 # Configuración del entorno
 
-![](../../.gitbook/assets/download-10-%20%281%29%20%282%29.jpeg)
+![](../../../.gitbook/assets/download-10- (1) (4).jpeg)
 
 ## Instalar paquetes
 
@@ -12,9 +8,9 @@ Instala los paquetes que necesitaremos.
 
 ```bash
 sudo apt install build-essential libssl-dev tcptraceroute python3-pip \
-         jq make automake unzip net-tools nginx ssl-cert pkg-config \
+         make automake unzip net-tools nginx ssl-cert pkg-config \
          libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev \
-         zlib1g-dev g++ libncursesw5 libtool autoconf -y
+         zlib1g-dev g++ libncursesw5 libtool autoconf jq -y
 ```
 
 ## Entorno
@@ -30,7 +26,7 @@ mkdir $HOME/git
 mkdir $HOME/tmp
 ```
 
-### Crear variables de bash & añade ~/.local/bin a nuestro $PATH🏃
+### Create bash variables & add \~/.local/bin to our $PATH 🏃
 
 {% hint style="info" %}
 [Variables de entorno en Linux/Unix](https://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells/247769#247769).
@@ -96,7 +92,7 @@ Los **binarios de cardano** no oficiales & cardano-cli disponibles para nosotros
 
 ```bash
 cd $HOME/tmp
-wget -O cardano_node_$(date +"%m-%d-%y").zip https://ci.zw3rk.com/build/1771/download/1/aarch64-unknown-linux-musl-cardano-node-1.29.0.zip
+wget -O cardano_node_$(date +"%m-%d-%y").zip https://ci.zw3rk.com/build/1771/download/1/aarch64-unknown-linux-musl-cardano-node-1.30.1.zip
 unzip *.zip
 mv cardano-node/* $HOME/.local/bin
 rm -r cardano*
@@ -241,10 +237,10 @@ Lo que acabamos de hacer fue añadir una función para controlar nuestro cardano
 
 Ahora sólo tenemos que hacer:
 
-* cardano-service enable \\(habilita cardano-node.service con autoejecución al arrancar\\)
-* cardano-service start      \(inicia cardano-node.service\)
-* cardano-service stop       \(para cardano-node.service\)
-* cardano-service status    \(muestra el estado de cardano-node.service\)
+* cardano-service enable (enables cardano-node.service auto start at boot)
+* cardano-service start (starts cardano-node.service)
+* cardano-service stop (stops cardano-node.service)
+* cardano-service status (shows the status of cardano-node.service)
 
 ## ⛓ Sincronización de la cadena ⛓
 
@@ -253,7 +249,7 @@ Ahora estás listo para empezar a usar cardano-node. Hacer esto iniciará el pro
 ### Descargar la instantánea
 
 {% hint style="danger" %}
-No intente esto con una tarjeta sd de 8GB. ¡No hay suficiente espacio! [Crea tu archivo de la imagen](https://app.gitbook.com/@wcatz/s/pi-pool-guide/create-.img-file) y flashealo en tu ssd.
+No intente esto con una tarjeta sd de 8GB. ¡No hay suficiente espacio! [Create your image file](https://app.gitbook.com/s/-MVFzwtnGyycav4A2zJu/create-.img-file) and flash it to your ssd.
 {% endhint %}
 
 He empezado a tomar instantáneas de mi carpeta db de backup y la he alojado en un directorio web. Con este método tarda unos 15 minutos en tirar la última instantánea y tal vez otros 30 minutos en sincronizar hasta el final de la cadena. El servicio se presta según lo establecido. Depende de ti. Si quieres sincronizar la cadena por tu cuenta simplemente:
@@ -277,13 +273,13 @@ Descargar la instantánea de la base de datos.
 {% tabs %}
 {% tab title="Testnet" %}
 ```bash
-wget -r -np -nH -R "index.html*" -e robots=off https://test-db.adamantium.online/db/
+wget -r -np -nH -R "index.html*" -e robots=off https://testnet.adamantium.online/db/
 ```
 {% endtab %}
 
 {% tab title="Mainnet" %}
 ```bash
-wget -r -np -nH -R "index.html*" -e robots=off https://db.adamantium.online/db/
+wget -r -np -nH -R "index.html*" -e robots=off https://mainnet.adamantium.online/db/
 ```
 {% endtab %}
 {% endtabs %}
@@ -296,11 +292,11 @@ cardano-service start
 cardano-service status
 ```
 
-## gLiveView.sh
+### gLiveView.sh
 
 Los scripts de Guild Operators tienen un par de herramientas útiles para operar en el Pool. No queremos que el proyecto como un todo, aunque hay un par de scripts que vamos a usar.
 
-{% embed url="https://github.com/cardano-community/guild-operators/tree/master/scripts/cnode-helper-scripts" caption="" %}
+{% embed url="https://github.com/cardano-community/guild-operators/tree/master/scripts/cnode-helper-scripts" %}
 
 ```bash
 cd $NODE_HOME/scripts
@@ -308,7 +304,7 @@ wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/
 wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/gLiveView.sh
 ```
 
-Tenemos que editar el archivo env para trabajar con nuestro entorno. El número de puerto aquí tendrá que ser actualizado para que coincida con el puerto en el que se está ejecutando el nodo cardano-nodo. Para el **Pi-Node** es el puerto 3003. A medida que construyamos el Pool iremos adaptándolo. Por ejemplo Pi-Relay\(2\) se ejecutará en el puerto 3002, Pi-Relay\(1\) en 3001 y Pi-Core en el puerto 3000.
+Tenemos que editar el archivo env para trabajar con nuestro entorno. El número de puerto aquí tendrá que ser actualizado para que coincida con el puerto en el que se está ejecutando el nodo cardano-nodo. Para el **Pi-Node** es el puerto 3003. A medida que construyamos el Pool iremos adaptándolo. For example Pi-Relay(2) will run on port 3002, Pi-Relay(1) on 3001 and Pi-Core on port 3000.
 
 {% hint style="info" %}
 Puedes cambiar la ejecución del puerto de cardano-node en /home/ada/.local/bin/cardano-service.
@@ -328,7 +324,7 @@ Permitir la ejecución de gLiveView.sh.
 chmod +x gLiveView.sh
 ```
 
-## topologyUpdater.sh
+### topologyUpdater.sh
 
 Hasta que el peer to peer no esté habilitado en los operadores de red se necesita una forma de obtener una lista de relays/peers a los que conectarse. El servicio de actualizador de topología (topology updater) se ejecuta en segundo plano con cron. Cada hora el script se ejecutará y le dirá al servicio que eres un relay y quieres ser parte de la red. Añadirá tu relay a su directorio después de cuatro horas y comenzará a generar una lista de relays en un archivo json en el directorio $NODE\_HOME/logs. Un segundo script, relay-topology\_pull.sh puede ser usado manualmente para generar un archivo mainnet-topolgy con relays/peers que sean relacionados directamente entre tú y ellos.
 
@@ -346,9 +342,15 @@ nano topologyUpdater.sh
 Pega lo siguiente, guardar & salir.
 
 {% hint style="warning" %}
-El número de puerto aquí tendrá que ser actualizado para que coincida con el puerto en el que se está ejecutando el nodo cardano-nodo. Si estás utilizando registros dns puede agregar el FQDN que coincide con la línea 6\(línea 6 solamente\). Déjalo como si no estuviera usando dns. El servicio recogerá la IP pública y la utilizará.
+El número de puerto aquí tendrá que ser actualizado para que coincida con el puerto en el que se está ejecutando el nodo cardano-nodo. If you are using dns records you can add the FQDN that matches on line 6(line 6 only). Déjalo como si no estuviera usando dns. El servicio recogerá la IP pública y la utilizará.
 {% endhint %}
 
+{% hint style="warning" %}
+Don't forget to update User and Paths to your user, unless you used 'ada'
+{% endhint %}
+
+{% tabs %}
+{% tab title="Testnet" %}
 ```bash
 #!/bin/bash
 # shellcheck disable=SC2086,SC2034
@@ -386,8 +388,50 @@ fi
 
 curl -s -f -4 "https://api.clio.one/htopology/v1/?port=${CNODE_PORT}&blockNo=${blockNo}&valency=${CNODE_VALENCY}&magic=${NWMAGIC}${T_HOSTNAME}" | tee -a "${LOG_DIR}"/topologyUpdater_lastresult.json
 ```
+{% endtab %}
 
-Guardar, salir y hacerlo ejecutable.
+{% tab title="Mainnet" %}
+```bash
+#!/bin/bash
+# shellcheck disable=SC2086,SC2034
+
+USERNAME=ada
+CNODE_PORT=3003 # must match your relay node port as set in the startup command
+CNODE_HOSTNAME="CHANGE ME"  # optional. must resolve to the IP you are requesting from
+CNODE_BIN="/home/ada/.local/bin"
+CNODE_HOME="/home/ada/pi-pool"
+LOG_DIR="${CNODE_HOME}/logs"
+GENESIS_JSON="${CNODE_HOME}/files/mainnet-shelley-genesis.json"
+NETWORKID=$(jq -r .networkId $GENESIS_JSON)
+CNODE_VALENCY=1   # optional for multi-IP hostnames
+NWMAGIC=$(jq -r .networkMagic < $GENESIS_JSON)
+[[ "${NETWORKID}" = "Mainnet" ]] && HASH_IDENTIFIER="--mainnet" || HASH_IDENTIFIER="--testnet-magic ${NWMAGIC}"
+[[ "${NWMAGIC}" = "764824073" ]] && NETWORK_IDENTIFIER="--mainnet" || NETWORK_IDENTIFIER="--testnet-magic ${NWMAGIC}"
+
+export PATH="${CNODE_BIN}:${PATH}"
+export CARDANO_NODE_SOCKET_PATH="${CNODE_HOME}/db/socket"
+
+blockNo=$(/home/ada/.local/bin/cardano-cli query tip ${NETWORK_IDENTIFIER} | jq -r .block )
+
+# Note:
+# if you run your node in IPv4/IPv6 dual stack network configuration and want announced the
+# IPv4 address only please add the -4 parameter to the curl command below  (curl -4 -s ...)
+if [ "${CNODE_HOSTNAME}" != "CHANGE ME" ]; then
+  T_HOSTNAME="&hostname=${CNODE_HOSTNAME}"
+else
+  T_HOSTNAME=''
+fi
+
+if [ ! -d ${LOG_DIR} ]; then
+  mkdir -p ${LOG_DIR};
+fi
+
+curl -s -f -4 "https://api.clio.one/htopology/v1/?port=${CNODE_PORT}&blockNo=${blockNo}&valency=${CNODE_VALENCY}&magic=${NWMAGIC}${T_HOSTNAME}" | tee -a "${LOG_DIR}"/topologyUpdater_lastresult.json
+```
+{% endtab %}
+{% endtabs %}
+
+Save, exit, and make it executable.
 
 ```bash
 chmod +x topologyUpdater.sh
@@ -407,10 +451,10 @@ Crea una tarea de cron (cron job) que ejecutará el script cada hora.
 crontab -e
 ```
 
-Añadir lo siguiente en la parte inferior, guardar & salir.
+Añade lo siguiente en la parte inferior, guardar & salir.
 
 {% hint style="info" %}
-La imagen de Pi-Node tiene esta línea de cron deshabilitada por defecto. Puedes activarla eliminando el \#.
+La imagen de Pi-Node tiene esta línea de cron deshabilitada por defecto. You can enable it by removing the #.
 {% endhint %}
 
 ```bash
@@ -425,12 +469,25 @@ Crear otro archivo relay-topology\_pull.sh y pegar en lo siguiente.
 nano relay-topology_pull.sh
 ```
 
+{% tabs %}
+{% tab title="Testnet" %}
 ```bash
 #!/bin/bash
 BLOCKPRODUCING_IP=<BLOCK PRODUCERS PRIVATE IP>
 BLOCKPRODUCING_PORT=3000
 curl -4 -s -o /home/ada/pi-pool/files/testnet-topology.json "https://api.clio.one/htopology/v1/fetch/?max=15&magic=1097911063&customPeers=${BLOCKPRODUCING_IP}:${BLOCKPRODUCING_PORT}:1"
 ```
+{% endtab %}
+
+{% tab title="Mainnet" %}
+```bash
+#!/bin/bash
+BLOCKPRODUCING_IP=<BLOCK PRODUCERS PRIVATE IP>
+BLOCKPRODUCING_PORT=3000
+curl -4 -s -o /home/ada/pi-pool/files/mainnet-topology.json "https://api.clio.one/htopology/v1/fetch/?max=15&magic=764824073&customPeers=${BLOCKPRODUCING_IP}:${BLOCKPRODUCING_PORT}:1"
+```
+{% endtab %}
+{% endtabs %}
 
 Guardar, salir y hacerlo ejecutable.
 
@@ -469,7 +526,7 @@ Los cambios en este archivo se verán afectados al reiniciar cardano-service.
 
 El estado debe mostrarse como habilitado y en ejecución.
 
-Una vez que el nodo se sincronice con el epoch 208\(shelley era\) puedes usar gLiveView.sh para monitorizarlo.
+Once your node syncs past epoch 208(shelley era) you can use gLiveView.sh to monitor.
 
 {% hint style="danger" %}
 Puede tardar hasta una hora en sincronizar el nodo cardano con el final de la cadena. Use el script ./gliveView.sh, el comando htop y la salida del log para ver cómo evoluciona el proceso. Ten paciencia finalizará.
@@ -480,19 +537,19 @@ cd $NODE_HOME/scripts
 ./gLiveView.sh
 ```
 
-![](../../.gitbook/assets/pi-node-glive%20%282%29.png)
+![](../../../.gitbook/assets/pi-node-glive (5).png)
 
 ## Prometheus, Node Exporter & Grafana
 
-Prometheus se conecta al backend de los cardano-nodes y muestra sus métricas mediante http. Grafana a su vez puede usar esos datos para mostrar gráficos y crear alertas. Nuestro panel de control de Grafana estará compuesto de datos de nuestro sistema Ubuntu & nodo de tarjeta. Grafana también puede mostrar datos de otras fuentes, como [adapools.org](https://adapools.org/).
+Prometheus se conecta al backend de los cardano-nodes y muestra sus métricas mediante http. Grafana a su vez puede usar esos datos para mostrar gráficos y crear alertas. Nuestro panel de control de Grafana estará compuesto de datos de nuestro sistema Ubuntu & nodo de tarjeta. Grafana can display data from other sources as well, like [adapools.org](https://adapools.org).
 
 {% hint style="info" %}
 Puedes conectar un bot de Telegram a Grafana que te puede alertar de problemas con el servidor. Mucho más fácil que intentar configurar las alertas por correo electrónico.
 {% endhint %}
 
-{% embed url="https://github.com/prometheus" caption="" %}
+{% embed url="https://github.com/prometheus" %}
 
-![](../../.gitbook/assets/pi-pool-grafana%20%282%29%20%282%29%20%282%29%20%282%29%20%281%29%20%282%29.png)
+![](../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (6).png)
 
 ### Instalar Prometheus & Node Exporter.
 
@@ -579,7 +636,7 @@ sed -i ${NODE_CONFIG}-config.json -e "s/127.0.0.1/0.0.0.0/g"
 
 ### Instalar Grafana
 
-{% embed url="https://github.com/grafana/grafana" caption="" %}
+{% embed url="https://github.com/grafana/grafana" %}
 
 Añade la clave gpg de Grafana a Ubuntu.
 
@@ -642,12 +699,12 @@ cardano-monitor start
 ```
 
 {% hint style="warning" %}
-En este punto es posible que quieras iniciar el cardano-service y que se sincronice antes de continuar con la configuración de Grafana. Pasar a [sincronizar la blockchain](https://app.gitbook.com/@wcatz/s/pi-pool-guide/~/drafts/-MYFtFDZp-rTlybgAO71/pi-node/environment-setup/@drafts#syncing-the-chain). Elige si quieres esperar 30 horas o descargar mi último snapshot. Vuelve aquí una vez que gLiveView.sh muestra que estás al final de la cadena.
+En este punto es posible que quieras iniciar el cardano-service y que se sincronice antes de continuar con la configuración de Grafana. Skip ahead to [syncing the chain section](https://app.gitbook.com/s/-MVFzwtnGyycav4A2zJu/pi-node/environment-setup). Elige si quieres esperar 30 horas o descargar mi último snapshot. Vuelve aquí una vez que gLiveView.sh muestra que estás al final de la cadena.
 {% endhint %}
 
 ### Configurar Grafana
 
-En tu máquina local abre tu navegador y ha llegado a [http://&lt;Pi-Nodo](http://<Pi-Node's) IP Privada&gt;:5000
+On your local machine open your browser and got to \[http://\<Pi-Node's]\(http://\<Pi-Node's) private ip>:5000
 
 {% hint style="danger" %}
 No cambies la contraseña por defecto todavía, no está cifrada la conexión. Elige omitir cuando se pregunte. La próxima vez que visitemos Grafana será con un certificado TLS autofirmado manejado por proxy\_pass de servidores web Nginx y tus contraseñas estarán a salvo de cualquiera que esté escuchando en tu red interna.
@@ -655,25 +712,25 @@ No cambies la contraseña por defecto todavía, no está cifrada la conexión. E
 
 Inicie sesión y establezca una nueva contraseña. El nombre de usuario y contraseña por defecto son **admin:admin**.
 
-#### Configurar la fuente de datos
+### **Configurar la fuente de datos**
 
-En el menú vertical de la mano izquierda, vaya a **Configure** &gt; **Datasources** y haga clic en **Add data source**. Elige Prometheus. Escribe [http://localhost:9090](http://localhost:9090) donde está en gris, el resto puede dejarse por defecto. En la parte inferior pinchar en save & test. Deberías obtener el verde "Data source is working" si el cardano-monitor está iniciado. Si por alguna razón estos servicios no pudieron iniciar, reinicie con **cardano-service restart**.
+In the left hand vertical menu go to **Configure** > **Datasources** and click to **Add data source**. Elige Prometheus. Escribe [http://localhost:9090](http://localhost:9090) donde está en gris, el resto puede dejarse por defecto. En la parte inferior pinchar en save & test. Deberías obtener el verde "Data source is working" si el cardano-monitor está iniciado. Si por alguna razón estos servicios no pudieron iniciar, reinicie con **cardano-service restart**.
 
-#### Importar Panel de Control (Dashboards)
+### **Importar Panel de Control (Dashboards)**
 
 Guarda los archivos json del dashboard en tu máquina local.
 
-{% embed url="https://github.com/armada-alliance/dashboards" caption="" %}
+{% embed url="https://github.com/armada-alliance/dashboards" %}
 
-En el menú vertical de la mano izquierda, vaya a **Dashboards** &gt; **Manage** y haga clic en **Import**. Selecciona el archivo que acabas de descargar/crear y guardar. Vuelve a **Dashboards** &gt; **Manage** y haz clic en tu nuevo Panel de control.
+In the left hand vertical menu go to **Dashboards** > **Manage** and click on **Import**. Selecciona el archivo que acabas de descargar/crear y guardar. Head back to **Dashboards** > **Manage** and click on your new dashboard.
 
-![](../../.gitbook/assets/pi-pool-grafana%20%282%29%20%282%29%20%282%29%20%282%29%20%281%29.png)
+![](../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1).png)
 
 ### Configurar poolDataLive
 
 Aquí puedes utilizar la api de PoolData para traer sus datos del Pool a Grafana.
 
-{% embed url="https://api.pooldata.live/dashboard" caption="" %}
+{% embed url="https://api.pooldata.live/dashboard" %}
 
 Siga las instrucciones para instalar el plugin Grafana, configurar su fuente de datos e importar el Panel de control.
 
@@ -689,11 +746,11 @@ Seguir salida de log al stdout (log general).
 sudo tail -f /var/log/syslog
 ```
 
-## Grafana, Nginx proxy\_pass & snakeoil
+### Grafana, Nginx proxy\_pass & snakeoil
 
-Pongamos Grafana detrás de Nginx con certificado autofirmado\(snakeoil\). El certificado se generó cuando instalamos el paquete ssl-cert.
+Let's put Grafana behind Nginx with self signed(snakeoil) certificate. El certificado se generó cuando instalamos el paquete ssl-cert.
 
-Recibirás una advertencia de tu navegador. Esto se debe a que ca-certificates no pueden seguir a una fuente de confianza \(centralizada\). Sin embargo, la conexión está cifrada y protegerá sus contraseñas volando en texto plano.
+Recibirás una advertencia de tu navegador. This is because ca-certificates cannot follow a trust chain to a trusted (centralized) source. Sin embargo, la conexión está cifrada y protegerá sus contraseñas volando en texto plano.
 
 ```bash
 sudo nano /etc/nginx/sites-available/default
@@ -743,9 +800,8 @@ sudo nginx -t
 sudo service nginx restart
 ```
 
-Ahora puede visitar su dirección IP de los pi-nodos sin ninguna especificación de puerto, la conexión se actualizará a SSL/TLS y recibirás un mensaje aterrador\(no realmente aterrador\). Continúe hasta su panel de control.
+You can now visit your pi-nodes ip address without any port specification, the connection will be upgraded to SSL/TLS and you will get a scary message(not really scary at all). Continúe hasta su panel de control.
 
-![](../../.gitbook/assets/snakeoil.png)
+![](../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (6).png)
 
 Desde aquí tienes un pi-node con herramientas para construir un Stake Pool desde las siguientes páginas. Te deseamos la mejor de las Suertes y por favor únete a la [armada-alliance](https://armada-alliance.com), ¡Juntos somos más fuertes!
-

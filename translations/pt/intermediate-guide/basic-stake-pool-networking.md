@@ -72,7 +72,7 @@ Your **relay nodes** should be pointed to other remote relay nodes and your bloc
 The **addr** and **port** entries above should be the IP addresses of your relay nodes. That's it. Your block producer should have firewall entries restricting access to only these IP addresses on the port you are running your block producer on. Example ufw firewall status below running the block producer on port 6000.
 
 {% code title="> sudo ufw status" %}
-```text
+```
 To                         Action      From
 --                         ------      ----
 6000/tcp                   ALLOW       10.20.30.1
@@ -84,12 +84,12 @@ To                         Action      From
 
 The first example **addr** line above **10.20.30.3** is your block producer's IP address and **port 6000** is the port you are running your block producer on. This object should be the exact same on your other relays.
 
-The other three objects are remote peers. You can set those manually or you can use the **topologyUpdater.sh** script from Guild operators. If you choose to use the topologyUpdater.sh be sure you set the **CUSTOM\_PEERS** line in the script correctly before you run it. This is a pipe-delimited set of addr:port:valency pairs of peers that you want the script to add to your final topology.json file. This line should include your block producer. Default valency is 1 \(one\) if not specified. Example showing the first two objects from the mainnet-topology.json file above:
+The other three objects are remote peers. You can set those manually or you can use the **topologyUpdater.sh** script from Guild operators. If you choose to use the topologyUpdater.sh be sure you set the **CUSTOM\_PEERS** line in the script correctly before you run it. This is a pipe-delimited set of addr:port:valency pairs of peers that you want the script to add to your final topology.json file. This line should include your block producer. Default valency is 1 (one) if not specified. Example showing the first two objects from the mainnet-topology.json file above:
 
-CUSTOM\_PEERS="10.20.30.3**:**6000**\|**138.197.71.216**:**6000"
+CUSTOM\_PEERS="10.20.30.3\*\*:**6000**|**138.197.71.216**:\*\*6000"
 
 {% hint style="info" %}
-Set **valency** to 0 \(zero\) to disable a remote peer if you do not wish to delete the peer entirely from the file.
+Set **valency** to 0 (zero) to disable a remote peer if you do not wish to delete the peer entirely from the file.
 {% endhint %}
 
 ## Pool Registration
@@ -113,7 +113,7 @@ When you create your stake pool's **pool.json** metadata file you will notice a 
 ```
 {% endcode %}
 
-A typical home network will only expose a single external IP address to the world, dynamically assigned by your ISP \(Internet Service Provider\). Dynamically assigned external IP leases can be relatively static for a good long period, but this is not guaranteed and you should consider registering a domain name so you can use dns entries in the pool.json instead. Otherwise, each time your external IP address changes you'll have to re-register your pool with a new IP for your relays.
+A typical home network will only expose a single external IP address to the world, dynamically assigned by your ISP (Internet Service Provider). Dynamically assigned external IP leases can be relatively static for a good long period, but this is not guaranteed and you should consider registering a domain name so you can use dns entries in the pool.json instead. Otherwise, each time your external IP address changes you'll have to re-register your pool with a new IP for your relays.
 
 ## DNS Client
 
@@ -125,5 +125,4 @@ Unless you have a static IP address assigned by your ISP, at some point you're g
 * no-ip
 * namecheap.com openwrt ddns-scripts
 
-Was this information helpful? Earn rewards with us! [Consider delegating some ADA](../cardano-developer-guides/delegate.md).
-
+Was this information helpful? Earn rewards with us! [Consider delegating some ADA](../delegate.md).

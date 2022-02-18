@@ -32,6 +32,7 @@ sed -i ${NODE_FILES}/${NODE_CONFIG}-config.json \
 ## Generate Keys & Issue Operational Certificate
 
 {% hint style="warning" %}
+
 #### Rotating the KES keys
 
 KES keys need to be regenerated and a new **pool.cert** needs to be issued and submitted to the chain every 90 days. The **node.counter** file keeps track of how many times this has been done.
@@ -41,12 +42,14 @@ Generate a KES key pair: **kes.vkey** & **kes.skey**
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-cd $NODE_HOME
+cd ${NODE_HOME}
 cardano-cli node key-gen-KES \
   --verification-key-file kes.vkey \
   --signing-key-file kes.skey
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -54,27 +57,44 @@ Generate a node cold key pair: **node.vkey**, **node.skey** and **node.counter**
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
-mkdir $HOME/cold-keys
+mkdir ${HOME}/cold-keys
 cd cold-keys
 cardano-cli node key-gen \
   --cold-verification-key-file node.vkey \
   --cold-signing-key-file node.skey \
   --operational-certificate-issue-counter node.counter
 ```
+
 {% endtab %}
 {% endtabs %}
+
+## Variables for guide interopability
+
+{% hint style="warning" %}
+In order for these commands to work on mainnet & testnet we have to set the $CONFIG_NET variable and the $MAGIC variable. This is because on testnet we are required to use --testnet-magic $MAGIC, where MAGIC= the magic value found in your ${NODE_CONFIG}-shelley-genesis.json.
+
+The official docs do not do this for some reason and I don't want to write this all out twice. If working through documentation elsewhere please substitute ${NODE_CONFIG} with ${CONFIG_NET} when submitting to the chain on testnet. For mainnet disregard /rant.
+{% endhint %}
+
+```bash
+echo export MAGIC=$(cat ${NODE_FILES}/${NODE_CONFIG}-shelley-genesis.json | jq -r '.networkMagic') >> ${HOME}/.adaenv; . ${HOME}/.adaenv
+if [[ ${NODE_CONFIG} = 'testnet' ]]; then echo export CONFIG_NET='testnet-magic\ ${MAGIC}'; else echo export CONFIG_NET=mainnet; fi >> ${HOME}/.adaenv; . ${HOME}/.adaenv
+```
 
 Create variables with the number of slots per KES period from the genesis file and current tip of the chain.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-slotsPerKesPeriod=$(cat $NODE_FILES/${NODE_CONFIG}-shelley-genesis.json | jq -r '.slotsPerKESPeriod')
-slotNo=$(cardano-cli query tip --${NODE_CONFIG} | jq -r '.slot')
+slotsPerKesPeriod=$(cat ${NODE_FILES}/${NODE_CONFIG}-shelley-genesis.json | jq -r '.slotsPerKESPeriod')
+slotNo=$(cardano-cli query tip --${CONFIG_NET} | jq -r '.slot')
 echo slotsPerKesPeriod: ${slotsPerKesPeriod}
 echo slotNo: ${slotNo}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -82,10 +102,12 @@ Set the **startKesPeriod** variable by dividing **slotNo** / **slotsPerKESPeriod
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 startKesPeriod=$((${slotNo} / ${slotsPerKesPeriod}))
 echo startKesPeriod: ${startKesPeriod}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -97,14 +119,16 @@ Replace **\<startKesPeriod>** with the value you wrote down.
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli node issue-op-cert \
   --kes-verification-key-file kes.vkey \
-  --cold-signing-key-file $HOME/cold-keys/node.skey \
-  --operational-certificate-issue-counter $HOME/cold-keys/node.counter
+  --cold-signing-key-file ${HOME}/cold-keys/node.skey \
+  --operational-certificate-issue-counter ${HOME}/cold-keys/node.counter \
   --kes-period <startKesPeriod> \
   --out-file node.cert
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -114,11 +138,13 @@ Generate a VRF key pair.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli node key-gen-VRF \
   --verification-key-file vrf.vkey \
   --signing-key-file vrf.skey
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -126,9 +152,11 @@ For security purposes the **vrf.skey** **needs** read only permissions or cardan
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 chmod 400 vrf.skey
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -136,47 +164,55 @@ Edit the cardano-service startup script by adding **kes.skey**, **vrf.skey** and
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-nano $HOME/.local/bin/cardano-service
+nano ${HOME}/.local/bin/cardano-service
 ```
+
 {% endtab %}
 {% endtabs %}
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-#!/bin/bash
-DIRECTORY=/home/ada/pi-pool
-FILES=/home/ada/pi-pool/files
-PORT=3000
-TOPOLOGY=${FILES}/${NODE_CONFIG}-topology.json
-DB_PATH=${DIRECTORY}/db
-SOCKET_PATH=${DIRECTORY}/db/socket
-CONFIG=${FILES}/${NODE_CONFIG}-config.json
-KES=${DIRECTORY}/kes.skey
-VRF=${DIRECTORY}/vrf.skey
-CERT=${DIRECTORY}/node.cert
+TOPOLOGY=${NODE_FILES}/${NODE_CONFIG}-topology.json
+DB_PATH=${NODE_HOME}/db
+CONFIG=${NODE_FILES}/${NODE_CONFIG}-config.json
+KES=${NODE_HOME}/kes.skey
+VRF=${NODE_HOME}/vrf.skey
+CERT=${NODE_HOME}/node.cert
 ## +RTS -N4 -RTS = Multicore(4)
 cardano-node run +RTS -N4 -RTS \
   --topology ${TOPOLOGY} \
   --database-path ${DB_PATH} \
-  --socket-path ${SOCKET_PATH} \
-  --port ${PORT} \
+  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
+  --port ${NODE_PORT} \
   --config ${CONFIG} \
   --shelley-kes-key ${KES} \
   --shelley-vrf-key ${VRF} \
   --shelley-operational-certificate ${CERT}
 ```
+
 {% endtab %}
 {% endtabs %}
+
+Change the port to 3000 in the .adaenv file.
+
+```bash
+nano ${HOME}/.adaenv
+. ${HOME}/.adaenv
+```
 
 Add your relay(s) to ${NODE_CONFIG}-topolgy.json.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-nano $NODE_FILES/${NODE_CONFIG}-topology.json
+nano ${NODE_FILES}/${NODE_CONFIG}-topology.json
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -186,6 +222,7 @@ Valency greater than one is only used with DNS round robin srv records.
 
 {% tabs %}
 {% tab title="1 Relay DNS" %}
+
 ```
 {
   "Producers": [
@@ -197,9 +234,11 @@ Valency greater than one is only used with DNS round robin srv records.
   ]
 }
 ```
+
 {% endtab %}
 
 {% tab title="2 Relays DNS" %}
+
 ```
 {
   "Producers": [
@@ -216,9 +255,11 @@ Valency greater than one is only used with DNS round robin srv records.
   ]
 }
 ```
+
 {% endtab %}
 
 {% tab title="1 Relay IPv4" %}
+
 ```
 {
   "Producers": [
@@ -230,9 +271,11 @@ Valency greater than one is only used with DNS round robin srv records.
   ]
 }
 ```
+
 {% endtab %}
 
 {% tab title="2 Relays IPv4" %}
+
 ```
 {
   "Producers": [
@@ -249,6 +292,7 @@ Valency greater than one is only used with DNS round robin srv records.
   ]
 }
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -256,9 +300,11 @@ Restart and your node is now running as a core.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-service restart
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -273,18 +319,20 @@ cardano-service restart
 4. _**Build**_ a wallet address from the **payment.vkey** & delegate with **stake.vkey**. = **payment.addr**
 5. Add funds to the wallet by sending ada to **payment.addr**
 6. Check balance.
-{% endhint %}
+   {% endhint %}
 
 ### 1. Generate wallet key pair
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
-cd $NODE_HOME
+cd ${NODE_HOME}
 cardano-cli address key-gen \
   --verification-key-file payment.vkey \
   --signing-key-file payment.skey
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -292,11 +340,13 @@ cardano-cli address key-gen \
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli stake-address key-gen \
   --verification-key-file stake.vkey \
   --signing-key-file stake.skey
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -304,12 +354,14 @@ cardano-cli stake-address key-gen \
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli stake-address build \
   --stake-verification-key-file stake.vkey \
   --out-file stake.addr \
-  --${NODE_CONFIG}
+  --${CONFIG_NET}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -317,13 +369,15 @@ cardano-cli stake-address build \
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli address build \
   --payment-verification-key-file payment.vkey \
   --stake-verification-key-file stake.vkey \
   --out-file payment.addr \
-  --${NODE_CONFIG}
+  --${CONFIG_NET}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -349,11 +403,13 @@ Core node needs to be synced to the tip of the blockchain.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli query utxo \
   --address $(cat payment.addr) \
-  --${NODE_CONFIG}
+  --${CONFIG_NET}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -363,11 +419,13 @@ Issue a staking registration certificate: **stake.cert**
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli stake-address registration-certificate \
   --stake-verification-key-file stake.vkey \
   --out-file stake.cert
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -377,10 +435,12 @@ Query current slot number or tip of the chain.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-slotNo=$(cardano-cli query tip --${NODE_CONFIG} | jq -r '.slot')
+slotNo=$(cardano-cli query tip --${CONFIG_NET} | jq -r '.slot')
 echo slotNo: ${slotNo}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -388,10 +448,11 @@ Get the utxo or balance of the wallet.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli query utxo \
   --address $(cat payment.addr) \
-  --${NODE_CONFIG} > fullUtxo.out
+  --${CONFIG_NET} > fullUtxo.out
 
 tail -n +3 fullUtxo.out | sort -k3 -nr > balance.out
 cat balance.out
@@ -411,6 +472,7 @@ txcnt=$(cat balance.out | wc -l)
 echo Total ADA balance: $((${total_balance} / 1000000))
 echo Number of UTXOs: ${txcnt}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -424,22 +486,24 @@ It is because the core has not finished syncing to the tip of the blockchain. Th
 If however the cardano-node does not shutdown 'cleanly' for whatever reason it can take up to an hour to verify the database(chain) and create the socket file. Socket file is created once your synced.
 {% endhint %}
 
-Query ${NODE_CONFIG} for protocol parameters.
+Query --${CONFIG_NET} for protocol parameters.
 
-```
+```bash
 cardano-cli query protocol-parameters \
-    --${NODE_CONFIG} \
-    --out-file params.json
+  --${CONFIG_NET} \
+  --out-file params.json
 ```
 
 Retrieve **stakeAddressDeposit** value from **params.json**.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-stakeAddressDeposit=$(cat $NODE_HOME/params.json | jq -r '.stakeAddressDeposit')
+stakeAddressDeposit=$(cat ${NODE_HOME}/params.json | jq -r '.stakeAddressDeposit')
 echo stakeAddressDeposit : ${stakeAddressDeposit}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -455,6 +519,7 @@ Build **tx.tmp** file to hold some information.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli transaction build-raw \
   ${tx_in} \
@@ -464,6 +529,7 @@ cardano-cli transaction build-raw \
   --certificate stake.cert \
   --out-file tx.tmp
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -471,17 +537,19 @@ Calculate the minimal fee.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 fee=$(cardano-cli transaction calculate-min-fee \
   --tx-body-file tx.tmp \
   --tx-in-count ${txcnt} \
   --tx-out-count 1 \
-  --${NODE_CONFIG} \
+  --${CONFIG_NET} \
   --witness-count 2 \
   --byron-witness-count 0 \
   --protocol-params-file params.json | awk '{ print $1 }')
 echo fee: $fee
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -489,10 +557,12 @@ Calculate txOut.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 txOut=$((${total_balance}-${stakeAddressDeposit}-${fee}))
 echo Change Output: ${txOut}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -500,6 +570,7 @@ Build the full transaction to register your staking address.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli transaction build-raw \
   ${tx_in} \
@@ -509,6 +580,7 @@ cardano-cli transaction build-raw \
   --certificate-file stake.cert \
   --out-file tx.raw
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -516,14 +588,16 @@ Transfer **tx.raw** to your Cold offline machine and sign the transaction with t
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli transaction sign \
   --tx-body-file tx.raw \
   --signing-key-file payment.skey \
   --signing-key-file stake.skey \
-  --${NODE_CONFIG} \
+  --${CONFIG_NET} \
   --out-file tx.signed
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -533,11 +607,13 @@ Submit the transaction to the blockchain.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli transaction submit \
   --tx-file tx.signed \
-  --${NODE_CONFIG}
+  --${CONFIG_NET}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -553,14 +629,16 @@ metadata-url must be less than 64 characters.
 Hosting your poolMetaData.json on github is popular choice
 {% endembed %}
 
-I say host it on your Pi with NGINX.
+I say host it on your Pi with Nginx.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-cd $NODE_HOME
+cd ${NODE_HOME}
 nano poolMetaData.json
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -572,6 +650,7 @@ Add the following and customize to your metadata.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```
 {
 "name": "Pool Name",
@@ -581,19 +660,26 @@ Add the following and customize to your metadata.
 "extended": "https://example.com/extendedPoolMetaData.json"
 }
 ```
+
 {% endtab %}
 {% endtabs %}
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli stake-pool metadata-hash \
   --pool-metadata-file poolMetaData.json > poolMetaDataHash.txt
 ```
+
 {% endtab %}
 {% endtabs %}
 
 Copy poolMetaData.json to [https://pages.github.io](https://pages.github.io) or host it yourself along with your website. Be careful not to accidentally insert a space or a new line, which would result in a different hash.
+
+{% hint style="danger" %}
+--metadata-url must be 64 characters or less.
+{% endhint %}
 
 {% hint style="info" %}
 Here is my **poolMetaData.json** & **extendedPoolMetaData.json** as a reference and shameless links back to my site. 😰
@@ -605,10 +691,12 @@ Here is my **poolMetaData.json** & **extendedPoolMetaData.json** as a reference 
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-minPoolCost=$(cat $NODE_HOME/params.json | jq -r .minPoolCost)
+minPoolCost=$(cat ${NODE_HOME}/params.json | jq -r .minPoolCost)
 echo minPoolCost: ${minPoolCost}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -616,35 +704,43 @@ Use the format below to register single or multiple relays.
 
 {% tabs %}
 {% tab title="DNS Relay(1)" %}
+
 ```
 --single-host-pool-relay <r1.example.com> \
 --pool-relay-port <R1 NODE PORT> \
 ```
+
 {% endtab %}
 
 {% tab title="IPv4 Relay(1)" %}
+
 ```
 --pool-relay-ipv4 <RELAY NODE PUBLIC IP> \
 --pool-relay-port <R1 NODE PORT> \
 ```
+
 {% endtab %}
 
 {% tab title="DNS Relay(2)" %}
+
 ```
 --single-host-pool-relay <r1.example.com> \
 --pool-relay-port <R1 NODE PORT> \
 --single-host-pool-relay <r2.example.com> \
 --pool-relay-port <R2 NODE PORT> \
 ```
+
 {% endtab %}
 
 {% tab title="IPv4 Relay(2)" %}
+
 ```
 --pool-relay-ipv4 <R1 NODE PUBLIC IP> \
 --pool-relay-port <R1 NODE PORT> \
 --pool-relay-ipv4 <R2 NODE PUBLIC IP> \
 --pool-relay-port <R2 NODE PORT> \
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -652,26 +748,37 @@ Use the format below to register single or multiple relays.
 Edit the information below to match your pools desired configuration.
 {% endhint %}
 
-Copy vrf.vkey and poolMetaDataHash.txt to your cold machine and issue a stake pool registration certificate.
+Copy the vrf.vkey and poolMetaDataHash.txt to your cold machine and issue a stake pool registration certificate. Create a file name registration-cert.txt. Use this file to edit the below command before you issue it. It's also handy to leave this file on the cold machine for any future edits. Below is 1,000 ada pledge, 340 cost and a 1% margin.
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
+ ```bash
+ cd ${NODE_HOME}
+ nano registration-cert.txt
+ ```
+
+{% hint style="danger" %}
+--metadata-url must be 64 characters or less.
+{% endhint %}
+
 ```bash
 cardano-cli stake-pool registration-certificate \
-  --cold-verification-key-file $HOME/cold-keys/node.vkey \
+  --cold-verification-key-file ${HOME}/cold-keys/node.vkey \
   --vrf-verification-key-file vrf.vkey \
   --pool-pledge 10000000000 \
   --pool-cost 340000000 \
   --pool-margin 0.01 \
   --pool-reward-account-verification-key-file stake.vkey \
   --pool-owner-stake-verification-key-file stake.vkey \
-  --${NODE_CONFIG} \
+  --${CONFIG_NET} \
   --single-host-pool-relay <r1.example.com> \
   --pool-relay-port 3001 \
   --metadata-url <https://example.com/poolMetaData.json> \
   --metadata-hash $(cat poolMetaDataHash.txt) \
   --out-file pool.cert
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -679,12 +786,14 @@ Issue a delegation certificate from **stake.skey** & **node.vkey**.
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli stake-address delegation-certificate \
   --stake-verification-key-file stake.vkey \
-  --cold-verification-key-file $HOME/cold-keys/node.vkey \
+  --cold-verification-key-file ${HOME}/cold-keys/node.vkey \
   --out-file deleg.cert
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -692,10 +801,12 @@ Retrieve your stake pool id.
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
-cardano-cli stake-pool id --cold-verification-key-file $HOME/cold-keys/node.vkey --output-format hex > stakePoolId.txt
+cardano-cli stake-pool id --cold-verification-key-file ${HOME}/cold-keys/node.vkey --output-format hex > stakePoolId.txt
 cat stakePoolId.txt
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -705,10 +816,12 @@ Query the current slot number or tip of the chain.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-slotNo=$(cardano-cli query tip --${NODE_CONFIG} | jq -r '.slot')
+slotNo=$(cardano-cli query tip --${CONFIG_NET} | jq -r '.slot')
 echo slotNo: ${slotNo}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -716,10 +829,11 @@ Get the utxo or balance of the wallet.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli query utxo \
   --address $(cat payment.addr) \
-  --${NODE_CONFIG} > fullUtxo.out
+  --${CONFIG_NET} > fullUtxo.out
 
 tail -n +3 fullUtxo.out | sort -k3 -nr > balance.out
 cat balance.out
@@ -739,6 +853,7 @@ txcnt=$(cat balance.out | wc -l)
 echo Total ADA balance: $((${total_balance} / 1000000))
 echo Number of UTXOs: ${txcnt}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -746,10 +861,12 @@ Parse **params.json** for stake pool registration deposit value. Spoiler: it's 5
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
-stakePoolDeposit=$(cat $NODE_HOME/params.json | jq -r '.stakePoolDeposit')
+stakePoolDeposit=$(cat ${NODE_HOME}/params.json | jq -r '.stakePoolDeposit')
 echo stakePoolDeposit: ${stakePoolDeposit}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -757,6 +874,7 @@ Build temporary **tx.tmp** to hold information while we build our raw transactio
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli transaction build-raw \
   ${tx_in} \
@@ -767,6 +885,7 @@ cardano-cli transaction build-raw \
   --certificate-file deleg.cert \
   --out-file tx.tmp
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -774,17 +893,19 @@ Calculate the transaction fee.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 fee=$(cardano-cli transaction calculate-min-fee \
   --tx-body-file tx.tmp \
   --tx-in-count ${txcnt} \
   --tx-out-count 1 \
-  --${NODE_CONFIG} \
+  --${CONFIG_NET} \
   --witness-count 3 \
   --byron-witness-count 0 \
   --protocol-params-file params.json | awk '{ print $1 }')
   echo fee: ${fee}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -792,10 +913,12 @@ Calculate your change output.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 txOut=$((${total_balance}-${stakePoolDeposit}-${fee}))
 echo txOut: ${txOut}
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -803,6 +926,7 @@ Build your **tx.raw** (unsigned) transaction file.
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli transaction build-raw \
   ${tx_in} \
@@ -813,6 +937,7 @@ cardano-cli transaction build-raw \
   --certificate-file deleg.cert \
   --out-file tx.raw
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -822,15 +947,17 @@ Sign the transaction with your **payment.skey**, **node.skey** & **stake.skey**.
 
 {% tabs %}
 {% tab title="Cold Offline" %}
+
 ```bash
 cardano-cli transaction sign \
   --tx-body-file tx.raw \
   --signing-key-file payment.skey \
-  --signing-key-file $HOME/cold-keys/node.skey \
+  --signing-key-file ${HOME}/cold-keys/node.skey \
   --signing-key-file stake.skey \
-  --${NODE_CONFIG} \
+  --${CONFIG_NET} \
   --out-file tx.signed
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -838,11 +965,13 @@ Move **tx.signed** back to your core node & submit the transaction to the blockc
 
 {% tabs %}
 {% tab title="Core" %}
+
 ```bash
 cardano-cli transaction submit \
   --tx-file tx.signed \
-  --${NODE_CONFIG}
+  --${CONFIG_NET}
 ```
+
 {% endtab %}
 {% endtabs %}
 

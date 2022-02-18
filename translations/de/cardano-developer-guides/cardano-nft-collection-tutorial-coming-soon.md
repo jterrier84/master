@@ -1,8 +1,12 @@
 # Cardano NFT Collection Tutorial 👛
 
+{% hint style="info" %}
+### THIS GUIDE IS DEPRECATED
+{% endhint %}
+
 ## Prerequisites
 
-* cardano-node / cardano-cli set up on local machine \([https://docs.cardano.org/projects/cardano-node/en/latest](https://docs.cardano.org/projects/cardano-node/en/latest)\)
+* cardano-node / cardano-cli set up on local machine ([https://docs.cardano.org/projects/cardano-node/en/latest](https://docs.cardano.org/projects/cardano-node/en/latest))
 * Node.js installed version 14
 * cardano-cli-js package installed
 * cardano-minter repo from the previous tutorial
@@ -11,18 +15,18 @@
 **If you haven't already, please watch our video from the previous NFT tutorial 😎**
 {% endhint %}
 
-{% embed url="https://youtu.be/OeOliguGn7Y" caption="" %}
+{% embed url="https://youtu.be/OeOliguGn7Y" %}
 
 ### Clone the cardano-minter repo if you haven't already...
 
-```text
+```
 git clone https://github.com/armada-alliance/cardano-minter
 cd cardano-minter
 ```
 
 ### Install additional dependencies
 
-```text
+```
 npm install form-data dotenv axios lodash sharp promise-parallel-throttle --save
 ```
 
@@ -32,7 +36,7 @@ npm install form-data dotenv axios lodash sharp promise-parallel-throttle --save
 
 * While in the "cardano-minter" directory create a script that will generate our assets in a nicely formatted JSON file called "assets.json".
 
-```text
+```
 nano create-initial-assets-json.js
 ```
 
@@ -124,7 +128,7 @@ main() i : i + 1
 main()
 ```
 
-```text
+```
 node src/create-initial-assets-json.js
 ```
 
@@ -135,7 +139,7 @@ node src/create-initial-assets-json.js
 * Make a folder called images to download the test images into
 * Create a script that will go and grab the images from the internet and download them into the images folder
 
-```text
+```
 cd src
 nano download-test-images.js
 ```
@@ -170,15 +174,15 @@ async function main() {
 main()
 ```
 
-```text
+```
 node src/download-test-images.js
 ```
 
-### 3. Extend metadata.json with thumbnails \(optional\)
+### 3. Extend metadata.json with thumbnails (optional)
 
 * generate thumbnails based on images from the metadata.json and give them the same name with `_thumbnail` tag added to the name
 
-```text
+```
 cd src
 nano generate-thumbnails.js
 ```
@@ -212,11 +216,11 @@ async function main() {
 main()
 ```
 
-```text
+```
 node src/generate-thumbnails.js
 ```
 
-### 4. Create our [pinata.cloud](https://pinata.cloud/) account to get our API keys
+### 4. Create our [pinata.cloud](https://pinata.cloud) account to get our API keys
 
 1. Create an account
 2. Create API keys
@@ -229,11 +233,11 @@ node src/generate-thumbnails.js
 Make sure the **.env** file is in the **cardano-minter** directory but **not in** **the** **src** folder
 {% endhint %}
 
-```text
+```
 nano .env
 ```
 
-```text
+```
 PINATA_API_KEY='Enter Your API Key'
 PINATA_API_SECRET='Enter Your API Secret Key'
 ```
@@ -246,7 +250,7 @@ Read [this article ](https://docs.ipfs.io/how-to/pin-files/#three-kinds-of-pins)
 
 * **First, we need to make a script called pin-to-ipfs.js, this script will "upload" and Pin our images to IPFS using the pinata.cloud API.**
 
-```text
+```
 nano pin-to-ipfs.js
 ```
 
@@ -372,14 +376,14 @@ node src/pin-images-to-ipfs.js
 ```
 
 {% hint style="warning" %}
-### Before you continue to the minting process, please understand the importance of minting policies and their scripts!
+#### Before you continue to the minting process, please understand the importance of minting policies and their scripts!
 {% endhint %}
 
 **Read the Cardano Documentation on "**[**Scripts**](https://docs.cardano.org/projects/cardano-node/en/latest/reference/simple-scripts.html#Step-1---construct-the-tx-body)**" and/or watch a video we made discussing the subject:**
 
-{% embed url="https://youtu.be/v6q66zcFqew" caption="" %}
+{% embed url="https://youtu.be/v6q66zcFqew" %}
 
-### 7. Create an "open" or "unlocked" minting policy and script \(Optional\)
+### 7. Create an "open" or "unlocked" minting policy and script (Optional)
 
 * We will create an open minting policy script and export it in JSON and TXT format.
 
@@ -403,15 +407,15 @@ fs.writeFileSync(__dirname + "/mint-policy.json", JSON.stringify(mintScript, nul
 fs.writeFileSync(__dirname + "/mint-policy-id.txt", cardano.transactionPolicyid(mintScript))
 ```
 
-```text
+```
 node src/create-mint-policy.js
 ```
 
-### 8. Create a "time-locked" minting policy and script \(Recommended\)
+### 8. Create a "time-locked" minting policy and script (Recommended)
 
 * Create a "time-locked" minting policy script and export it in JSON and TXT format.
 
-```text
+```
 cd src
 nano create-time-locked-mint-policy.js
 ```
@@ -444,7 +448,7 @@ fs.writeFileSync(__dirname + "/mint-policy.json", JSON.stringify(mintScript, nul
 fs.writeFileSync(__dirname + "/mint-policy-id.txt", cardano.transactionPolicyid(mintScript))
 ```
 
-```text
+```
 node src/create-time-locked-mint-policy.js
 ```
 
@@ -472,7 +476,7 @@ module.exports = () => {
 }
 ```
 
-```text
+```
 node src/get-policy-id.js
 ```
 
@@ -685,4 +689,3 @@ sendAssets({
 ```bash
 node src/send-multiple-assets-back-to-wallet.js
 ```
-

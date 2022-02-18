@@ -27,13 +27,13 @@ git fetch --recurse-submodules --tags --all
 git tag
 ```
 
-3\) Replace `<tag>` in this step with the latest tag such as `v1.2.1`.
+3\) Replace `<tag>` in this step with the latest tag such as `v1.5.0`.
 
 ```
 git checkout tags/<tag>
 ```
 
-## Upgrading to Alpine v3.14 from Alpine v3.13:
+## Upgrading to Alpine v3.15 from Alpine v3.14:
 
 1\) Update your current version of AlpineOS.
 
@@ -45,10 +45,10 @@ sudo apk update
 sudo apk upgrade
 ```
 
-2\) Edit the repository to reflect Alpine v3.14.
+2\) Edit the repository to reflect Alpine v3.15.
 
 ```
-sudo sed -i 's@v3.13@v3.14@g' /etc/apk/repositories
+sudo sed -i 's@v3.14@v3.15@g' /etc/apk/repositories
 ```
 
 3\) Update the package list.
@@ -57,7 +57,7 @@ sudo sed -i 's@v3.13@v3.14@g' /etc/apk/repositories
 sudo apk update
 ```
 
-4\) Upgrading packages to v3.14
+4\) Upgrading packages to v3.15
 
 ```
 sudo apk add --upgrade apk-tools
@@ -75,17 +75,17 @@ sudo sync
 sudo reboot now
 ```
 
-5\) Now you should have AlpineOS upgraded to v3.14 🍷.
+5\) Now you should have AlpineOS upgraded to v3.15 🍷.
 
 ```
 cat /etc/alpine-release
 ```
 
-6\) To troubleshoot the upgrade, refer to the link: [https://wiki.alpinelinux.org/wiki/Upgrading_Alpine](https://wiki.alpinelinux.org/wiki/Upgrading_Alpine)
+6\) To troubleshoot the upgrade, refer to the link: [https://wiki.alpinelinux.org/wiki/Upgrading\_Alpine](https://wiki.alpinelinux.org/wiki/Upgrading\_Alpine)
 
 ## Initial Setup for AlpineOS on Raspberry Pi 4B 8GB:
 
-1\) Download the AlpineOS for RPi 4 aarch64 here: [https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/aarch64/alpine-rpi-3.14.2-aarch64.tar.gz](https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/aarch64/alpine-rpi-3.14.2-aarch64.tar.gz)
+1\) Download the AlpineOS for RPi 4 aarch64 [here](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-rpi-3.15.0-aarch64.tar.gz).&#x20;
 
 2\) Decompress the .tar.gz file and copy it's contents into an SSD/SD card
 
@@ -212,7 +212,7 @@ Replace `<tag>` with the latest tag in the next command.
 ## Installing/Upgrading the 'cardano-node' and 'cardano-cli' static binaries (AlpineOS uses static binaries almost exclusively so avoid non-static builds)
 
 {% hint style="info" %}
-**You may obtain the static binaries for version 1.30.1 via this** [**link**](https://ci.zw3rk.com/build/409517) **courtesy of Moritz Angermann, the SPO of ZW3RK pool 🙏**
+**You may obtain the static binaries for version 1.33.0 via this** [**link** ](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-rpi-3.15.0-aarch64.tar.gz)**thanks to Moritz Angermann, the SPO of ZW3RK pool 🙏**
 {% endhint %}
 
 **Run the following commands to download and install the binaries into the correct directory.**
@@ -220,13 +220,13 @@ Replace `<tag>` with the latest tag in the next command.
 * Download the binaries
 
 ```
-    wget -O ~/aarch64-unknown-linux-musl-cardano-node-1.30.1.zip https://ci.zw3rk.com/build/409517/download/1/aarch64-unknown-linux-musl-cardano-node-1.30.1.zip
+    wget -O ~/aarch64-unknown-linux-musl-cardano-node-1.33.0.zip https://ci.zw3rk.com/build/427926/download/1/aarch64-unknown-linux-musl-cardano-node-1.33.0.zip
 ```
 
 * Unzip and install the binaries via the commands
 
 ```
-    unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.30.1.zip
+    unzip -d ~/ aarch64-unknown-linux-musl-cardano-node-1.33.0.zip
 
     sudo mv ~/cardano-node/* /usr/local/bin/
 ```
@@ -234,11 +234,11 @@ Replace `<tag>` with the latest tag in the next command.
 ## Install the Armada Alliance Alpine Linux Cardano node service
 
 {% hint style="success" %}
-### If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of scripts and services useful.
+#### If you have decided to use AlpineOS for your Cardano stake pool operations, you may find this collection of scripts and services useful.
 {% endhint %}
 
 {% hint style="info" %}
-### To install the scripts and services correctly don't skip steps 🏴‍☠️😎
+#### To install the scripts and services correctly don't skip steps 🏴‍☠️😎
 {% endhint %}
 
 1\) Clone this repo to obtain the neccessary folder and scripts to quickly start your cardano node. You may skip this step if you have already clonned this repo from step 12 when setting up AlpineOS.
@@ -300,11 +300,11 @@ Replace `<tag>` with the latest tag in the next command.
 1\) Download Prometheus and node-exporter into the home directory
 
 ```
-    wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.29.2/prometheus-2.29.2.linux-arm64.tar.gz
+    wget -O ~/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.32.1/prometheus-2.32.1.linux-arm64.tar.gz
 ```
 
 ```
-    wget -O ~/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-arm64.tar.gz
+    wget -O ~/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-arm64.tar.gz
 ```
 
 2\) Extract the tarballs
@@ -317,14 +317,24 @@ tar -xzvf prometheus.tar.gz
 tar -xzvf node_exporter.tar.gz
 ```
 
-3\) Rename the folders with the following commands
+3\) If you are upgrading from previous versions of prometheus and node-exporter, make a backup. You may delete these folders if they do not contain anything useful.
 
 ```
-    mv prometheus-2.29.2.linux-arm64 prometheus
+mv prometheus prometheus-bak
 ```
 
 ```
-    mv node_exporter-1.2.2.linux-arm64 node_exporter
+mv node_exporter node_exporter-bak
+```
+
+4\) Rename the folders with the following commands
+
+```
+    mv prometheus-2.32.1.linux-arm64 prometheus
+```
+
+```
+    mv node_exporter-1.3.1.linux-arm64 node_exporter
 ```
 
 4\) Follow the guide written in **README.txt** contained in the $HOME directory after installing cnode, scripts and services to start the services accordingly.
@@ -335,17 +345,34 @@ tar -xzvf node_exporter.tar.gz
 
 ## General Troubleshooting
 
-* If you have trouble with port forwarding via SSH, run the following command
+1\) If you have trouble with port forwarding via SSH, run the following command
 
 ```
 sudo nano /etc/ssh/sshd_config
 ```
 
-* Edit the line `AllowTcpForwarding no` to `AllowTcpForwarding yes`
+Edit the line `AllowTcpForwarding no` to `AllowTcpForwarding yes`
 
 {% hint style="info" %}
 Make sure this line is not commented out with a`#`
 {% endhint %}
+
+2\) If you run into a situation where you get the error:
+
+> /lib/rc/sh/openrc-run.sh: source: line 10: can't open '/home//cnode\_env': No such file or directory
+
+Do the following:
+
+```
+export USER=$(whoami)
+sudo ash -c "echo 'export USER=$USER' >> /etc/profile"
+```
+
+Then reboot:
+
+```
+sudo reboot
+```
 
 {% hint style="success" %}
 We would like to give a special shoutout to our [alliance member](https://armada-alliance.com), [Sayshar](https://armada-alliance.com/identities/sayshar-srn), operator of [\[SRN\] Pool](https://armada-alliance.com/stake-pools/cc1b1c03798884c636703443a23b8d9e827d6c0417921600394198a0), for providing this tutorial 🏴‍☠️ 🙏 😎

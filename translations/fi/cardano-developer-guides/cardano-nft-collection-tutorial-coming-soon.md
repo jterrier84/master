@@ -1,38 +1,42 @@
 # Cardano NFT-kokoelma opas
 
+{% hint style="info" %}
+### THIS GUIDE IS DEPRECATED
+{% endhint %}
+
 ## Edellytykset
 
-* cardano-node / cardano-cli asennettu paikalliseen koneeseen \([https://docs.cardano.org/projects/cardano-node/en/latest](https://docs.cardano.org/projects/cardano-node/en/latest)\)
+* cardano-node / cardano-cli set up on local machine ([https://docs.cardano.org/projects/cardano-node/en/latest](https://docs.cardano.org/projects/cardano-node/en/latest))
 * Node.js versio 14 asennettu
 * cardano-cli-js paketti asennettu
 * cardano-minter repo edellisestä tutoriaalista
 
 {% hint style="info" %}
-**Jos et ole jo katsonut, katso meidän edellisen NFT opetusohjelman video 😎**
+**If you haven't already, please watch our video from the previous NFT tutorial 😎**
 {% endhint %}
 
-{% embed url="https://youtu.be/OeOliguGn7Y" caption="" %}
+{% embed url="https://youtu.be/OeOliguGn7Y" %}
 
-### Kloonaa cardano-minter repo jos et ole jo...
+### Clone the cardano-minter repo if you haven't already...
 
-```text
+```
 git clone https://github.com/armada-alliance/cardano-minter
 cd cardano-minter
 ```
 
-### Riippuvuuksien asennus
+### Install additional dependencies
 
-```text
+```
 npm install form-data dotenv axios lodash sharp promise-parallel-throttle --save
 ```
 
-## Aloitetaan nyt tutoriaalilla 😊
+## Now, let's start with the tutorial 😊
 
-### 1. Luo alkuperäiset assetit
+### 1. Create our initial assets
 
 * "cardano-minter" hakemistossa, tee skripti, joka luo assetit nätisti muotoiltuun JSON tiedostoon nimeltä "assets.json".
 
-```text
+```
 nano create-initial-assets-json.js
 ```
 
@@ -82,18 +86,18 @@ async function main() {
 main()
 ```
 
-```text
+```
 node src/create-initial-assets-json.js
 ```
 
 * Assets.json tiedoston pitäisi näyttää [tältä](https://github.com/armada-alliance/cardano-minter-collection/blob/master/src/assets.json).
 
-### 2. Lataa satunnaisia kuvia testausta varten
+### 2. Download random images for testing
 
 * Tee hakemisto nimeltä 'kuvat', johon voit ladata testikuvat
 * Luo skripti, joka menee ja nappaa kuvia internetistä ja lataa ne kuvat-kansioon
 
-```text
+```
 cd src
 nano download-test-images.js
 ```
@@ -128,15 +132,15 @@ async function main() {
 main()
 ```
 
-```text
+```
 node src/download-test-images.js
 ```
 
-### 3. Laajenna metadata.json kuvakkeilla \(valinnainen\)
+### 3. Extend metadata.json with thumbnails (optional)
 
 * luo kuvakkeet, jotka perustuvat metadata.jsonin kuviin ja anna niille sama nimi `_thumbnail` -tunnisteella, joka on lisätty nimeen
 
-```text
+```
 cd src
 nano generate-thumbnails.js
 ```
@@ -170,41 +174,41 @@ async function main() {
 main()
 ```
 
-```text
+```
 node src/generate-thumbnails.js
 ```
 
-### 4. Luo [pinata.cloud](https://pinata.cloud/) -tili saadaksesi API-avaimemme
+### 4. Create our [pinata.cloud](https://pinata.cloud) account to get our API keys
 
 1. Luo käyttäjätili
 2. Luo API-avaimet
 
-### 5. API-avaimia on säilytettävä turvallisesti
+### 5. Need to safely store our API keys
 
 * luo .env tiedosto ja liitä siihen avaimet
 
 {% hint style="info" %}
-Varmista, että **.env** tiedosto on **cardano-minter** hakemistossa, **eikä** **** **src** kansiossa
+Make sure the **.env** file is in the **cardano-minter** directory but **not in** **the** **src** folder
 {% endhint %}
 
-```text
+```
 nano .env
 ```
 
-```text
+```
 PINATA_API_KEY='Enter Your API Key'
 PINATA_API_SECRET='Enter Your API Secret Key'
 ```
 
-### 6. Lataa ja kiinnitä data IPFS-järjestelmään
+### 6. Upload and pin our data to IPFS
 
 {% hint style="info" %}
-Lue [tämä artikkeli ](https://docs.ipfs.io/how-to/pin-files/#three-kinds-of-pins)saadaksesi lisää tietoa siitä, miksi haluamme kiinnittää NFT: mme IPFS:lle.
+Read [this article ](https://docs.ipfs.io/how-to/pin-files/#three-kinds-of-pins)to learn more about why we want to Pin our NFTs to IPFS.
 {% endhint %}
 
 * **Ensinnäkin, meidän täytyy tehdä skripti nimeltään pin-to-ipfs.js, tämä skripti "vie" ja kiinnittää kuvamme IPFS:ään käyttäen pinata.cloud APIa.**
 
-```text
+```
 nano pin-to-ipfs.js
 ```
 
@@ -328,14 +332,14 @@ node src/pin-images-to-ipfs.js
 ```
 
 {% hint style="Huomaa" %}
-### Ennen kuin jatkat painoprosessia (minting process), on hyvä ymmärtää painotoiminnan säännösten ja niiden skriptien tärkeys!
+#### Before you continue to the minting process, please understand the importance of minting policies and their scripts!
 {% endhint %}
 
-**Lue Cardano Dokumentaatio osoitteesta "**[**Skriptit**](https://docs.cardano.org/projects/cardano-node/en/latest/reference/simple-scripts.html#Step-1---construct-the-tx-body)**" ja/tai katso video, jonka teimme aiheesta:**
+**Read the Cardano Documentation on "**[**Scripts**](https://docs.cardano.org/projects/cardano-node/en/latest/reference/simple-scripts.html#Step-1---construct-the-tx-body)**" and/or watch a video we made discussing the subject:**
 
-{% embed url="https://youtu.be/v6q66zcFqew" caption="" %}
+{% embed url="https://youtu.be/v6q66zcFqew" %}
 
-### 7. Luo "open" tai "unlocked" minting käytäntö ja skripti \(Valinnainen\)
+### 7. Create an "open" or "unlocked" minting policy and script (Optional)
 
 * Luomme avoimen painatussääntö (minting policy) -skriptin ja tallennamme sen JSON ja TXT muodossa.
 
@@ -359,15 +363,15 @@ fs.writeFileSync(__dirname + "/mint-policy.json", JSON.stringify(mintScript, nul
 fs.writeFileSync(__dirname + "/mint-policy-id.txt", cardano.transactionPolicyid(mintScript))
 ```
 
-```text
+```
 node src/create-mint-policy.js
 ```
 
-### 8. Luo "aika-lukittu" minting käytäntö ja skripti \(Suositeltu\)
+### 8. Create a "time-locked" minting policy and script (Recommended)
 
 * Luo "aika-lukittu" minting policy skripti ja tallenna se JSON ja TXT muodoissa.
 
-```text
+```
 cd src
 nano create-time-locked-mint-policy.js
 ```
@@ -400,7 +404,7 @@ fs.writeFileSync(__dirname + "/mint-policy.json", JSON.stringify(mintScript, nul
 fs.writeFileSync(__dirname + "/mint-policy-id.txt", cardano.transactionPolicyid(mintScript))
 ```
 
-```text
+```
 node src/create-time-locked-mint-policy.js
 ```
 
@@ -428,7 +432,7 @@ module.exports = () => {
 }
 ```
 
-```text
+```
 node src/get-policy-id.js
 ```
 
@@ -641,4 +645,3 @@ sendAssets({
 ```bash
 node src/send-multiple-assets-back-to-wallet.js
 ```
-

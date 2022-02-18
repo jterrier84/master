@@ -32,7 +32,7 @@ cardano-node version
 ```
 {% endhint %}
 
-## Choose testnet or mainnet. Defaults to testnet.
+## Choose testnet or mainnet. **Defaults to testnet**.
 Switch between testnet & mainnet, for mainnet issue.. Config file path /home/ada/.adaenv
 ```bash
 sed -i .adaenv -e "s/NODE_CONFIG=testnet/NODE_CONFIG=mainnet/g"
@@ -69,9 +69,6 @@ cd /home/ada/pi-pool
 
 ```bash
 wget -r -np -nH -R "index.html*" -e robots=off https://$NODE_CONFIG.adamantium.online/db/
-```
-```bash
-touch /home/ada/pi-pool/db/clean
 ```
 
 ### 5. Enable & start the cardano-service.

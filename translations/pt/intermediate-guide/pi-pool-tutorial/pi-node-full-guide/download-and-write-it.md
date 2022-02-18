@@ -31,13 +31,11 @@ Plug the Pi into a monitor, insert the sd card and power up. Once you see a gree
 
 {% tabs %}
 {% tab title="Pre configured Pi-Node.img.gz" %}
-### Obtain Pi-Node.img.gz file
+#### Obtain Pi-Node.img.gz file
 
-| [Pi-Node](https://mainnet.adamantium.online/Pi-Node.img.gz) |
-| ----------------------------------------------------------- |
-|                                                             |
+| [Pi-Node](https://mainnet.adamantium.online/Pi-Node.img.gz)
 
-### Within Raspberry Pi Imager
+#### Within Raspberry Pi Imager
 
 **Choose OS -> Use custom**
 
@@ -45,17 +43,16 @@ Locate the .img.gz file you downloaded & wish to flash.
 
 Locate your target drive & write it to disk.
 
-![](../../../.gitbook/assets/custom_os.png)
+![](../../../.gitbook/assets/custom\_os.png)
 {% endtab %}
 
-{% tab title="Fresh Ubuntu 21.10 installation" %}
-### Within Raspberry Pi Imager
+{% tab title="Fresh Ubuntu 22.04 LTS installation" %}
+#### Within Raspberry Pi Imager
 
-### Select  Ubuntu Server 21.10 (RPI 3/4/400)
+#### Download Ubuntu Server 22.04 (RPI 3/4/400)
 
-**Choose OS -> Other general purpose OS -> Ubuntu -> Ubuntu Server 21.10 (RPI 3/4/400)**. The 64 bit server option.
+[Raspberry Pi Generic (64-bit ARM) preinstalled server image](https://cdimage.ubuntu.com/ubuntu-server/daily-preinstalled/current/jammy-preinstalled-server-arm64+raspi.img.xz)
 
-Locate your target drive & write it to disk.
-
+****Choose OS -> Use custom**** Locate the .img.gz file you downloaded & wish to flash. Locate your target drive & write it to disk.
 {% endtab %}
 {% endtabs %}

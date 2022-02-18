@@ -5,7 +5,7 @@ description: 'Create the ada user, add to group sudo'
 # User Setup
 
 {% hint style="warning" %}
-If you are using a Pi-Node image you need only reference this material until we start configuring the Relay & Core. The guide builds the image you can download.
+If you are using a Pi-Node image you need only reference this material. The guide builds the image you can download.
 {% endhint %}
 
 ## Create the ada user
@@ -13,12 +13,12 @@ If you are using a Pi-Node image you need only reference this material until we 
 Create a new user and add it to the sudo group.
 
 ```bash
-sudo adduser ada && sudo adduser ada sudo
+sudo adduser ada; sudo adduser ada sudo
 ```
 
 ### Change password
 
-You can change the ada users password at anytime with.
+You can change the users password at anytime with.
 
 ```bash
 passwd
@@ -52,14 +52,14 @@ ssh ada@<server-ip>
 Test that ada is in the sudo group by updating your package lists and upgrading the system.
 
 {% hint style="warning" %}
-Updating Ubuntu is going to take 10 minutes or more unless they update the image used with rpi-imager.
+If you get error about repos and time it is because the clock is not set. Install chrony now to fix, otherwise we will install and configure it later.
 {% endhint %}
 
 ```bash
-sudo apt update && sudo apt upgrade
+sudo apt update; sudo apt upgrade -y
 ```
 
-If that was successful we can delete the default ubuntu user and it's home directory.
+We can delete the default ubuntu user and it's home directory.
 
 ```bash
 sudo deluser --remove-home ubuntu

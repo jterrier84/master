@@ -7,16 +7,10 @@ description: Configure the environment for Cardano Node
 ## Choose testnet or mainnet.
 
 {% hint style="danger" %}
-There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet or ask Alliance members in Telegram. Try not to lose it please.
+There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs to start a pool on mainnet. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet. [tada faucet link](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/)
 {% endhint %}
 
-Create an .adaenv file, choose which network you want to be on and source the file. This file will hold the variables for operating a Pi-Node.
-
-```shell
-echo -e NODE_CONFIG=testnet >> ${HOME}/.adaenv && source ${HOME}/.adaenv
-```
-
-Make some directories.
+Create the directories for our project.
 
 ```bash
 mkdir -p ${HOME}/.local/bin
@@ -25,6 +19,12 @@ mkdir -p ${HOME}/pi-pool/scripts
 mkdir -p ${HOME}/pi-pool/logs
 mkdir ${HOME}/git
 mkdir ${HOME}/tmp
+```
+
+Create an .adaenv file, choose which network you want to be on and source the file. This file will hold the variables/settings for operating a Pi-Node. /home/ada/.adaenv
+
+```shell
+echo -e NODE_CONFIG=testnet >> ${HOME}/.adaenv; source ${HOME}/.adaenv
 ```
 
 ### Create bash variables & add \~/.local/bin to our $PATH 🏃
@@ -38,14 +38,71 @@ You must reload environment files after updating them. Same goes for cardano-nod
 {% endhint %}
 
 ```bash
-echo PATH="${HOME}/.local/bin:$PATH" >> ${HOME}/.bashrc
 echo . ~/.adaenv >> ${HOME}/.bashrc
+cd .local/bin; echo "export PATH=\"$PWD:\$PATH\"" >> $HOME/.adaenv
 echo export NODE_HOME=${HOME}/pi-pool >> ${HOME}/.adaenv
 echo export NODE_PORT=3003 >> ${HOME}/.adaenv
 echo export NODE_FILES=${HOME}/pi-pool/files >> ${HOME}/.adaenv
+echo export TOPOLOGY='${NODE_FILES}'/'${NODE_CONFIG}'-topology.json >> ${HOME}/.adaenv
+echo export DB_PATH='${NODE_HOME}'/db >> ${HOME}/.adaenv
+echo export CONFIG='${NODE_FILES}'/'${NODE_CONFIG}'-config.json >> ${HOME}/.adaenv
 echo export NODE_BUILD_NUM=$(curl https://hydra.iohk.io/job/Cardano/iohk-nix/cardano-deployment/latest-finished/download/1/index.html | grep -e "build" | sed 's/.*build\/\([0-9]*\)\/download.*/\1/g') >> ${HOME}/.adaenv
 echo export CARDANO_NODE_SOCKET_PATH="${HOME}/pi-pool/db/socket" >> ${HOME}/.adaenv
-source ${HOME}/.bashrc && source .adaenv
+source ${HOME}/.bashrc; source ${HOME}/.adaenv
+```
+
+## Build Libsodium
+
+This is IOHK's fork of Libsodium. It is needed for the dynamic build binary of cardano-node.
+
+```bash
+cd; cd git/
+git clone https://github.com/input-output-hk/libsodium
+cd libsodium
+git checkout 66f017f1
+./autogen.sh
+./configure
+make
+sudo make install
+```
+
+Echo library paths .bashrc file and source it.
+
+```bash
+echo "export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"" >> ~/.bashrc
+echo "export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"" >> ~/.bashrc
+. ~/.bashrc
+```
+
+Update link cache for shared libraries and confirm.
+
+```bash
+sudo ldconfig; ldconfig -p | grep libsodium
+```
+
+## Build a static binary of jq
+
+We need a static binary we can move to the offline machine later in the guide.
+
+```bash
+cd; cd git
+git clone https://github.com/stedolan/jq.git
+cd jq/
+git submodule update --init
+autoreconf -fi
+./configure --with-oniguruma=builtin
+make LDFLAGS=-all-static
+make check
+sudo make install
+```
+
+Confirm.
+
+```bash
+jq -V
+# jq-1.6-145-ga9f97e9-dirty
+which jq
+# /usr/local/bin/jq
 ```
 
 ### Retrieve node files
@@ -57,6 +114,7 @@ wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-
 wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-shelley-genesis.json
 wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-alonzo-genesis.json
 wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-topology.json
+wget -N https://raw.githubusercontent.com/input-output-hk/cardano-node/master/cardano-submit-api/config/tx-submit-mainnet-config.yaml
 ```
 
 Run the following to modify ${NODE_CONFIG}-config.json and update TraceBlockFetchDecisions to "true" & listen on all interfaces with Prometheus Node Exporter.
@@ -71,17 +129,17 @@ sed -i ${NODE_CONFIG}-config.json \
 **Tip for relay nodes**: It's possible to reduce memory and cpu usage by setting "TraceMemPool" to "false" in **{NODE_CONFIG}-config.json.** This will turn off mempool data in Grafana and gLiveView.sh.
 {% endhint %}
 
-### Retrieve aarch64 binaries
+### Retrieve aarch64 1.33.1 and cardano-submit-api binaries
 
 {% hint style="info" %}
-The **unofficial** cardano-node & cardano-cli binaries available to us are being built by an IOHK engineer in his **spare time**. Please visit the '[Arming Cardano](https://t.me/joinchat/FeKTCBu-pn5OUZUz4joF2w)' Telegram group for more information.
+The **unofficial** cardano-node, cardano-cli and cardano-submit-api binaries available to us are being built by an IOHK engineer in his **spare time**. Consider delegating to zw3rk pool to support mobile Haskel development.
 {% endhint %}
 
 ```bash
 cd ${HOME}/tmp
-wget -O cardano_node_$(date +"%m-%d-%y").zip wget https://ci.zw3rk.com/build/410011/download/1/aarch64-unknown-linux-musl-cardano-node-1.31.0.zip
+wget https://ci.zw3rk.com/build/430108/download/1/aarch64-unknown-linux-musl-cardano-node-1.33.1.zip
 unzip *.zip
-mv cardano-node/* ${HOME}/.local/bin
+mv cardano-node/cardano-* ${HOME}/.local/bin
 rm -r cardano*
 cd ${HOME}
 ```
@@ -97,7 +155,7 @@ cardano-node version
 cardano-cli version
 ```
 
-### Systemd unit files
+### Systemd unit startup scripts
 
 Create the systemd unit file and startup script so systemd can manage cardano-node.
 
@@ -110,10 +168,7 @@ Paste the following, save & exit.
 ```bash
 #!/bin/bash
 . /home/ada/.adaenv
-#DIRECTORY=/home/${USER}/pi-pool
-TOPOLOGY=${NODE_FILES}/${NODE_CONFIG}-topology.json
-DB_PATH=${NODE_HOME}/db
-CONFIG=${NODE_FILES}/${NODE_CONFIG}-config.json
+
 ## +RTS -N4 -RTS = Multicore(4)
 cardano-node run +RTS -N4 -RTS \
   --topology ${TOPOLOGY} \
@@ -123,7 +178,7 @@ cardano-node run +RTS -N4 -RTS \
   --config ${CONFIG}
 ```
 
-Allow execution of our new startup script.
+Allow execution of our new cardano-node service file.
 
 ```bash
 chmod +x ${HOME}/.local/bin/cardano-service
@@ -135,7 +190,7 @@ Open /etc/systemd/system/cardano-node.service.
 sudo nano /etc/systemd/system/cardano-node.service
 ```
 
-Paste the following, You will need to edit the username here if you chose to not use ada. save & exit.
+Paste the following, You will need to edit the username here if you chose to not use ada. Save & exit.
 
 ```bash
 # The Cardano Node Service (part of systemd)
@@ -153,23 +208,81 @@ WorkingDirectory= /home/ada/pi-pool
 ExecStart       = /bin/bash -c "PATH=/home/ada/.local/bin:$PATH exec /home/ada/.local/bin/cardano-service"
 KillSignal=SIGINT
 RestartKillSignal=SIGINT
-TimeoutStopSec=3
+TimeoutStopSec=10
 LimitNOFILE=32768
 Restart=always
-RestartSec=5
+RestartSec=10
 EnvironmentFile=-/home/ada/.adaenv
 
 [Install]
 WantedBy= multi-user.target
 ```
 
-Reload systemd so it picks up our new service file.
+Create the systemd unit file and startup script so systemd can manage cardano-submit-api.
+
+```bash
+nano ${HOME}/.local/bin/cardano-submit-service
+```
+
+```bash
+#!/bin/bash
+. /home/ada/.adaenv
+
+cardano-submit-api \
+  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
+  --port 8090 \
+  --config /home/ada/pi-pool/files/tx-submit-mainnet-config.yaml \
+  --listen-address 0.0.0.0 \
+  --mainnet
+```
+
+Allow execution of our new cardano-submit-api service script.
+
+```bash
+chmod +x ${HOME}/.local/bin/cardano-submit-service
+```
+
+Create /etc/systemd/system/cardano-submit.service.
+
+```bash
+sudo nano /etc/systemd/system/cardano-submit.service
+```
+
+Paste the following, You will need to edit the username here if you chose to not use ada. save & exit.
+
+```bash
+# The Cardano Submit Service (part of systemd)
+# file: /etc/systemd/system/cardano-submit.service
+
+[Unit]
+Description     = Cardano submit service
+Wants           = network-online.target
+After           = network-online.target
+
+[Service]
+User            = ada
+Type            = simple
+WorkingDirectory= /home/ada/pi-pool
+ExecStart       = /bin/bash -c "PATH=/home/ada/.local/bin:$PATH exec /home/ada/.local/bin/cardano-submit-service"
+KillSignal=SIGINT
+RestartKillSignal=SIGINT
+TimeoutStopSec=10
+LimitNOFILE=32768
+Restart=always
+RestartSec=10
+EnvironmentFile=-/home/ada/.adaenv
+
+[Install]
+WantedBy= multi-user.target
+```
+
+Reload systemd so it picks up our new service files.
 
 ```bash
 sudo systemctl daemon-reload
 ```
 
-Let's add a function to the bottom of our .adaenv file to make life a little easier.
+Let's add a couple functions to the bottom of our .adaenv file to make life a little easier.
 
 ```bash
 nano ${HOME}/.adaenv
@@ -180,6 +293,11 @@ cardano-service() {
     #do things with parameters like $1 such as
     sudo systemctl "$1" cardano-node.service
 }
+
+cardano-submit() {
+    #do things with parameters like $1 such as
+    sudo systemctl "$1" cardano-submit.service
+}
 ```
 
 Save & exit.
@@ -188,16 +306,29 @@ Save & exit.
 source ${HOME}/.adaenv
 ```
 
-What we just did there was add a function to control our cardano-service without having to type out
+What we just did there was add a couple functions to control our cardano-service and cardano-submit without having to type out
 
 > > sudo systemctl enable cardano-node.service sudo systemctl start cardano-node.service sudo systemctl stop cardano-node.service sudo systemctl status cardano-node.service
 
 Now we just have to:
 
-* cardano-service enable  (enables cardano-node.service auto start at boot)
-* cardano-service start      (starts cardano-node.service)
-* cardano-service stop       (stops cardano-node.service)
-* cardano-service status    (shows the status of cardano-node.service)
+- cardano-service enable (enables cardano-node.service auto start at boot)
+- cardano-service start (starts cardano-node.service)
+- cardano-service stop (stops cardano-node.service)
+- cardano-service status (shows the status of cardano-node.service)
+
+Or
+
+- cardano-submit enable (enables cardano-submit.service auto start at boot)
+- cardano-submit start (starts cardano-submit.service)
+- cardano-submit stop (stops cardano-submit.service)
+- cardano-submit status (shows the status of cardano-submit.service)
+
+The submit service listens on port 8090. You can connect your Nami wallet like below to submit tx's yourself in Nami's settings.
+
+```bash
+http://<node lan ip>:8090/api/submit/tx
+```
 
 ## ⛓ Syncing the chain ⛓
 
@@ -247,17 +378,27 @@ wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/
 wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/gLiveView.sh
 ```
 
-We have to edit the env file to work with our environment. The port number here will have to be updated to match the port cardano-node is running on. For the **Pi-Node** it's port 3003. As we build the pool we will work down. For example Pi-Relay(2) will run on port 3002, Pi-Relay(1) on 3001 and Pi-Core on port 3000.
-
 {% hint style="info" %}
-You can change the port cardano-node runs on in the .adaenv file in your home directory.
+You can change the port cardano-node runs on in the .adaenv file in your home directory. Open the file edit the port number. Load the change into your shell & restart the cardano-node service.
+
+```bash
+nano /home/ada/.adaenv
+source /home/ada/.adaenv
+cardano-service restart
+```
+
 {% endhint %}
+
+Add a line sourcing our .adaenv file to the top of the env file and adjust some paths.
 
 ```bash
 sed -i env \
-    -e "s/\#CNODE_HOME=\"\/opt\/cardano\/cnode\"/NODE_HOME=\"\/home\/${USER}\/pi-pool\"/g" \
-    -e "s/"6000"/"3003"/g" \
-    -e "s/\#CONFIG=\"\${CNODE_HOME}\/files\/config.json\"/CONFIG=\"\${NODE_FILES}\/${NODE_CONFIG}-config.json\"/g"
+    -e "/#CNODEBIN/i. ${HOME}/.adaenv" \
+    -e "s/\#CNODE_HOME=\"\/opt\/cardano\/cnode\"/CNODE_HOME=\"\${HOME}\/pi-pool\"/g" \
+    -e "s/\#CNODE_PORT=6000"/CNODE_PORT=\"'${NODE_PORT}'\""/g" \
+    -e "s/\#CONFIG=\"\${CNODE_HOME}\/files\/config.json\"/CONFIG=\"\${NODE_FILES}\/"'${NODE_CONFIG}'"-config.json\"/g" \
+    -e "s/\#TOPOLOGY=\"\${CNODE_HOME}\/files\/topology.json\"/TOPOLOGY=\"\${NODE_FILES}\/"'${NODE_CONFIG}'"-topology.json\"/g" \
+    -e "s/\#LOG_DIR=\"\${CNODE_HOME}\/logs\"/LOG_DIR=\"\${CNODE_HOME}\/logs\"/g"
 ```
 
 Allow execution of gLiveView.sh.
@@ -268,24 +409,22 @@ chmod +x gLiveView.sh
 
 ## topologyUpdater.sh
 
-Until peer to peer is enabled on the network operators need a way to get a list of relays/peers to connect to. The topology updater service runs in the background with cron. Every hour the script will run and tell the service you are a relay and want to be a part of the network. It will add your relay to it's directory after four hours and start generating a list of relays in a json file in the $NODE\_HOME/logs directory. A second script, relay-topology\_pull.sh can then be used manually to generate a mainnet-topolgy file with relays/peers that are aware of you and you of them.
+Until peer to peer is enabled on the network operators need a way to get a list of relays/peers to connect to. The topology updater service runs in the background with cron. Every hour the script will run and tell the service you are a relay and want to be a part of the network. It will add your relay to it's directory after four hours you should see in connections in gLiveView. &#x20;
 
 {% hint style="info" %}
-The list generated will show you the distance in miles & a clue as to where the relay is located.
+The list generated will show you the distance & a clue as to where the relay is located.
 {% endhint %}
 
-Open a file named topologyUpdater.sh
-
-```bash
-cd $NODE_HOME/scripts
-nano topologyUpdater.sh
-```
-
-Download the topologyUpdater script.
+Download the topologyUpdater script and have a look at it. Lower the number of peers to 10 and add any custom peers you wish. These are outgoing connections. You will not see any incoming transactions untill other nodes start connecting to you.
 
 ```bash
 wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/topologyUpdater.sh
+```
 
+Lower the number of MX_PEERS to 10.
+
+```bash
+nano topologyUpdater.sh
 ```
 
 Save, exit and make it executable.
@@ -298,15 +437,15 @@ chmod +x topologyUpdater.sh
 You will not be able to successfully execute ./topologyUpdater.sh until you are fully synced up to the tip of the chain.
 {% endhint %}
 
-{% hint style="info" %}
-Choose nano when prompted for editor.
-{% endhint %}
-
 Create a cron job that will run the script every hour.
 
 ```bash
 crontab -e
 ```
+
+{% hint style="info" %}
+Choose nano when prompted for editor.
+{% endhint %}
 
 Add the following to the bottom, save & exit.
 
@@ -315,48 +454,12 @@ The Pi-Node image has this cron entry disabled by default. You can enable it by 
 {% endhint %}
 
 ```bash
-33 * * * * . $HOME/.adaenv; /home/$USER/pi-pool/scripts/topologyUpdater.sh
+SHELL=/bin/bash
+PATH=/home/ada/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+33 * * * * . $HOME/.adaenv; $HOME/pi-pool/scripts/topologyUpdater.sh
 ```
 
-After 4 hours of on boarding you will be added to the service and can pull your new list of peers into the {NODE_CONFIG}-topology file.
-
-Create another file relay-topology\_pull.sh and paste in the following.
-
-```bash
-nano relay-topology_pull.sh
-```
-{% hint style="warning" %}
-If your running just an active relay you can add a random ip and port. Just remove it from the topology file after you pull and restart node.
-{% endhint %}
-
-```bash
-#!/bin/bash
-NODE_CONFIG=$(grep NODE_CONFIG /home/${USER}/.adaenv | cut -d '=' -f2)
-BLOCKPRODUCING_IP=<BLOCK PRODUCERS PRIVATE IP>
-BLOCKPRODUCING_PORT=3000
-curl -4 -s -o /home/${USER}/pi-pool/files/{${NODE_CONFIG}-topology.json "https://api.clio.one/htopology/v1/fetch/?max=10&customPeers=${BLOCKPRODUCING_IP}:${BLOCKPRODUCING_PORT}:1|relays-new.cardano-${NODE_CONFIG}.iohk.io:3001:2"
-```
-
-Save, exit and make it executable.
-
-```bash
-chmod +x relay-topology_pull.sh
-```
-
-{% hint style="danger" %}
-Pulling in a new list will overwrite your existing topology file. Keep that in mind.
-{% endhint %}
-
-After 4 hours you can pull in your new list and restart the cardano-service.
-
-```bash
-cd $NODE_HOME/scripts
-./relay-topology_pull.sh
-```
-
-{% hint style="info" %}
-relay-topology\_pull.sh will add 15 peers to your mainnet-topology file. I usually remove the furthest 5 relays and use the closest 10.
-{% endhint %}
+After four hours you can open ${NODE_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
 
 ```bash
 nano $NODE_FILES/${NODE_CONFIG}-topology.json
@@ -374,10 +477,10 @@ Don't forget to remove the last comma in your topology file!
 
 Status should show as enabled & running.
 
-Once your node syncs past epoch 208(shelley era) you can use gLiveView.sh to monitor.
+Once your node syncs past epoch 208(shelley era) you can use gLiveView.sh to monitor your sync progress.
 
 {% hint style="danger" %}
-It can take up to an hour for cardano-node to sync to the tip of the chain. Use ./gliveView.sh, htop and log outputs to view process. Be patient it will come up.
+It can take over an hour for cardano-node to sync to the tip of the chain. Use ./gliveView.sh, htop and log outputs to view process. Be patient it will come up.
 {% endhint %}
 
 ```bash
@@ -392,7 +495,7 @@ cd $NODE_HOME/scripts
 Prometheus connects to cardano-nodes backend and serves metrics over http. Grafana in turn can use that data to display graphs and create alerts. Our Grafana dashboard will be made up of data from our Ubuntu system & cardano-node. Grafana can display data from other sources as well, like [adapools.org](https://adapools.org).
 
 {% hint style="info" %}
-You can connect a Telegram bot to Grafana which can alert you of problems with the server. Much easier than trying to configure email alerts.
+You can connect a [Telegram bot](https://docs.armada-alliance.com/learn/intermediate-guide/grafana-alerts-with-telegram) to Grafana which can alert you of problems with the server. Much easier than trying to configure email alerts.
 {% endhint %}
 
 {% embed url="https://github.com/prometheus" %}
@@ -402,7 +505,7 @@ You can connect a Telegram bot to Grafana which can alert you of problems with t
 ### Install Prometheus & Node Exporter.
 
 {% hint style="info" %}
-Prometheus can scrape the http endpoints of other servers running node exporter. Meaning Grafana and Prometheus does not have to be installed on your core and relays. Only the package prometheus-node-exporter is required if you would like to build a central Grafana dashboard for the pool, freeing up resources.
+Prometheus can scrape the http endpoints of other servers running node exporter. Meaning Grafana and Prometheus does not have to be installed on your core and relays. Only the package prometheus-node-exporter is required if you would like to build a central Grafana dashboard for the pool, freeing up resources and having a single dashboard to monitor everything.
 {% endhint %}
 
 ```bash
@@ -432,48 +535,54 @@ Indentation must be correct YAML format or Prometheus will fail to start.
 
 ```yaml
 global:
-  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  scrape_interval: 15s # By default, scrape targets every 15 seconds.
 
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    monitor: 'codelab-monitor'
+    monitor: "codelab-monitor"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label job=<job_name> to any timeseries scraped from this config.
-  - job_name: 'Prometheus' # To scrape data from Prometheus Node Exporter
+  - job_name: "Prometheus" # To scrape data from Prometheus Node Exporter
     scrape_interval: 5s
     static_configs:
-#      - targets: ['<CORE PRIVATE IP>:12798']
-#        labels:
-#          alias: 'C1'
-#          type:  'cardano-node'
-#      - targets: ['<RELAY PRIVATE IP>:12798']
-#        labels:
-#          alias: 'R1'
-#          type:  'cardano-node'
-      - targets: ['localhost:12798']
+      #      - targets: ['<CORE PRIVATE IP>:12798']
+      #        labels:
+      #          alias: 'C1'
+      #          type:  'cardano-node'
+      #      - targets: ['<RELAY PRIVATE IP>:12798']
+      #        labels:
+      #          alias: 'R1'
+      #          type:  'cardano-node'
+      - targets: ["localhost:12798"]
         labels:
-          alias: 'N1'
-          type:  'cardano-node'
+          alias: "N1"
+          type: "cardano-node"
 
-#      - targets: ['<CORE PRIVATE IP>:9100']
-#        labels:
-#          alias: 'C1'
-#          type:  'node'
-#      - targets: ['<RELAY PRIVATE IP>:9100']
-#        labels:
-#          alias: 'R1'
-#          type:  'node'
-      - targets: ['localhost:9100']
+      #      - targets: ['<CORE PRIVATE IP>:9100']
+      #        labels:
+      #          alias: 'C1'
+      #          type:  'node'
+      #      - targets: ['<RELAY PRIVATE IP>:9100']
+      #        labels:
+      #          alias: 'R1'
+      #          type:  'node'
+      - targets: ["localhost:9100"]
         labels:
-          alias: 'N1'
-          type:  'node'
+          alias: "N1"
+          type: "node"
 ```
 
 Save & exit.
+
+Start Prometheus.
+
+```bash
+sudo systemctl start prometheus.service
+```
 
 ### Install Grafana
 
@@ -494,16 +603,21 @@ echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/a
 Update your package lists & install Grafana.
 
 ```bash
-sudo apt update
-sudo apt install grafana
+sudo apt update; sudo apt install grafana
 ```
 
 Change the port Grafana listens on so it does not clash with cardano-node.
 
 ```bash
 sudo sed -i /etc/grafana/grafana.ini \
--e "s/;http_port/http_port/" \
--e "s/3000/5000/"
+         -e "s#;http_port#http_port#" \
+         -e "s#3000#5000#"
+```
+
+Start Grafana
+
+```bash
+sudo systemctl start grafana-server.service
 ```
 
 ### cardano-monitor bash function
@@ -511,8 +625,7 @@ sudo sed -i /etc/grafana/grafana.ini \
 Open .adaenv.
 
 ```bash
-cd ${HOME}
-nano .adaenv
+cd ${HOME}; nano .adaenv
 ```
 
 Down at the bottom add.
@@ -543,7 +656,7 @@ cardano-monitor start
 At this point you may want to start cardano-service and get synced up before we continue to configure Grafana. Go to the syncing the chain section. Choose whether you want to wait 30 hours or download the latest chain snapshot. Return here once gLiveView.sh shows you are at the tip of the chain.
 {% endhint %}
 
-## Grafana, Nginx proxy\_pass & snakeoil
+## Grafana, Nginx proxy_pass & snakeoil
 
 Let's put Grafana behind Nginx with self signed(snakeoil) certificate. The certificate was generated when we installed the ssl-cert package.
 
@@ -593,7 +706,7 @@ Check that Nginx is happy with our changes and restart it.
 
 ```bash
 sudo nginx -t
-## if ok do
+## if ok, do
 sudo service nginx restart
 ```
 
@@ -609,7 +722,7 @@ Log in and set a new password. Default username and password is **admin:admin**.
 
 #### Configure data source
 
-In the left hand vertical menu go to **Configure** > **Datasources** and click to **Add data source**. Choose Prometheus. Enter [http://localhost:9090](http://localhost:9090) where it is grayed out, everything can be left default. At the bottom save & test. You should get the green "Data source is working" if cardano-monitor has been started. If for some reason those services failed to start issue **cardano-service restart**.
+In the left hand vertical menu go to **Configure** > **Datasources** and click to **Add data source**. Choose Prometheus. Enter [http://localhost:9090](http://localhost:9090) where it is grayed out, everything else can be left default. At the bottom save & test. You should get the green "Data source is working" if cardano-monitor has been started. If for some reason those services failed to start issue **cardano-service restart**.
 
 #### Import dashboards
 
@@ -623,13 +736,23 @@ In the left hand vertical menu go to **Dashboards** > **Manage** and click on **
 
 ### Configure poolDataLive
 
-Here you can use the poolData api to bring your pools data into Grafana.
+Here you can use the poolData api to bring extra pool data into Grafana like stake & price.
 
 {% embed url="https://api.pooldata.live/dashboard" %}
 
 Follow the instructions to install the Grafana plugin, configure your datasource and import the dashboard.
 
 ## Useful Commands
+
+{% hint style="info" %}
+
+View how much zram swap cardano-node is using.
+
+```bash
+
+CNZRAM=$(pidof cardano-node)
+grep --color VmSwap /proc/$CNZRAM/status
+```
 
 Follow log output to journal.
 
@@ -649,4 +772,6 @@ View network connections with netstat.
 sudo netstat -puntw
 ```
 
-From here you have a pi-node with tools to build a stake pool from the following pages. Best of luck and please join the [armada-alliance](https://armada-alliance.com), together we are stronger! :muscle:&#x20;
+{% endhint %}
+
+From here you have a Pi-Node with tools to build an active relay or a stake pool from the following pages. Best of luck and please join the [armada-alliance](https://armada-alliance.com), together we are stronger! :muscle:
