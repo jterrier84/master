@@ -43,8 +43,8 @@ brew install htop
 # Web content retriever
 brew install wget
 
-# Replacement for the unavailable sha256sum used in the guild operators env file
-brew install sha3sum
+# GNU date and other GNU goodness for the MacOS
+brew install coreutils
 
 # Who doesn't love wireguard?
 brew install wireguard-tools
