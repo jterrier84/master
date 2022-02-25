@@ -11,7 +11,7 @@ At the time of writing this the brew install of chrony does not create the neces
 ```bash
 ##############################################################
 # Create the .plist service definition
-sudo nano /Library/LaunchDaemons/homebrew.chronyd.plist
+sudo nano /opt/homebrew/opt/chrony/homebrew.mxcl.chrony.plist
 
 # Add the following to the file:
 
@@ -20,13 +20,13 @@ sudo nano /Library/LaunchDaemons/homebrew.chronyd.plist
 <plist version="1.0">
 <dict>
         <key>Label</key>
-        <string>homebrew.chronyd</string>
+        <string>homebrew.mxcl.chrony</string>
         <key>ProgramArguments</key>
         <array>
                 <string>/opt/homebrew/sbin/chronyd</string>
         </array>
         <key>RunAtLoad</key>
-        <false/>
+        <true/>
         <key>StandardErrorPath</key>
         <string>/var/log/chronyd.err.log</string>
         <key>StandardOutPath</key>
@@ -37,11 +37,8 @@ sudo nano /Library/LaunchDaemons/homebrew.chronyd.plist
 # Save and exit nano
 ##############################################################
 
-# Load the new system service definition
-sudo launchctl load /Library/LaunchDaemons/homebrew.chronyd.plist
-
-# Verify the service definition was loaded successfully
-sudo launchctl list homebrew.chronyd
+# Create the run folder for Chrony
+sudo mkdir /var/run/chrony
 ```
 
 Now we need to create the /etc/chrony.conf file which the service will use. I just copied the one from my other block producer.
@@ -89,8 +86,8 @@ local stratum 10
 # Save and exit nano
 ##############################################################
 
-# Start up chrony
-sudo launchctl start homebrew.chronyd
+# Fire up chrony using Brew
+sudo brew services start chrony
 
 # Verify chrony started successfully - should see one line:
 ps aux | grep "[c]hronyd"
@@ -160,22 +157,10 @@ nano ~/pi-pool/scripts/env
 # Change the shebang line to this so we use the new shell:
 #!/usr/bin/env bash
 
-# Replace all sha256sum instances with sha3sum
-
-# Comment out the following 3 lines for this gdate block:
-if [[ $(uname) == Darwin ]]; then
-   date () { gdate "$@"; }
-fi
-
 # Change this line:
 export LC_ALL=C.UTF-8
 # to this:
 export LC_ALL=C.UTF-8 2>/dev/null
-
-# Change this line:
-SHELLEY_GENESIS_START_SEC=$(date --date="$(jq -r .systemStart "${GENESIS_JSON}")" +%s)
-# to this:
-SHELLEY_GENESIS_START_SEC=1506203091
 
 # Save and exit nano
 ##############################################################
