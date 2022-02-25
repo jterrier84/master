@@ -37,12 +37,14 @@ Fire up the M1 to the desktop. We need to do a few tasks while we're on the desk
 * System Preferences > Desktop & Screen Saver
   * Turn off the screen saver
   * Turn off desktop change picture
+  * These are heavy users of resources
 * System Preferences > Energy Saver
   * Prevent computer from sleeping is checked
   * Put disks to sleep is not checked
   * Start up automatically is checked
 * Close System Preferences
-* I didn't mess around with the firewall, left it off (default I think). If you turn it on or it's on just make sure you have Remote Login access for now.
+* I didn't mess around with the firewall at first, left it off (default I think). If you turn it on or it's on just make sure you have Remote Login access for now.
+  * Once I finished this guide I turned the firewall on. MacOS should auto-negotiate the ports for you and just ensure they are set to open (green).
 * Install Xcode from the Mac App Store
   * After it finishes, install Xcode command line tools
   * Open the macOS terminal and type:  `xcode-select --install`
