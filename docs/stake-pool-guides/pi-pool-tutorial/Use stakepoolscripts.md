@@ -1,25 +1,28 @@
 ---
-description: How to use the stakepoolscripts to start a pool, rotate KES and update pool data.
+description: How to use the stakepoolscripts to start a pool, rotate KES, update pool data, claim rewards and send transactions.
 ---
 
-# Create a stake pool
+# Introduction
 
-Now that everything is set up let's start creating the pool. Please read the [official documentation](https://github.com/gitmachtl/scripts) Martin of [ATADA](https://stakepool.at/) pool provides to get a better understanding of the scripts. His tutorial is much more detailed and covers a lot of options. 
-This tutorial is for the basic workflow. It contains the necessary steps to get a stake pool running and registered on chain.
+Now that everything is set up let's start creating the pool. Please read the [official documentation](https://github.com/gitmachtl/scripts) Martin of [ATADA](https://stakepool.at/) pool provides to get a better understanding of the scripts. His tutorial is much more detailed and covers a lot of options. Thank you Martin!
 
 {% embed url="https://github.com/gitmachtl/scripts" %}
 
+This tutorial on the other hand is for the basics. It contains everything necessary to get a stake pool running and some other fundamental operations. It should help to get a nice and easy workflow.
 
-{% hint style="warning" %} Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times best case. The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opcert. {% endhint %}
+![](../../../.gitbook/assets/photo\offline_workflow.jpg)
 
-The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, which should also work automated.
-If not mount it with ```sudo mount ~/usb_transfer``` 
-Make sure to unmount again before removing it. ```sudo umount ~/usb_transfer``` 
+The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, 
+which should also work automated.
+If not, mount it with ```sudo mount ~/usb_transfer```. 
+Make sure to unmount everytime before removing ```sudo umount ~/usb_transfer```. 
 
-### Set up the cold machine
+# Prerequisits on the cold machine
 
-Let's begin with a directory for your keys. 
-Also make sure the offline machine's time is correct, you'll have to do it everytime you use it. 
+{% hint style="info" %}
+Let's begin with a directory for your keys. This guide assumes, that you are always in `$HOME/pool_keys` when running a script on the offline machine.
+Also make sure the offline machine's time is correct, you'll have to do this everytime you use it. 
+{% endhint %}
 
 {% tab title="offline" %}
 ```bash
@@ -35,6 +38,10 @@ timedatectl
 timedatectl set-time xxxxx
 ```
 {% endtab %}
+
+# Create a stake pool
+
+{% hint style="warning" %} Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times best case. The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opcert. {% endhint %}
 
 ## Create and fund a wallet
 
@@ -56,8 +63,9 @@ Now copy the addresses to your core to fund the new wallet. You'll need your fre
 {% endtab %}
 
 Switch the USB drive from offline to online machine.
+Extract the address files.
 
-{% tab title="online" %}
+{% tab title="core" %}
 ```bash
 cd $HOME/pi-pool
 01_workOffline.sh extract
@@ -66,7 +74,7 @@ cd $HOME/pi-pool
 
 Retrieve the address and send some funds to your new wallet. You'll need at least 502 ADA + tx fees + your pledge.
 
-{% tab title="online" %}
+{% tab title="core" %}
 ```bash
 cat wallet_name.payment.addr
 ```
@@ -74,7 +82,7 @@ cat wallet_name.payment.addr
 
 Query the balance and wait until the new UTXO shows up.
 
-{% tab title="online" %}
+{% tab title="core" %}
 ```bash
 01_queryAddress.sh wallet_name.payment
 ```
@@ -82,21 +90,22 @@ Query the balance and wait until the new UTXO shows up.
 
 When the funds arrived copy the UTXO data to your offline machine. 
 
-{% tab title="online" %}
+{% tab title="core" %}
 ```bash
 01_workOffline.sh add wallet_name.payment
 ```
 {% endtab %}
 
-## Create the pool's keys and certificates
-
-Generate the stakeaddress registration transaction. 
+Generate a transaction to register the staking address. 
+It will be submitted later on.
 
 {% tab title="offline" %}
 ```bash 
 03b_regStakingAddrCert.sh wallet_name.staking 
 ```
 {% endtab %}
+
+## Create the pool's keys and certificates
 
 Generate the keys for your core node.
 
@@ -118,16 +127,25 @@ Generate your stakepool certificate and metadata.json.
 {% endtab %}
 
 This creates a `pool_name.pool.json` file, which you can edit according to your needs and wishes. 
-In this case we get a pool with 100k ADA pledge, 340 ADA fixed cost (minimum) and 1% margin.
-For OwnerName and poolRewards enter the name of your wallet.
-Add as many relays as you want. Either ip or dns based.
-Pool description can contain up to 255 characters, 
-poolMetaUrl only 64. If you need to shorten the URL you can do it by creating an empty `pool_name.metadata.json`
-You may also add an URL to your extended.metadata.json, which holds more information, like the URL to your logo etc.
-You can find an example for the extended metadata below.
+Everything is calculated in lovelaces. (Reminder: 1 ADA = 1,000,000 lovelace)
+So in this case we get a pool with 100k ADA pledge, 340 ADA fixed cost (minimum) and 1% margin.
 
+Add as many of your relays as you want. Either ip or dns based.
 
-{% tab title="metadata.json" %}
+Pool description can contain up to 255 characters. 
+
+poolMetaUrl points to the Metadata file, which you need to upload later. Github is a popular choice, if you don't want to use your own server.  
+
+{% hint style="info" %} 
+poolMetaUrl can only be 64 characters long.
+Make sure it points to the raw file. 
+In case you need to shorten the URL you can do it by creating an empty `pool_name.metadata.json`, upload it
+and shorten the URL. Make sure the short URL doesn't expire. Later replace it with the actual file. {% endhint %}
+
+You may also add an URL to an `extended.metadata.json`, which holds more information like the URL to your logo etc.
+You can find an example for the extended metadata further down. 
+
+{% tab title="pool_name.pool.json" %}
 ```bash
 {
    "poolName": "pool_name",  
@@ -157,12 +175,16 @@ You can find an example for the extended metadata below.
    "poolMetaDescription": "This is the description of my Pool!",
    "poolMetaTicker": "POOL",
    "poolMetaHomepage": "https://mypool.com",
-   "poolMetaUrl": "https://mypool.com/mypool.metadata.json",
+   "poolMetaUrl": "https://mypool.com/pool_name.metadata.json",
    "poolExtendedMetaUrl": "",
    "---": "--- DO NOT EDIT BELOW THIS LINE ---"
 }
 ```
 {% endtab %}
+
+Now to the extended.metadata.json. 
+Create it on your local machine, it's quite self-explanatory. 
+The png icon is limited to 64x64 while the logo could use 400x400 pixels. jpg works aswell.
 
 {% tab title="extended.metadata.json" %}
 ```bash
@@ -203,9 +225,8 @@ You can find an example for the extended metadata below.
 {% endtab %}
 
 Now run ```05a_genStakepoolCert.sh pool_name``` again. This will generate the pool_name.pool.cert file and the actual pool_name.metadata.json.
-Later you can upload the metadata.json to the URL you specified in the previous step. Do not edit it anymore or the hash will not fit!
-If you want to change something, change it in the pool_name.pool.json and repeat ```05a_genStakepoolCert.sh pool_name```.
-
+Later you can upload the metadata.json to the URL you specified in the previous step. Do not edit it anymore or the hash won't fit!
+If you want to change something, change it in the pool_name.pool.json and run ```05a_genStakepoolCert.sh pool_name``` again.
 
 Delegate to your own pool as owner. (Pledge) 
 
@@ -218,9 +239,274 @@ Delegate to your own pool as owner. (Pledge)
 
 Generate the stakepool registration transaction. The script also attaches the new pool_name.metadata.json to the offlinetransfer file.
 
-
 {% tab title="offline" %}
 ```bash
 05c_regStakepoolCert.sh pool_name wallet_name.payment
 ``` 
+{% endtab %}
+
+Now attach the files needed by the core.
+
+{% tab title="offline" %}
+```bash
+01_workOffline.sh attach pool_name.vrf.skey
+01_workOffline.sh attach pool_name.kes-xxx.skey
+01_workOffline.sh attach pool_name.node-xxx.opcert
+```
+{% endtab %}
+
+You are done with the offline part. Unmount and bring your USB drive to the core again.
+
+{% tab title="core" %}
+```bash
+cd $HOME/pi-pool
+01_workOffline.sh extract
+```
+{% endtab %}
+
+For convenience rename the core files so you don't have to change the startup script every KES rotation.
+
+{% tab title="core" %}
+```bash
+mv pool_name.kes-xxx.skey kes.skey
+mv pool_name.vrf.skey vrf.skey
+mv pool_name.node-xxx.opcert node.cert
+```
+{% endtab %}
+
+Now change the startup script and add the three files.
+
+{% tab title="core" %}
+```bash
+nano $HOME/.local/bin/cardano-service
+```
+{% endtab %}
+
+```
+#!/bin/bash
+. /home/ada/.adaenv
+
+TOPOLOGY=${NODE_FILES}/${NODE_CONFIG}-topology.json
+DB_PATH=${NODE_HOME}/db
+CONFIG=${NODE_FILES}/${NODE_CONFIG}-config.json
+KES=${NODE_HOME}/kes.skey
+VRF=${NODE_HOME}/vrf.skey
+CERT=${NODE_HOME}/node.cert
+cardano-node +RTS -N4 --disable-delayed-os-memory-return -RTS run \
+  --topology ${TOPOLOGY} \
+  --database-path ${DB_PATH} \
+  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
+  --port ${NODE_PORT} \
+  --config ${CONFIG} \
+  --shelley-kes-key ${KES} \
+  --shelley-vrf-key ${VRF} \
+  --shelley-operational-certificate ${CERT}
+```
+
+Restart the service.
+
+{% tab title="core" %}
+```bash
+cardano-service restart
+```
+{% endtab %}
+
+While your core is starting you can transfer the `pool_name.metadata.json` to your local machine and upload it to the prepared URL.
+Do the same with the extended metadata and your logos, if you have made them.
+
+Check the status of the core. When it's up again you can submit the transactions.
+First the staking key registration, then repeat the same command for the stake pool registration.
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh execute
+```
+{% endtab %}
+
+## Confirm successful registration
+
+### pool.vet
+
+pool.vet is a website for pool operators to check the validity of their stake pools on chain data. You can check this site for problems and clues as to how to fix them.
+
+{% embed url="https://pool.vet/" %}
+
+### adapools.org
+
+You should create an account and claim your pool here.
+
+{% embed url="https://adapools.org/" %}
+
+### pooltool.io
+
+You should create an account and claim your pool here.
+
+{% embed url="https://pooltool.io/" %}
+
+# Rotate KES keys
+
+{% hint style="warning" %}
+Make sure to rotate your KES keys and node certificate before! they expire.
+{% endhint %}
+
+{% hint style="info" %}
+Before starting check `timedatectl` on your offline machine and adjust, if needed.
+{% endhint %}
+
+Create the new KES keypair. You will notice that the counter increments automatically.
+
+{% tab title="offline" %}
+```bash
+04c_genKESKeys.sh pool_name
+```
+{% endtab %}
+
+Create a new operational certificate.
+
+{% tab title="offline" %}
+```bash
+04d_genNodeOpCert.sh pool_name
+```
+{% endtab %}
+
+Now attach the new files.
+
+{% tab title="offline" %}
+```bash
+01_workOffline.sh attach pool_name.vrf.skey
+01_workOffline.sh attach pool_name.kes-xxx.skey
+01_workOffline.sh attach pool_name.node-xxx.opcert
+```
+{% endtab %}
+
+Unmount and bring the USB drive to the core.
+Stop the node and extract the files.
+
+Now attach the files for the core.
+
+{% tab title="core" %}
+```bash
+cardano-service stop
+cd $HOME/pi-pool
+01_workOffline.sh extract
+```
+{% endtab %}
+
+Now rename/move them to match the startup script. 
+Then start again. That's it.
+
+{% tab title="core" %}
+```bash
+mv pool_name.kes-xxx.skey kes.skey
+mv pool_name.vrf.skey vrf.skey
+mv pool_name.node-xxx.opcert node.cert
+cardano-service start 
+```
+{% endtab %}
+
+# Update pool registration
+
+First get up-to-date information from the core via your USB drive.
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh add wallet_name.payment
+```
+{% endtab %}
+
+Switch to the offline machine and edit the values you want to change in the `pool_name.pool.json`.
+
+{% tab title="offline" %}
+```bash
+chmod 600 pool_name.pool.json
+nano pool_name.pool.json
+chmod 400 pool_name.pool.json
+```
+{% endtab %}
+
+Create a new certificate `pool_name.pool.cert` and `pool_name.metadata.json`.
+
+{% tab title="offline" %}
+```bash
+05a_genStakepoolCert.sh pool_name
+```
+{% endtab %}
+
+Create the registration transaction. If the metadata didn't change you don't need to attach it to the transfer file.
+
+{% tab title="offline" %}
+```bash
+05c_regStakepoolCert.sh pool_name wallet_name.payment
+```
+{% endtab %}
+
+Now switch to the core.
+First, if you changed the metadata, ```01_workOffline.sh extract``` and upload it.
+Otherwise skip this step and submit the transaction directly. 
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh execute
+```
+{% endtab %}
+
+# Claim rewards
+
+First get up-to-date information from the core via your USB drive.
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh add wallet_name.payment
+01_workOffline.sh add wallet_name.staking
+```
+{% endtab %}
+
+Switch over to the offline machine.
+
+{% tab title="offline" %}
+```bash
+01_claimRewards.sh wallet_name.staking wallet_name.payment
+```
+{% endtab %}
+
+Back to the core.
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh execute
+```
+{% endtab %}
+
+# Send a simple transaction
+
+First get up-to-date information from the core via your USB drive.
+Create a `other_wallet.payment.addr` which contains the address (and only the address) you want to send your ADA to.
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh add wallet_name.payment
+01_workOffline.sh attach other_wallet.payment.addr
+```
+{% endtab %}
+
+Bring everything over to the cold machine and create the transaction.
+This will send 1000 ADA from your pledge wallet to the other wallet.
+(Again everything in lovelaces. 1 ADA = 1000000 lovelace)
+
+{% tab title="offline" %}
+```bash
+01_workOffline.sh extract
+01_sendLovelaces.sh wallet_name.payment other_wallet.payment 1000000000
+```
+{% endtab %}
+
+{% hint style="warning" %} Make sure to meet your pledge at any time. And some ADA for transactions fees on top aren't bad.
+{% endhint %}
+
+USB transfer and submitting at your core.
+
+{% tab title="core" %}
+```bash
+01_workOffline.sh execute
+```
 {% endtab %}
