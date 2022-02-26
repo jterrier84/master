@@ -1,5 +1,5 @@
 ---
-description: Flash image
+description: Raspberry Pi OS Cardano Stakepool
 ---
 
 # Raspi-Node Guide 🍓
