@@ -16,6 +16,7 @@ coverY: 0
 | Contact Us                                                                                            |
 | ----------------------------------------------------------------------------------------------------- |
 | [Website](https://armada-alliance.com)                                                                |
+| [Telegram](https://t.me/armada_alli)                                                                  |
 | [Discord](https://discord.com/invite/EEcB8eb2)                                                        |
 | [Project Catalyst](https://cardano.ideascale.com/a/dtd/ARMing-Cardano/340480-48088#idea-tab-comments) |
 | [GitHub](https://github.com/armada-alliance)                                                          |
