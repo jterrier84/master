@@ -1,6 +1,6 @@
 # Alpine Linux OS 🗻
 
-![](../../.gitbook/assets/image (1).png)
+![](../.gitbook/assets/image (1).png)
 
 ## ¿Por qué usar AlpineOS en el Raspberry Pi? Estas son algunas razones:
 
@@ -85,7 +85,7 @@ cat /etc/alpine-release
 
 ## Configuración inicial para AlpineOS en Raspberry Pi 4B 8GB:
 
-1\) Download the AlpineOS for RPi 4 aarch64 [here](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-rpi-3.15.0-aarch64.tar.gz).&#x20;
+1\) Download the AlpineOS for RPi 4 aarch64 [here](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-rpi-3.15.0-aarch64.tar.gz).
 
 2\) Descomprime el archivo .tar.gz y copia su contenido en una tarjeta SSD/SD
 
@@ -234,11 +234,11 @@ Replace `<tag>` with the latest tag in the next command.
 ## Instalar el servicio de nodos Cardano Alpine Linux de Armada Alliance
 
 {% hint style="success" %}
-#### Si usted ha decidido usar AlpineOS para las operaciones del stake pool de Cardano, encontrará esta colección de scripts y servicios útiles.
+**Si usted ha decidido usar AlpineOS para las operaciones del stake pool de Cardano, encontrará esta colección de scripts y servicios útiles.**
 {% endhint %}
 
 {% hint style="info" %}
-#### Para instalar correctamente los scripts y servicios no omitir los siguientes pasos 🏴‍☠️😎
+**Para instalar correctamente los scripts y servicios no omitir los siguientes pasos 🏴‍☠️😎**
 {% endhint %}
 
 1\) Clone this repo to obtain the neccessary folder and scripts to quickly start your cardano node. You may skip this step if you have already clonned this repo from step 12 when setting up AlpineOS.
