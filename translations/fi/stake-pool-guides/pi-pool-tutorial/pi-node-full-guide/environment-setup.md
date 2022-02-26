@@ -117,7 +117,7 @@ wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-
 wget -N https://raw.githubusercontent.com/input-output-hk/cardano-node/master/cardano-submit-api/config/tx-submit-mainnet-config.yaml
 ```
 
-Suorita seuraavat muokataksesi ${NODE_CONFIG}-config.json ja päivittääksesi TraceBlockFetchDecisions arvoon "true" & kuuntele kaikki yhteyksiä Prometheus Node Exporteriin.
+Run the following to modify ${NODE\_CONFIG}-config.json and update TraceBlockFetchDecisions to "true" & listen on all interfaces with Prometheus Node Exporter.
 
 ```bash
 sed -i ${NODE_CONFIG}-config.json \
@@ -126,7 +126,7 @@ sed -i ${NODE_CONFIG}-config.json \
 ```
 
 {% hint style="info" %}
-**Tip for relay nodes**: It's possible to reduce memory and cpu usage by setting "TraceMemPool" to "false" in **{NODE_CONFIG}-config.json.** This will turn off mempool data in Grafana and gLiveView.sh.
+**Tip for relay nodes**: It's possible to reduce memory and cpu usage by setting "TraceMemPool" to "false" in **{NODE\_CONFIG}-config.json.** This will turn off mempool data in Grafana and gLiveView.sh.
 {% endhint %}
 
 ### Retrieve aarch64 1.33.1 and cardano-submit-api binaries
@@ -312,17 +312,17 @@ What we just did there was add a couple functions to control our cardano-service
 
 Nyt meidän täytyy vain:
 
-- cardano-service enable (enables cardano-node.service auto start at boot)
-- cardano-service start (starts cardano-node.service)
-- cardano-service stop (stops cardano-node.service)
-- cardano-service status (shows the status of cardano-node.service)
+* cardano-service enable (enables cardano-node.service auto start at boot)
+* cardano-service start (starts cardano-node.service)
+* cardano-service stop (stops cardano-node.service)
+* cardano-service status (shows the status of cardano-node.service)
 
 Or
 
-- cardano-submit enable (enables cardano-submit.service auto start at boot)
-- cardano-submit start (starts cardano-submit.service)
-- cardano-submit stop (stops cardano-submit.service)
-- cardano-submit status (shows the status of cardano-submit.service)
+* cardano-submit enable (enables cardano-submit.service auto start at boot)
+* cardano-submit start (starts cardano-submit.service)
+* cardano-submit stop (stops cardano-submit.service)
+* cardano-submit status (shows the status of cardano-submit.service)
 
 The submit service listens on port 8090. You can connect your Nami wallet like below to submit tx's yourself in Nami's settings.
 
@@ -386,7 +386,6 @@ nano /home/ada/.adaenv
 source /home/ada/.adaenv
 cardano-service restart
 ```
-
 {% endhint %}
 
 Add a line sourcing our .adaenv file to the top of the env file and adjust some paths.
@@ -409,7 +408,7 @@ chmod +x gLiveView.sh
 
 ## topologyUpdater.sh
 
-Kunnes vertaisverkko on otettu käyttöön verkko-operaattorit tarvitsevat tavan saada listan releistä/vertaisverkoista, joihin muodostaa yhteyden. Topologian päivityspalvelu toimii taustalla cron kanssa. Joka tunti skripti toimii ja kertoo palvelulle, että olet relay ja haluat olla osa verkkoa. It will add your relay to it's directory after four hours you should see in connections in gLiveView. &#x20;
+Kunnes vertaisverkko on otettu käyttöön verkko-operaattorit tarvitsevat tavan saada listan releistä/vertaisverkoista, joihin muodostaa yhteyden. Topologian päivityspalvelu toimii taustalla cron kanssa. Joka tunti skripti toimii ja kertoo palvelulle, että olet relay ja haluat olla osa verkkoa. It will add your relay to it's directory after four hours you should see in connections in gLiveView.
 
 {% hint style="info" %}
 The list generated will show you the distance & a clue as to where the relay is located.
@@ -421,7 +420,7 @@ Download the topologyUpdater script and have a look at it. Lower the number of p
 wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/topologyUpdater.sh
 ```
 
-Lower the number of MX_PEERS to 10.
+Lower the number of MX\_PEERS to 10.
 
 ```bash
 nano topologyUpdater.sh
@@ -459,14 +458,14 @@ PATH=/home/ada/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 33 * * * * . $HOME/.adaenv; $HOME/pi-pool/scripts/topologyUpdater.sh
 ```
 
-After four hours you can open ${NODE_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
+After four hours you can open ${NODE\_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
 
 ```bash
 nano $NODE_FILES/${NODE_CONFIG}-topology.json
 ```
 
 {% hint style="info" %}
-You can use gLiveView.sh to view ping times in relation to the peers in your {NODE_CONFIG}-topology file. Käytä Ping:ää palvelimien nimien selvittämiseen IP-osoitteissa.
+You can use gLiveView.sh to view ping times in relation to the peers in your {NODE\_CONFIG}-topology file. Käytä Ping:ää palvelimien nimien selvittämiseen IP-osoitteissa.
 {% endhint %}
 
 Muutokset tässä tiedostossa tulevat käyttöön vasta kun cardano-service käynnistetään uudelleen.
@@ -488,7 +487,7 @@ cd $NODE_HOME/scripts
 ./gLiveView.sh
 ```
 
-![](../../../../.gitbook/assets/pi-node-glive (7).png)
+![](../../../../.gitbook/assets/pi-node-glive (1) (3).png)
 
 ## Prometheus, Node Exporter & Grafana
 
@@ -500,7 +499,7 @@ You can connect a [Telegram bot](https://docs.armada-alliance.com/learn/intermed
 
 {% embed url="https://github.com/prometheus" %}
 
-![](../../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (7).png)
+![](../../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (1) (3).png)
 
 ### Asenna Prometheus & Node Exporter.
 
@@ -656,7 +655,7 @@ cardano-monitor start
 Tässä vaiheessa saatat haluta käynnistää cardano-servicen ja synkronoida nodesi lohkoketjun kanssa ennen kuin jatkamme Grafanan konfigurointia. Go to the syncing the chain section. Choose whether you want to wait 30 hours or download the latest chain snapshot. Palaa tähän kun gLiveView.sh näyttää, että olet ketjun kärjessä.
 {% endhint %}
 
-## Grafana, Nginx proxy_pass & snakeoil
+## Grafana, Nginx proxy\_pass & snakeoil
 
 Let's put Grafana behind Nginx with self signed(snakeoil) certificate. Sertifikaatti luotiin, kun asensimme ssl-cert paketin.
 
@@ -712,7 +711,7 @@ sudo service nginx restart
 
 You can now visit your pi-nodes ip address without any port specification, the connection will be upgraded to SSL/TLS and you will get a scary message(not really scary at all). Jatka kohti kojelautaasi.
 
-![](../../../../.gitbook/assets/snakeoil.png)
+![](../../../.gitbook/assets/snakeoil.png)
 
 ### Määritä Grafana
 
@@ -732,7 +731,7 @@ Tallenna kojelaudan json tiedostot paikalliseen koneeseen.
 
 In the left hand vertical menu go to **Dashboards** > **Manage** and click on **Import**. Valitse tiedosto, jonka juuri latasit tai loit ja tallenna. Head back to **Dashboards** > **Manage** and click on your new dashboard.
 
-![](../../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (5).png)
+![](../../../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (1) (4).png)
 
 ### Määritä poolDataLive
 
@@ -745,11 +744,9 @@ Noudata ohjeita asentaaksesi Grafana plugin, määritä datasource ja tuo dashbo
 ## Useful Commands
 
 {% hint style="info" %}
-
 Katso, kuinka paljon zram swap:ia cardano-node käyttää.
 
 ```bash
-
 CNZRAM=$(pidof cardano-node)
 grep --color VmSwap /proc/$CNZRAM/status
 ```
@@ -771,7 +768,6 @@ View network connections with netstat.
 ```bash
 sudo netstat -puntw
 ```
-
 {% endhint %}
 
 From here you have a Pi-Node with tools to build an active relay or a stake pool from the following pages. Best of luck and please join the [armada-alliance](https://armada-alliance.com), together we are stronger! :muscle:
