@@ -158,6 +158,13 @@ nano ~/pi-pool/scripts/env
 # Change the shebang line to this so we use the new shell:
 #!/usr/bin/env bash
 
+# Add the following 5 lines right above the # Do NOT modify code below # line:
+# special mapping of coreutils for MacOS
+if [[ $(uname) == Darwin ]]; then
+   sed () { gsed "$@"; }
+   head () { ghead "$@"; }
+fi
+
 # Save and exit nano
 ##############################################################
 ```
