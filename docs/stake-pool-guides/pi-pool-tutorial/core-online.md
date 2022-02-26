@@ -14,6 +14,10 @@ Martin provides a [script](https://github.com/gitmachtl/scripts/tree/master/card
 
 Please visit and review the configuration, scriptfiles syntax & filenames to better familiarize yourself with the workflow and capabilities of this awesome toolset. All the instructions and commands needed to use these scripts are in the README files located in the stakepoolsripts folder.
 
+If you need further assistance with using the Stakepool Operator Scripts you can go through our guide:
+
+[](pi-pool-tutorial/stakepoolscripts.md)
+
 ### Online Core Installation
 
 Refer to the Pi-Relay guide and update these settings accordingly for a Core server and reboot.
