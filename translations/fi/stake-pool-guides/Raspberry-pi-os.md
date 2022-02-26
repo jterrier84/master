@@ -1,10 +1,10 @@
 ---
-description: Flash image
+description: Raspberry Pi OS Cardano Stakepool
 ---
 
-# Raspi-Node Guide
+# Raspi-Node Guide 🍓
 
-![](../../.gitbook/assets/download-10- (1) (3).jpeg)
+![](../../.gitbook/assets/download-10- (1) (1) (4).jpeg)
 
 ## Miksi tämä opas?
 
@@ -36,15 +36,15 @@ Aseta SSD yhteen sinisestä usb3-porteista. Then insert the HDMI, Keyboard, Mous
 The first Pi4's to ship did not boot from USB3 by default, nowadays they do. Jos imagesi ei käynnisty kaksi yleisintä ongelmaa ovat vanhemmat laiteohjelmistot Pi:ssäsi tai yhteensopimaton USB3 sovitin.
 {% endhint %}
 
-![](../../.gitbook/assets/pi4.jpeg)
+![](../../.gitbook/assets/pi4 (1) (2).jpeg)
 
 {% hint style="info" %}
 All we really need to do here is disable auto-login & create the ada user with sudo privileges. After we log back in we will delete the default Pi user and configure the server & environment for cardano-node & cardano-cli.
 {% endhint %}
 
-![Avaa Raspberry Pi Configuration apuohjelma.](../../.gitbook/assets/raspberrypi-configuration.png)
+![Avaa Raspberry Pi Configuration apuohjelma.](../.gitbook/assets/raspberrypi-configuration.png)
 
-![Aseta automaattinen kirjautuminen pois käytöstä](../../.gitbook/assets/disable-auto-login.png)
+![Aseta automaattinen kirjautuminen pois käytöstä](../.gitbook/assets/disable-auto-login.png)
 
 ### Luo ada käyttäjä
 
@@ -103,6 +103,7 @@ Edit /boot/config.txt.
 ```bash
 sudo nano /boot/firmware/config.txt
 ```
+
 Just paste the Pi Pool additions in at the bottom.
 
 ```bash
@@ -110,6 +111,7 @@ Just paste the Pi Pool additions in at the bottom.
 over_voltage=6
 arm_freq=2000
 ```
+
 use `CTRL + x` to save and `y` to confirm and exit.
 
 Tallenna ja käynnistä uudelleen.
@@ -848,7 +850,7 @@ cd $NODE_HOME/scripts
 ./gLiveView.sh
 ```
 
-![](../../.gitbook/assets/pi-node-glive (7).png)
+![](../../.gitbook/assets/pi-node-glive (1) (3).png)
 
 ### Prometheus, Node Exporter & Grafana
 
@@ -860,7 +862,7 @@ You can connect a [Telegram bot](https://docs.armada-alliance.com/learn/intermed
 
 {% embed url="https://github.com/prometheus" %}
 
-![](../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (7).png)
+![](../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (1) (3).png)
 
 #### Asenna Prometheus & Node Exporter.
 
@@ -1072,7 +1074,7 @@ sudo service nginx restart
 
 You can now visit your pi-nodes ip address without any port specification, the connection will be upgraded to SSL/TLS and you will get a scary message(not really scary at all). Jatka kohti kojelautaasi.
 
-![](../../.gitbook/assets/snakeoil.png)
+![](../.gitbook/assets/snakeoil.png)
 
 #### Määritä Grafana
 
@@ -1092,7 +1094,7 @@ Tallenna kojelaudan json tiedostot paikalliseen koneeseen.
 
 In the left hand vertical menu go to **Dashboards** > **Manage** and click on **Import**. Valitse tiedosto, jonka juuri latasit tai loit ja tallenna. Head back to **Dashboards** > **Manage** and click on your new dashboard.
 
-![](../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (5).png)
+![](../../.gitbook/assets/pi-pool-grafana (2) (2) (2) (2) (1) (1) (4).png)
 
 #### Määritä poolDataLive
 
