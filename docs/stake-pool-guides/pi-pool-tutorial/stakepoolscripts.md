@@ -8,14 +8,12 @@ Now that everything is set up let's start creating the pool. Please read the [of
 
 {% embed url="https://github.com/gitmachtl/scripts" %}
 
-This tutorial on the other hand is for the basics. It contains everything necessary to get a stake pool running and some other fundamental operations. It should help to get a nice and easy workflow.
 
-![](../../../.gitbook/assets/photo\offline_workflow.jpg)
+This tutorial on the other hand is for the basics. It contains everything necessary to get a stake pool running and some other fundamental operations. It should help to get a nice and easy workflow.
 
 The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, 
 which should also work automated.
-If not, mount it with ```sudo mount ~/usb_transfer```. 
-Make sure to unmount everytime before removing ```sudo umount ~/usb_transfer```. 
+If not, mount it with ```sudo mount ~/usb_transfer```.                                                                          Make sure to unmount everytime before removing ```sudo umount ~/usb_transfer```. 
 
 # Prerequisits on the cold machine
 
@@ -41,7 +39,11 @@ timedatectl set-time xxxxx
 
 # Create a stake pool
 
-{% hint style="warning" %} Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times best case. The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opcert. {% endhint %}
+{% hint style="warning" %} Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times best case. The only keys you need on your core are: kes-xxx.skey, vrf.skey and node-xxx.opcert. {% endhint %}
+
+## Workflow
+
+![](../../.gitbook/assets/offline_workflow.jpg)
 
 ## Create and fund a wallet
 
@@ -323,7 +325,7 @@ First the staking key registration, then repeat the same command for the stake p
 ```
 {% endtab %}
 
-## Confirm successful registration
+### Confirm successful registration
 
 ### pool.vet
 
