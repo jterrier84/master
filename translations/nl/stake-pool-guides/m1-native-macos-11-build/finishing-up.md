@@ -100,7 +100,24 @@ less /var/log/chronyd.log
 
 
 
-### Prometheus/Exporter
+### Prometheus/Node Exporter
+
+For the mini M1 the thermal readings aren't available per node_exporter's default thermal collector. So we need to shut off that collector so logs don't fill up. Let's also add a textfile exporter directory so we can collect custom stats.
+
+```bash
+##############################################################
+nano /opt/homebrew/etc/node_exporter.args
+
+# Add these two lines:
+--collector.textfile.directory=/opt/homebrew/opt/node_exporter/stats
+--no-collector.thermal
+
+# Save and exit nano
+##############################################################
+
+# Create the textfile collector directory
+mkdir /opt/homebrew/opt/node_exporter/stats
+```
 
 Register the services with launchctl and start 'em up
 
