@@ -2,7 +2,7 @@
 
 * [Welcome ARMada Operators 🏴‍☠️](README.md)
 
-## Stake Pool Guides <a href="#stake-pool-guides" id="stake-pool-guides"></a>
+## Stake Pool Guides
 
 * [Pi-Node/Pi-Pool Guide 🥧](stake-pool-guides/pi-pool-tutorial/README.md)
   * [Pi-Node (Full Guide)](stake-pool-guides/pi-pool-tutorial/pi-node-full-guide/README.md)

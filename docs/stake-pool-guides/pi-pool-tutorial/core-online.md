@@ -4,7 +4,7 @@ Create another Pi-Node from the guide or burn the Armada Alliance Pi-Node.img.gz
 
 ## Core server setup
 
-We will be using Martin Lang's [ATADA](https://cardanoscan.io/pool/00000036d515e12e18cd3c88c74f09a67984c2c279a5296aa96efe89) StakePool Operator Scripts to manage our pool and interact with the blockchain. These scripts not only handle pool creation & operations. They can be used with a hardware wallet, send ada, create NFT's and more. 
+We will be using Martin Lang's [ATADA](https://cardanoscan.io/pool/00000036d515e12e18cd3c88c74f09a67984c2c279a5296aa96efe89) StakePool Operator Scripts to manage our pool and interact with the blockchain. These scripts not only handle pool creation & operations. They can be used with a hardware wallet, send ada, create NFT's and more.
 
 Unlike [CNTools](https://cardano-community.github.io/guild-operators/Scripts/cntools/) they do not hook into systemd and can be used in any directory under the users home folder. We already have gLiveView.sh and you can retreive the pools slot schedule [1.5 days before epoch boundary](https://github.com/asnakep/ScheduledBlocks) without CNCLI thanks to [SNAKE](https://cardanoscan.io/pool/342350284fd76ba9dbd7fd4ed579b2a2058d5ee558f8872b37817b28) pool!
 
@@ -14,16 +14,19 @@ Martin provides a [script](https://github.com/gitmachtl/scripts/tree/master/card
 
 Please visit and review the configuration, scriptfiles syntax & filenames to better familiarize yourself with the workflow and capabilities of this awesome toolset. All the instructions and commands needed to use these scripts are in the README files located in the stakepoolsripts folder.
 
-If you need further assistance with using the Stakepool Operator Scripts you can go through our guide:
+If you need further assistance with using the Stakepool Operator Scripts you can go through our guide.
 
-[](pi-pool-tutorial/stakepoolscripts.md)
+{% content-ref url="stakepoolscripts.md" %}
+[stakepoolscripts.md](stakepoolscripts.md)
+{% endcontent-ref %}
 
 ### Online Core Installation
 
 Refer to the Pi-Relay guide and update these settings accordingly for a Core server and reboot.
-- Set hostname in /etc/hosts & /etc/hostname
-- Static IP (192.168.1.150 or whatever works for you on your LAN)
-- Port to 3000
+
+* Set hostname in /etc/hosts & /etc/hostname
+* Static IP (192.168.1.150 or whatever works for you on your LAN)
+* Port to 3000
 
 ```bash
 sudo reboot
@@ -83,7 +86,7 @@ These would include the latest $HOME/stakepoolscripts/bin folder and a copy of t
 
 #### Common.inc
 
-Create a variable for testnet magic, Byron to Shelley epoch value and a variable to determine whether we are on mainnet or testnet. If on testnet we append the magic value onto our CONFIG_NET variable.
+Create a variable for testnet magic, Byron to Shelley epoch value and a variable to determine whether we are on mainnet or testnet. If on testnet we append the magic value onto our CONFIG\_NET variable.
 
 ```bash
 echo export MAGIC=$(cat ${NODE_FILES}/${NODE_CONFIG}-shelley-genesis.json | jq -r '.networkMagic') >> ${HOME}/.adaenv; . ${HOME}/.adaenv
@@ -91,7 +94,7 @@ if [[ ${NODE_CONFIG} = 'testnet' ]]; then echo export BYRON_SHELLEY_EPOCHS=74; e
 if [[ ${NODE_CONFIG} = 'testnet' ]]; then echo export CONFIG_NET='testnet-magic\ "${MAGIC}"'; else echo export CONFIG_NET=mainnet; fi >> ${HOME}/.adaenv; . ${HOME}/.adaenv
 ```
 
-Copy the top portion of the 00_common.sh file into a new file named common.inc. This will hold the variable paths needed to connect these scripts to our running node.
+Copy the top portion of the 00\_common.sh file into a new file named common.inc. This will hold the variable paths needed to connect these scripts to our running node.
 
 ```bash
 cd $HOME/stakepoolscripts/bin/
