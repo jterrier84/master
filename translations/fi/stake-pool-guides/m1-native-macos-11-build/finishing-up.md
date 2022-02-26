@@ -132,9 +132,9 @@ If you turned on the M1 firewall you'll need to ensure port 9090 is available if
 
 ### gLiveView
 
-The normal guild operators env and gLiveView.sh scripts don't run correctly out of the box on the macOS terminal even with the new bash shell installed. So, we need to tweak them a bit to get them to fire up.
+The normal guild operators env and gLiveView.sh scripts will complain out of the box on the macOS. So, we need to tweak them a little bit.
 
-Unfortunately this requires us to change stuff in the "Do NOT modify code below" section. Which means if you don't specify the **-u** option it'll think the script has changed and ask you to download the new one.
+Unfortunately this requires us to change stuff in the "Do NOT modify code below" section of gLiveView.sh. Which means if you don't specify the **-u** option it'll see the script has changed and ask you to download the new one.
 
 ```bash
 ##############################################################
@@ -143,6 +143,7 @@ nano ~/pi-pool/scripts/gLiveView.sh
 # Change the shebang line to this so we use the new shell:
 #!/usr/bin/env bash
 
+# This is the only change that will cause gLiveView.sh to ask for script updates so you'll need to use the -u option. MacOS BSD doesn't have a workaround for ps.
 # Change this line:
 read -ra proc_data <<<"$(ps -q ${CNODE_PID} -o pcpu= -o rss=)"
 # to this:
@@ -156,11 +157,6 @@ nano ~/pi-pool/scripts/env
 
 # Change the shebang line to this so we use the new shell:
 #!/usr/bin/env bash
-
-# Change this line:
-export LC_ALL=C.UTF-8
-# to this:
-export LC_ALL=C.UTF-8 2>/dev/null
 
 # Save and exit nano
 ##############################################################
