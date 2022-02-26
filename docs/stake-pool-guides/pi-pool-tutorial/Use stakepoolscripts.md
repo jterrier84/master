@@ -4,23 +4,22 @@ description: How to use the stakepoolscripts to start a pool, rotate KES and upd
 
 # Create a stake pool
 
-Now that everything is set up let's start creating the pool. Please read the [documentation](https://github.com/gitmachtl/scripts) Martin provides to get a better understanding of the scripts. 
-His tutorial is much more detailed and covers a lot of options. 
-This tutorial is only for the basic workflow. It contains the necessary steps to get a stake pool running and registered on chain.
+Now that everything is set up let's start creating the pool. Please read the [official documentation](https://github.com/gitmachtl/scripts) Martin of [ATADA](https://stakepool.at/) pool provides to get a better understanding of the scripts. His tutorial is much more detailed and covers a lot of options. 
+This tutorial is for the basic workflow. It contains the necessary steps to get a stake pool running and registered on chain.
 
 {% embed url="https://github.com/gitmachtl/scripts" %}
 
 
 {% hint style="warning" %} Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times best case. The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opcert. {% endhint %}
 
+The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, which should also work automated.
+If not mount it with ```sudo mount ~/usb_transfer``` 
+Make sure to unmount again before removing it. ```sudo umount ~/usb_transfer``` 
 
-{% hint style="info" %} The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, which should also work automated.
-If not mount it with ```sudo mount ~/usb_transfer``` {% endhint %}
-
-## Setup 
+### Set up the cold machine
 
 Let's begin with a directory for your keys. 
-Also make sure the offline machine's time is correct. You'll have to do it everytime you use it. 
+Also make sure the offline machine's time is correct, you'll have to do it everytime you use it. 
 
 {% tab title="offline" %}
 ```bash
@@ -33,10 +32,11 @@ cd pool_keys
 {% tab title="offline" %}
 ```bash
 timedatectl
+timedatectl set-time xxxxx
 ```
 {% endtab %}
 
-## Creating and funding a wallet
+## Create and fund a wallet
 
 First of all you'll need a wallet and with it a staking key. Create the keys and name the wallet accordingly.
 
@@ -88,9 +88,9 @@ When the funds arrived copy the UTXO data to your offline machine.
 ```
 {% endtab %}
 
+## Create the pool's keys and certificates
 
-
-Generate the stakeaddress registration transaction.
+Generate the stakeaddress registration transaction. 
 
 {% tab title="offline" %}
 ```bash 
@@ -98,7 +98,7 @@ Generate the stakeaddress registration transaction.
 ```
 {% endtab %}
 
-Generate the keys for your core node
+Generate the keys for your core node.
 
 {% tab title="offline" %}
 ```bash
@@ -109,9 +109,6 @@ Generate the keys for your core node
 ```
 {% endtab %}
 
-
-
-
 Generate your stakepool certificate and metadata.json.
 
 {% tab title="offline" %}
@@ -120,13 +117,14 @@ Generate your stakepool certificate and metadata.json.
 ```
 {% endtab %}
 
-This creates a pool_name.pool.json file, which you can edit according to your needs and wishes. 
+This creates a `pool_name.pool.json` file, which you can edit according to your needs and wishes. 
 In this case we get a pool with 100k ADA pledge, 340 ADA fixed cost (minimum) and 1% margin.
 For OwnerName and poolRewards enter the name of your wallet.
 Add as many relays as you want. Either ip or dns based.
-Pool description can contain up to 255 characters.
-metaUrl only 64. Ticker 3-5.
-You may also add an url to your extended.metadata.json. Example for extended metadata below.
+Pool description can contain up to 255 characters, 
+poolMetaUrl only 64. If you need to shorten the URL you can do it by creating an empty `pool_name.metadata.json`
+You may also add an URL to your extended.metadata.json, which holds more information, like the URL to your logo etc.
+You can find an example for the extended metadata below.
 
 
 {% tab title="metadata.json" %}
@@ -204,11 +202,12 @@ You may also add an url to your extended.metadata.json. Example for extended met
 ```
 {% endtab %}
 
-Run 05a_genStakepoolCert.sh pool_name again. This will generate the pool_name.pool.cert file and the pool_name.metadata.json.
-Now upload the metadata.json to the URL you specified in the previous step. Do not edit it anymore or the hash will not fit!
+Now run ```05a_genStakepoolCert.sh pool_name``` again. This will generate the pool_name.pool.cert file and the actual pool_name.metadata.json.
+Later you can upload the metadata.json to the URL you specified in the previous step. Do not edit it anymore or the hash will not fit!
+If you want to change something, change it in the pool_name.pool.json and repeat ```05a_genStakepoolCert.sh pool_name```.
 
 
-Delegate to your own pool as owner -> pledge 
+Delegate to your own pool as owner. (Pledge) 
 
 {% tab title="offline" %}
 ```bash
@@ -217,7 +216,8 @@ Delegate to your own pool as owner -> pledge
 {% endtab %}
 
 
-Generate the stakepool registration transaction. The script also attaches the new pool_name.metadata.json to the offlinetransfer file
+Generate the stakepool registration transaction. The script also attaches the new pool_name.metadata.json to the offlinetransfer file.
+
 
 {% tab title="offline" %}
 ```bash
