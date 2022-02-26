@@ -2,21 +2,25 @@
 description: How to use the stakepoolscripts to start a pool, rotate KES and update pool data.
 ---
 
-Now that everything is set up let's start creating the pool. Please read the documentation Martin provides to get a better understanding of the scripts. 
+# Create a stake pool
+
+Now that everything is set up let's start creating the pool. Please read the [documentation](https://github.com/gitmachtl/scripts) Martin provides to get a better understanding of the scripts. 
 His tutorial is much more detailed and covers a lot of options. 
-This tutorial is only for the basic workflow. It contains the necessary steps to get a stake pool running and registered on chain though.
+This tutorial is only for the basic workflow. It contains the necessary steps to get a stake pool running and registered on chain.
+
+{% embed url="https://github.com/gitmachtl/scripts" %}
 
 
-Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times.
-The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opcert.
+{% hint style="warning" %} Basically everything is created offline. Make sure that you never expose your secret keys to an online environment and back them up, multiple times best case. The only keys you need on your core are: kes-xxx.skey, vfr.skey and node-xxx.opcert. {% endhint %}
 
 
-The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, which should also work automated.
-If not mount it with ```sudo mount ~/usb_transfer```
+{% hint style="info" %} The transfer with the USB device is fully automated. It just needs to be mounted at the current working environment, which should also work automated.
+If not mount it with ```sudo mount ~/usb_transfer``` {% endhint %}
 
+## Setup 
 
-
-Let's begin with a directory for your keys. Also make sure the offline machine's time is correct, otherwise transactions would fail.
+Let's begin with a directory for your keys. 
+Also make sure the offline machine's time is correct. You'll have to do it everytime you use it. 
 
 {% tab title="offline" %}
 ```bash
@@ -32,6 +36,7 @@ timedatectl
 ```
 {% endtab %}
 
+## Creating and funding a wallet
 
 First of all you'll need a wallet and with it a staking key. Create the keys and name the wallet accordingly.
 
@@ -67,7 +72,7 @@ cat wallet_name.payment.addr
 ```
 {% endtab %}
 
-Query the balance and new UTXO.
+Query the balance and wait until the new UTXO shows up.
 
 {% tab title="online" %}
 ```bash
@@ -75,7 +80,7 @@ Query the balance and new UTXO.
 ```
 {% endtab %}
 
-Copy the data of the query to the offline machine.
+When the funds arrived copy the UTXO data to your offline machine. 
 
 {% tab title="online" %}
 ```bash
@@ -83,7 +88,9 @@ Copy the data of the query to the offline machine.
 ```
 {% endtab %}
 
-Generate the stakeaddress registration transaction
+
+
+Generate the stakeaddress registration transaction.
 
 {% tab title="offline" %}
 ```bash 
