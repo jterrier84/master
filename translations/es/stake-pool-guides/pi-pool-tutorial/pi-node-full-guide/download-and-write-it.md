@@ -27,15 +27,15 @@ Conecta el Pi a un monitor, inserta la tarjeta SD y enciéndela. Una vez que vea
 **Choose OS -> Misc utility images -> Raspberry Pi 4 EEPROM boot recovery** [https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md](https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md)
 {% endhint %}
 
-![](../../../../.gitbook/assets/otgpoltut (1) (1) (3) (3).png)
+![](../../../../.gitbook/assets/otgpoltut (1) (1) (3) (1) (1).png)
 
 {% tabs %}
 {% tab title="Pre configured Pi-Node.img.gz" %}
-#### Obtain Pi-Node.img.gz file
+**Obtain Pi-Node.img.gz file**
 
-| [Pi-Node](https://mainnet.adamantium.online/Pi-Node.img.gz)
+\| [Pi-Node](https://mainnet.adamantium.online/Pi-Node.img.gz)
 
-#### Within Raspberry Pi Imager
+**Within Raspberry Pi Imager**
 
 **Choose OS -> Use custom**
 
@@ -43,16 +43,16 @@ Locate the .img.gz file you downloaded & wish to flash.
 
 Locate your target drive & write it to disk.
 
-![](../../../.gitbook/assets/custom\_os.png)
+![](../../../.gitbook/assets/image-2- (1) (3).png)
 {% endtab %}
 
 {% tab title="Fresh Ubuntu 22.04 LTS installation" %}
-#### Within Raspberry Pi Imager
+**Within Raspberry Pi Imager**
 
-#### Download Ubuntu Server 22.04 (RPI 3/4/400)
+**Download Ubuntu Server 22.04 (RPI 3/4/400)**
 
 [Raspberry Pi Generic (64-bit ARM) preinstalled server image](https://cdimage.ubuntu.com/ubuntu-server/daily-preinstalled/current/jammy-preinstalled-server-arm64+raspi.img.xz)
 
-****Choose OS -> Use custom**** Locate the .img.gz file you downloaded & wish to flash. Locate your target drive & write it to disk.
+**Choose OS -> Use custom** Locate the .img.gz file you downloaded & wish to flash. Locate your target drive & write it to disk.
 {% endtab %}
 {% endtabs %}
