@@ -186,6 +186,13 @@ nano /etc/wireguard/wg0.conf
 # start the service
 systemctl start wg-quick@wg0
 ```
+
+There is a shortcut you can use instead of the steps above if you are adding or updating peers. The following will reload the config file without affecting peer connections:
+
+```bash
+sudo wg syncconf wg0 <(wg-quick strip wg0)
+```
+
 {% endhint %}
 
 #### Topology
@@ -229,7 +236,7 @@ sudo ufw allow in on wg0 to any port 9090 proto tcp
 
 **Bring up ufw**
 
-When you're sure you are not going to lock yourself out and that all the ports for your pool that need to be open are you can bring up the firewall. Don't forget 80 & 443 if you have nginx proxying Grafana.
+When you're sure you are not going to lock yourself out and that all the ports for your pool that need to be open are open you can bring up the firewall. Don't forget 80 & 443 if you have nginx proxying Grafana.
 
 ```c
 sudo ufw enable
@@ -245,10 +252,4 @@ PostUp = resolvectl domain %i "~."; resolvectl dns %i 192.0.2.1; resolvectl dnss
 
 ```c
 PostUp = wg set %i private-key /etc/wireguard/wg0.key <(cat /some/path/%i/privkey)
-```
-
-Reload conf without taking VPN down.
-
-```
-alias wgstrip='wg syncconf wg0 <(wg-quick strip wg0)'
 ```
