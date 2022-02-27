@@ -186,19 +186,26 @@ nano /etc/wireguard/wg0.conf
 # start the service
 systemctl start wg-quick@wg0
 ```
+
+There is a shortcut you can use instead of the steps above if you are adding or updating peers. The following will reload the config file without affecting peer connections:
+
+```bash
+sudo wg syncconf wg0 <(wg-quick strip wg0)
+```
+
 {% endhint %}
 
 #### Topologia
 
-Voit nyt päivittää C1 & R1 topologian tiedostot, jotta ne yhdistävät 10.220.0.2 & 10.220.0.1 vastaavasti Wireguard VPN:n kautta.
+You can now update your C1 & R1 topology files so they point 10.220.0.2 & 10.220.0.1 respectively through the Wireguard VPN.
 
 #### Prometheus
 
-Samoin päivitetään IPv4-osoite /etc/prometheus/prometheus.yml tiedostossa käyttämään VPN:ää.
+Likewise update IPv4 address' in /etc/prometheus/prometheus.yml to use the VPN.
 
 ### UFW
 
-Ohjaa liikennettä VPN:n kautta. Seuraavassa sallitaan, että Prometheus/Grafana C1:ssä voi tiedustella metriikkaa node exportterilta R1:ssä.
+Control traffic through the VPN. The following allows for Prometheus/Grafana on C1 to scrape metrics from node-exporter on R1.
 
 {% tabs %}
 {% tab title="C1" %}
@@ -227,9 +234,9 @@ sudo ufw allow in on wg0 to any port 9090 proto tcp
 {% endtab %}
 {% endtabs %}
 
-**Käynnistä ufw**
+**Bring up ufw**
 
-Kun olet varma, että et lukitse itseäsi ulos ja että kaikki poolisi portit, joiden pitää olla auki ovat auki, voit käynnistää palomuurin. Älä unohda 80 & 443 jos sinulla on nginx liitettynä Grafanaan.
+When you're sure you are not going to lock yourself out and that all the ports for your pool that need to be open are open you can bring up the firewall. Don't forget 80 & 443 if you have nginx proxying Grafana.
 
 ```c
 sudo ufw enable
@@ -237,7 +244,7 @@ sudo ufw enable
 sudo ufw status numbered
 ```
 
-Huomautuksia & linkkejä/tehtäviä
+Notes & links/To Do
 
 ```c
 PostUp = resolvectl domain %i "~."; resolvectl dns %i 192.0.2.1; resolvectl dnssec %i yes
@@ -245,10 +252,4 @@ PostUp = resolvectl domain %i "~."; resolvectl dns %i 192.0.2.1; resolvectl dnss
 
 ```c
 PostUp = wg set %i private-key /etc/wireguard/wg0.key <(cat /some/path/%i/privkey)
-```
-
-Lataa conf uudelleen ottamatta VPN:ää alas.
-
-```
-alias wgstrip='wg syncconf wg0 <(wg-quick strip wg0)'
 ```
