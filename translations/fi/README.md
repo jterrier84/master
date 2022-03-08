@@ -12,10 +12,9 @@ cover: .gitbook/assets/banner-armada copy.png coverY: 0
 
 ### Vaikka keskiössämme on RPi-ARM pohjaisten stake poolien toiminta ja ylläpito, tarjoamme myös laajan kattauksen tietoa, oppaita ja resursseja Cardanon kehittämiseen.
 
-| Ota yhteyttä:                                                                                         |
-| ----------------------------------------------------------------------------------------------------- |
-| [Verkkosivu](https://armada-alliance.com)                                                             |
-| [Telegram](https://t.me/armada_alli)                                                                  |
-| [Discord](https://discord.com/invite/EEcB8eb2)                                                        |
-| [Project Catalyst](https://cardano.ideascale.com/a/dtd/ARMing-Cardano/340480-48088#idea-tab-comments) |
-| [GitHub](https://github.com/armada-alliance)                                                          |
+| Ota yhteyttä:                                  |
+| ---------------------------------------------- |
+| [Verkkosivu](https://armada-alliance.com)      |
+| [Telegram](https://t.me/armada_alli)           |
+| [Discord](https://discord.com/invite/EEcB8eb2) |
+| [GitHub](https://github.com/armada-alliance)   |
