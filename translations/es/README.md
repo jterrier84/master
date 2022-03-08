@@ -12,10 +12,9 @@ cover: .gitbook/assets/banner-armada copy.png coverY: 0
 
 ### Although our focus is ARM stake pool operations, we will provide a wide range of information, tutorials, and resources for developing on the Cardano blockchain.
 
-| Contacta con nosotros                                                                                 |
-| ----------------------------------------------------------------------------------------------------- |
-| [Página Web](https://armada-alliance.com)                                                             |
-| [Telegram](https://t.me/armada_alli)                                                                  |
-| [Discord](https://discord.com/invite/EEcB8eb2)                                                        |
-| [Project Catalyst](https://cardano.ideascale.com/a/dtd/ARMing-Cardano/340480-48088#idea-tab-comments) |
-| [GitHub](https://github.com/armada-alliance)                                                          |
+| Contacta con nosotros                          |
+| ---------------------------------------------- |
+| [Página Web](https://armada-alliance.com)      |
+| [Telegram](https://t.me/armada_alli)           |
+| [Discord](https://discord.com/invite/EEcB8eb2) |
+| [GitHub](https://github.com/armada-alliance)   |
