@@ -5,7 +5,7 @@ Tämä opas noudattaa samoja asetuksia kuin meidän [Pi-Node opas ja image](../p
 {% endhint %}
 
 {% hint style="success" %}
-#### Current Official Cardano Node Version: 1.33.0
+#### Current Official Cardano Node Version: 1.34.1
 {% endhint %}
 
 ### Overview 🗒
@@ -25,13 +25,13 @@ Tämä opas noudattaa samoja asetuksia kuin meidän [Pi-Node opas ja image](../p
 ### Static binaries and Cardano node configuration files are provided by [\[ZW3RK\]](https://armada-alliance.com/identities/zw3rk) pool🙏 and can be found at our [Github repository](https://github.com/armada-alliance/cardano-node-binaries/tree/main/static-binaries).
 
 ```bash
-wget -O 1_32_1.zip https://github.com/armada-alliance/cardano-node-binaries/blob/main/static-binaries/1_32_1.zip?raw=true
+wget -O 1_34_1.zip https://github.com/armada-alliance/cardano-node-binaries/blob/main/static-binaries/1_34_1.zip?raw=true
 ```
 
 Pura zip tiedoston sisältö.
 
 ```bash
-unzip 1_32_1.zip
+unzip 1_34_1.zip
 ```
 
 ### Tarkista, onko cardano-node jo käynnissä
@@ -40,7 +40,7 @@ unzip 1_32_1.zip
 **Nyt meidän on varmistettava, ettei meidän kardano-node ole jo käynnissä. Jos näin on, meidän on suljettava se ennen jatkamista.**
 {% endhint %}
 
-Voit tarkistaa, jos sinulla on cardano-node prosessi jo käynnissä muutamalla eri tavalla kuten käyttämällä `htop` -komentoa tai tarkistamalla systemd palvelu.
+You can check if you have a cardano-node process already running a few ways like using `htop` or by checking your systemd service.
 
 Jos olet seurannut [Pi-Node -opasta](../pi-pool-tutorial/) voit tarkistaa cardano-noden tilan ja lopettaa sen käyttämällä seuraavia komentoja.
 
@@ -70,7 +70,7 @@ cardano-node --version
 #### Tuloste:
 
 ```bash
-cardano-node 1.32.0 - linux-aarch64 - ghc-8.10
+cardano-node 1.34.1 - linux-aarch64 - ghc-8.10
 git rev 0000000000000000000000000000000000000000
 ```
 
@@ -83,7 +83,7 @@ cardano-cli --version
 #### Tuloste:
 
 ```bash
-cardano-cli 1.32.1 - linux-aarch64 - ghc-8.10
+cardano-cli 1.34.1 - linux-aarch64 - ghc-8.10
 git rev 0000000000000000000000000000000000000000
 ```
 
@@ -96,7 +96,7 @@ This step is not needed every time you update your node, typically you only need
 {% tabs %}
 {% tab title="Mainnet" %}
 ```bash
-cd ~/pi-pool/files
+cd $NODE_FILES
 wget https://hydra.iohk.io/build/7370192/download/1/mainnet-config.json
 wget https://hydra.iohk.io/build/7370192/download/1/mainnet-byron-genesis.json
 wget https://hydra.iohk.io/build/7370192/download/1/mainnet-shelley-genesis.json
@@ -107,7 +107,7 @@ wget https://hydra.iohk.io/build/7370192/download/1/mainnet-topology.json
 
 {% tab title="Testnet" %}
 ```bash
-cd ~/pi-pool/files
+cd $NODE_FILES
 wget https://hydra.iohk.io/build/7370192/download/1/testnet-config.json
 wget https://hydra.iohk.io/build/7370192/download/1/testnet-byron-genesis.json
 wget https://hydra.iohk.io/build/7370192/download/1/testnet-shelley-genesis.json
@@ -115,18 +115,18 @@ wget https://hydra.iohk.io/build/7370192/download/1/testnet-alonzo-genesis.json
 wget https://hydra.iohk.io/build/7370192/download/1/testnet-topology.json
 ```
 {% endtab %}
-
-{% tab title="Alonzo-Purple" %}
-```bash
-cd ~/pi-pool/files
-wget https://hydra.iohk.io/build/7370192/download/1/alonzo-purple-config.json
-wget https://hydra.iohk.io/build/7370192/download/1/alonzo-purple-byron-genesis.json
-wget https://hydra.iohk.io/build/7370192/download/1/alonzo-purple-shelley-genesis.json
-wget https://hydra.iohk.io/build/7370192/download/1/alonzo-purple-alonzo-genesis.json
-wget https://hydra.iohk.io/build/7370192/download/1/alonzo-purple-topology.json
-```
-{% endtab %}
 {% endtabs %}
+
+## Download Database snapshot
+
+{% hint style="info" %}
+Thanks to [OTG pool](https://armada-alliance.com/stake-pools/c825168836c5bf850dec38567eb4771c2e03eea28658ff291df768ae) for providing an up to date  snapshot of the Cardano blockchain to help speed up sync times for a node dramatically.
+{% endhint %}
+
+```bash
+cd $NODE_HOME && rm -rf db
+wget -r -np -nH -R "index.html*" -e robots=off https://$NODE_CONFIG.adamantium.online/db/
+```
 
 ## Käynnistä Cardano Node uudelleen
 
