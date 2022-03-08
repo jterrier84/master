@@ -7,7 +7,7 @@ _**Me Armada Allianssissa rakennamme aktiivisesti tarvittavia ohjelmistopakettej
 {% endhint %}
 
 {% hint style="success" %}
-#### Current Official Cardano Node Version: 1.33.0
+#### Current Official Cardano Node Version: 1.34.1
 {% endhint %}
 
 ### Overview :notepad\_spiral:
@@ -90,13 +90,13 @@ Tämä varmistaa, että järjestelmä on tietoinen libsodiumista (ei vain käytt
 Dynamic binaries and Cardano node configuration files provided by [SRN pool ](https://armada-alliance.com/stake-pools/cc1b1c03798884c636703443a23b8d9e827d6c0417921600394198a0):pray: at our [Github repository](https://github.com/armada-alliance/cardano-node-binaries).
 
 ```bash
-wget -O cardano-1_32_1-aarch64-ubuntu_2004.zip https://github.com/armada-alliance/cardano-node-binaries/blob/main/dynamic-binaries/1.32.1/cardano-1_32_1-aarch64-ubuntu_2004.zip?raw=true
+wget -O cardano-1_34_1-aarch64-ubuntu_2004.zip https://github.com/armada-alliance/cardano-node-binaries/blob/main/dynamic-binaries/1.34.1/cardano-1_34_1-aarch64-ubuntu_2004.zip?raw=true
 ```
 
 Pura zip tiedoston sisältö.
 
 ```bash
-unzip cardano-1_32_1-aarch64-ubuntu_2004.zip?raw=true
+unzip cardano-1_34_1-aarch64-ubuntu_2004.zip?raw=true
 ```
 
 ### Tarkista, onko cardano-node jo käynnissä
@@ -123,7 +123,7 @@ Jos käytät Linuxin `htop` -komentoa, tarkista vain prosessi, joka alkaa `carda
 Jos käytät [Pi-Node -opasta](../pi-pool-tutorial/) ja cardano-node & -cli ovat kansiossa `~/.local/bin`
 
 ```bash
-mv cardano-1_32_1-aarch64-ubuntu_2004/cardano-node cardano-1_32_1-aarch64-ubuntu_2004/cardano-cli ~/.local/bin
+mv cardano-1_34_1-aarch64-ubuntu_2004/cardano-node cardano-1_34_1-aarch64-ubuntu_2004/cardano-cli ~/.local/bin
 ```
 
 ### Tarkista cardano-noden versio
@@ -135,7 +135,7 @@ cardano-node --version
 #### Tuloste:
 
 ```bash
-cardano-node 1.32.1 - linux-aarch64 - ghc-8.10
+cardano-node 1.34.1 - linux-aarch64 - ghc-8.10
 git rev 2cbe363874d0261bc62f52185cf23ed492cf4859
 ```
 
@@ -148,33 +148,37 @@ cardano-cli --version
 #### Tuloste:
 
 ```bash
-cardano-cli 1.32.1 - linux-aarch64 - ghc-8.10
+cardano-cli 1.34.1 - linux-aarch64 - ghc-8.10
 git rev 2cbe363874d0261bc62f52185cf23ed492cf4859
 ```
 
 ### Replace the Cardano node configuration files
 
-Olemme jo ladanneet kolmeen eri verkkoon (mainnet, testnet ja alonzo-purple testnet) liittyvät konfiguraatiotiedostot.
+We have already downloaded the configuration files needed for three networks mainnet and testnet.
 
 {% tabs %}
 {% tab title="Mainnet Config" %}
 ```bash
-mv cardano-1_32_1-aarch64-ubuntu_2004/files/mainnet/* ~/pi-pool/files
+mv cardano-1_34_1-aarch64-ubuntu_2004/files/mainnet/* ~/pi-pool/files
 ```
 {% endtab %}
 
 {% tab title="Testnet Config" %}
 ```bash
-mv cardano-1_32_1-aarch64-ubuntu_2004/files/testnet/* ~/pi-pool/files
+mv cardano-1_34_1-aarch64-ubuntu_2004/files/testnet/* ~/pi-pool/files
 ```
 {% endtab %}
 
-{% tab title="Alonzo Purple Config" %}
+## Download Database snapshot
+
+{% hint style="info" %}
+Thanks to [OTG pool](https://armada-alliance.com/stake-pools/c825168836c5bf850dec38567eb4771c2e03eea28658ff291df768ae) for providing an up to date  snapshot of the Cardano blockchain to help speed up sync times for a node dramatically.
+{% endhint %}
+
 ```bash
-mv cardano-1_32_1-aarch64-ubuntu_2004/files/alonzo-purple/* ~/pi-pool/files
+cd $NODE_HOME && rm -rf db
+wget -r -np -nH -R "index.html*" -e robots=off https://$NODE_CONFIG.adamantium.online/db/
 ```
-{% endtab %}
-{% endtabs %}
 
 ## Käynnistä Cardano Node uudelleen
 
