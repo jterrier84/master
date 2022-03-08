@@ -7,7 +7,7 @@ _**We at the Armada Alliance actively build the required software packages neede
 {% endhint %}
 
 {% hint style="success" %}
-#### Current Official Cardano Node Version: 1.33.0
+#### Current Official Cardano Node Version: 1.34.1
 {% endhint %}
 
 ### Overview :notepad\_spiral:
@@ -154,7 +154,7 @@ git rev 2cbe363874d0261bc62f52185cf23ed492cf4859
 
 ### Replace the Cardano node configuration files
 
-We have already downloaded the configuration files needed for three networks mainnet, testnet, and the alonzo-purple testnet.
+We have already downloaded the configuration files needed for three networks mainnet and testnet.
 
 {% tabs %}
 {% tab title="Mainnet Config" %}
