@@ -494,7 +494,7 @@ cd $NODE_HOME/scripts
 Prometheus connects to cardano-nodes backend and serves metrics over http. Grafana in turn can use that data to display graphs and create alerts. Our Grafana dashboard will be made up of data from our Ubuntu system & cardano-node. Grafana can display data from other sources as well, like [adapools.org](https://adapools.org).
 
 {% hint style="info" %}
-You can connect a [Telegram bot](https://docs.armada-alliance.com/learn/intermediate-guide/grafana-alerts-with-telegram) to Grafana which can alert you of problems with the server. Much easier than trying to configure email alerts.
+You can connect a [Telegram bot](https://docs.armada-alliance.com/learn/stake-pool-guides/grafana-alerts-with-telegram) to Grafana which can alert you of problems with the server. Much easier than trying to configure email alerts.
 {% endhint %}
 
 {% embed url="https://github.com/prometheus" %}
