@@ -79,7 +79,7 @@ cat R1-pubkey
 {% tab title="C1" %}
 ```bash
 [Interface]
-Address = 10.220.0.1/22
+Address = 10.220.0.1/32
 SaveConfig = true
 ListenPort = 51820
 PostUp = wg set %i private-key <path to private key>
@@ -87,7 +87,7 @@ PostUp = wg set %i private-key <path to private key>
 
 [Peer]
 PublicKey = <result of cat R1-pubkey>
-AllowedIPs = 10.220.0.2/22
+AllowedIPs = 10.220.0.2/32
 Endpoint = <R1 nodes public ip or hostname>:51820
 PersistentKeepalive = 21
 ```
@@ -96,14 +96,14 @@ PersistentKeepalive = 21
 {% tab title="R1" %}
 ```bash
 [Interface]
-Address = 10.220.0.2/22
+Address = 10.220.0.2/32
 SaveConfig = true
 ListenPort = 51820
 PostUp = wg set %i private-key <path to private key>
 
 [Peer]
 PublicKey = <result of cat C1-pubkey>
-AllowedIPs = 10.220.0.1/22
+AllowedIPs = 10.220.0.1/32
 #Endpoint = endpoint is not needed on the listening side
 PersistentKeepalive = 21
 ```
@@ -112,14 +112,14 @@ PersistentKeepalive = 21
 {% tab title="Example" %}
 ```bash
 [Interface]
-Address = 10.220.0.1/22
+Address = 10.220.0.1/32
 SaveConfig = true
 ListenPort = 51820
 PostUp = wg set %i private-key /etc/wireguard/C1-privkey
 
 [Peer]
 PublicKey = FnXP9t17JXTCf3kyuTBh/z83NeJsE8Ar2HtOCy2VPyw=
-AllowedIPs = 10.220.0.2/22
+AllowedIPs = 10.220.0.2/32
 Endpoint = r1.armada-alliance.com:51820
 PersistentKeepalive = 21
 ```
