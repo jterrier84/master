@@ -18,6 +18,7 @@
   * [KES-avainten uusiminen](stake-pool-guides/pi-pool-tutorial/rotate-kes.md)
   * [Update Registration](stake-pool-guides/pi-pool-tutorial/update-registration-cert.md)
   * [Stakepool Operator Scripts Guide](stake-pool-guides/pi-pool-tutorial/stakepoolscripts.md)
+* [Arm64 Docker Image and Stake Pool Guide](stake-pool-guides/docker-pool-guide.md)
 * [Raspi-Node Guide 🍓](stake-pool-guides/Raspberry-pi-os.md)
 * [Alpine Linux OS](stake-pool-guides/alpine-linux-os.md)
 * [Apple M1 macOS 🍏](stake-pool-guides/m1-native-macos-11-build/README.md)
