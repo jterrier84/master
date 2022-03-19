@@ -58,6 +58,9 @@ sudo chmod +x build.sh
 cd files
 sudo wget -N https://raw.githubusercontent.com/jterrier84/Cardano-node-docker/master/dockerfiles/files/run.sh
 sudo chmod +x run.sh
+cd ${HOME}/Cardano-node-docker/node
+sudo wget -N https://raw.githubusercontent.com/jterrier84/Cardano-node-docker/master/node/run-node.sh
+sudo chmod +x run-node.sh
 ```
 
 Download the latest official Cardano node configuration files from the IOHK repository and store them on our host system.
