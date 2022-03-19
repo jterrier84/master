@@ -5,14 +5,14 @@ description: Running a Cardano full node with a Docker image
 # Cardano Node Docker Image (for ARM64 devices)
 
 In this project you will find the files to build a docker image on Linux containing all the needed files to run a Cardano full node.
-The docker image can run on any arm64 device (such as a RaspberryPi, Mac Mini M1, etc.). The node can be configured as a relay or bock production node.
+The docker image can run on any arm64 device (such as a RaspberryPi, Mac Mini M1, etc.). The node can be configured as a relay or block production node.
 
 ## Why using docker image to run a Cardano node?
 
 The elegant thing about a Cardano node deployed as a Docker image is that it can be installed seamlessly and launched out of the box. 
 If you ever decide to remove it, you only have to delete one file - the image. Another advantage is that the created image can run on any 
 operating system where Docker is installed. Using Docker reduces the complexity and effort of setting up a Cardano node in the traditional way 
-(for example, you don't have to deal with systemctl settings). This guide is therefore recommended for less experienced Linux users.
+(for example, you don't have to deal with systemd settings).
 
 ## System requirements
 
@@ -45,7 +45,7 @@ Create the repositories on your host system first. They will hold the files to b
 cd ${HOME}
 sudo mkdir Cardano-node-docker
 cd Cardano-node-docker
-sudo mkdir node/db && node/files && mkdir dockerfiles/files
+sudo mkdir -p node/db && sudo mkdir -p node/files && sudo mkdir -p dockerfiles/files
 ```  
 
 The files to build the docker images can be downloaded from [MINI1 pool GitHub](https://github.com/jterrier84/Cardano-node-docker)
