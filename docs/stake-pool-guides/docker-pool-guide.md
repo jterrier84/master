@@ -11,7 +11,7 @@ The docker image can run on any arm64 device (such as a RaspberryPi, Mac Mini M1
 
 The elegant thing about a Cardano node deployed as a Docker image is that it can be installed seamlessly and launched out of the box. 
 If you ever decide to remove it, you only have to delete one file - the image. Another advantage is that the created image can run on any 
-operating system where Docker is installed. Using Docker reduces the complexity and effort of setting up a Cardano node in the traditional way 
+operating system where Docker is installed. Using Docker reduces the complexity and effort of setting up a Cardano node compared to the traditional way 
 (for example, you don't have to deal with systemd settings).
 
 ## System requirements
@@ -48,7 +48,7 @@ cd Cardano-node-docker
 sudo mkdir -p node/db && sudo mkdir -p node/files && sudo mkdir -p dockerfiles/files
 ```  
 
-The files to build the docker images can be downloaded from [MINI1 pool GitHub](https://github.com/jterrier84/Cardano-node-docker)
+The files to build the docker images will be downloaded from [MINI1 pool GitHub](https://github.com/jterrier84/Cardano-node-docker)
 
 ```bash
 cd dockerfiles
@@ -72,7 +72,7 @@ just replace "testnet" with "mainnet" here below.
 
 {% hint style="info" %}
 As the configuration files might require modifications over time, it is way more practical to have them stored on the host, 
-rather than have them stored inside the Docker container. Our Cardano node will have access these files from inside the docker container. 
+rather than have them stored inside the Docker container. Our Cardano Docker node will have access to these files from the container. 
 {% endhint %}
 
 ```bash
@@ -87,13 +87,11 @@ sudo wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CON
 ```
 
 {% hint style="info" %}
-The Docker Cardano node will access to the directories /files and /db on the host system. 
-
 The directory /files contains the downloaded Cardano node configuration files.
 
 The /db directory will host the Cardano blockchain once the Docker node is started. It is important that the blockchain data 
 are stored on the host system and not inside the Docker container, otherwise the entire blockchain would be deleted every time 
-the Docker container is removed. Our docker image will manage this automatically.
+the Docker container is removed.
 {% endhint %}
 
 # 3. Build the Cardano node docker image
@@ -110,7 +108,7 @@ sudo ./build.sh
 ```
 The process might take some minutes.
 
-Once the process is done, you can use the command to see the list of all Docker images:
+Once the process is done, you can use the command to see the list of all Docker images on your host system:
 
 ```bash
 docker images
@@ -163,8 +161,8 @@ CN_RTS_OPTS="+RTS -N2 -I0.1 -Iw3600 -A64m -AL128M -n4m -F1.1 -H3500M -O3500M -RT
 CN_BF_ID="mainnetd9PBzlK7KB7wWko8NTKUwJIsHfvEKNaV"               ## Your blockfrost.io project ID (for ScheduledBlock script)
 CN_POOL_ID="c3e7025ebae638e994c149e5703e82619b31897c9e1d64fc684f81c2"   ## Your stake pool ID (for ScheduledBlock script)
 CN_POOL_TICKER="MINI1"                                           ## Your pool ticker (for ScheduledBlock script)
-CN_VRF_SKEY_PATH="scheduledblocks.vrf.skey"                      ## Name of the vrf.skey file. It must be located in the same directory as CN_K>
-CN_KEY_PATH="/home/julienterrier/Cardano-node-docker/node/files/.keys"  ## Path to the folder where the OP certificate and keys are stored on t>
+CN_VRF_SKEY_PATH="scheduledblocks.vrf.skey"                      ## Name of the vrf.skey file. It must be located in the same directory as CN_KEY_PATH (for ScheduledBlock script)
+CN_KEY_PATH="/home/julienterrier/Cardano-node-docker/node/files/.keys"  ## Path to the folder where the OP certificate and keys are stored on the host system
 ```
 
 After making the changes, save and close the file.
@@ -234,6 +232,25 @@ While the docker Cardano node is running, you can monitor its status with the to
 docker exec -it {CONTAINER ID} /home/cardano/pi-pool/scripts/gLiveView.sh
 ```
 
+## Check the scheduled slots of the block production node
 
+Our Docker image contains the ScheduledBlocks python script from [SNAKE pool](https://github.com/asnakep/ScheduledBlocks). This tool allows to
+query the blockchain for the scheduled slots for your block production node.
+
+Before using the script, make sure that the right configurations are set in our shell script run-node.sh. Set the following variables:
+
+```bash
+CN_BF_ID="mainnetd9PBzlK7KB7wWko8NTKUwJIsHfvEKNaV"               ## Your blockfrost.io project ID (for ScheduledBlock script)
+CN_POOL_ID="c3e7025ebae638e994c149e5703e82619b31897c9e1d64fc684f81c2"   ## Your stake pool ID (for ScheduledBlock script)
+CN_POOL_TICKER="MINI1"                                           ## Your pool ticker (for ScheduledBlock script)
+CN_VRF_SKEY_PATH="scheduledblocks.vrf.skey"                      ## Name of the vrf.skey file. It must be located in the same directory as CN_KEY_PATH (for ScheduledBlock script)
+CN_KEY_PATH="/home/julienterrier/Cardano-node-docker/node/files/.keys"  ## Path to the folder where the OP certificate and keys are stored on the host system
+```
+
+Start the ScheduledBlocks.py script and follow the instructions on the terminal:
+
+```bash
+docker exec -it {CONTAINER ID} python3 /home/cardano/pi-pool/scripts/ScheduledBlocks/ScheduledBlocks.py
+```
 
 
