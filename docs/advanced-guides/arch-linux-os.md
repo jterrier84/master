@@ -99,7 +99,7 @@ Add the following packages to build and run cardano-node.
 
 ```
 sudo pacman -S --needed base-devel
-sudo pacman -S openssl libtool unzip jq
+sudo pacman -S openssl libtool unzip jq bc xz numactl
 ```
 
 ## zram swap
@@ -214,9 +214,64 @@ sudo systemctl stop dhcpcd
 sudo systemctl disable dhcpcd
 sudo reboot
 ```
+## GHCUP, GHC & Cabal
 
+Install ghcup use defaults when asked.
 
+```
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+```
 
+```
+. ~/.bashrc
+ghcup upgrade
+ghcup install cabal 3.4.0.0
+ghcup set cabal 3.4.0.0
+
+ghcup install ghc 8.10.4
+ghcup set ghc 8.10.4
+```
+
+Compile cardano-node
+
+```
+cd $HOME/git
+git clone https://github.com/input-output-hk/cardano-node.git
+cd cardano-node
+git fetch --all --recurse-submodules --tags
+git checkout $(curl -s https://api.github.com/repos/input-output-hk/cardano-node/releases/latest | jq -r .tag_name)
+```
+
+Configure with 8.10.4 set libsodium flag and clean build folder
+
+```
+cabal configure -O0 -w ghc-8.10.4
+
+echo -e "package cardano-crypto-praos\n flags: -external-libsodium-vrf" > cabal.project.local
+sed -i $HOME/.cabal/config -e "s/overwrite-policy:/overwrite-policy: always/g"
+rm -rf $HOME/git/cardano-node/dist-newstyle/build/x86_64-linux/ghc-8.10.4
+```
+
+Build them.
+
+```
+cabal build cardano-cli cardano-node cardano-submit-api
+```
+
+Add them to your PATH.
+
+```
+sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-cli") $HOME/.local/bin/cardano-cli
+sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-node") $HOME/.local/bin/cardano-node
+sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-submit-api") $HOME/.local/bin/cardano-node
+```
+
+Check
+
+```
+cardano-node version
+cardano-cli version
+```
 
 
 
