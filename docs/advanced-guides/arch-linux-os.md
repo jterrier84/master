@@ -154,18 +154,26 @@ Update link cache for shared libraries and confirm.
 sudo ldconfig; ldconfig -p | grep libsodium
 ```
 
-## Grafana
+## Prometheus
+
+Install Prometheus and Prometheus-node-exporter
+```
+sudo pacman -S prometheus prometheus-node-exporter
+```
+
+## Build Grafana from AUR
+
+No arm64 candidate in repos.
 
 ```
+mkdir ~/git
 cd ~/git
 
-git clone https://aur.archlinux.org/snapd.git
-cd snapd
+git clone https://aur.archlinux.org/grafana-bin.git
+cd grafana-bin
 makepkg -si
-
-sudo systemctl enable --now snapd.socket
-sudo ln -s /var/lib/snapd/snap /snap
-sudo snap install grafana --channel=rock/edge
+sudo systemctl start grafana.service
+sudo systemctl enable grafana.service
 
 ```
 
