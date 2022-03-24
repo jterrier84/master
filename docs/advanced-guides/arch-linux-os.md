@@ -30,6 +30,10 @@ passwd ada
 
 Log out and back in as your new user with SSH. Test sudo by upgrading the system again.
 
+```
+pacman -Syu
+```
+
 {% hint style="info" %}
 The Arch Bash shell is boring. Optionally install [Bash-it](https://bash-it.readthedocs.io/en/latest/installation/) for a fancy shell.
 {% endhint %}
@@ -119,41 +123,6 @@ zram-size =  min(ram / 1)
 ```
 Reboot and check htop to confirm.
 
-## Build Libsodium
-
-This is IOHK's fork of Libsodium. It is needed for the dynamic build binary of cardano-node.
-
-```bash
-cd; cd git/
-git clone https://github.com/input-output-hk/libsodium
-cd libsodium
-git checkout 66f017f1
-./autogen.sh
-./configure
-make
-sudo make install
-```
-
-Add library path to ldconfig.
-
-```
-sudo touch /etc/ld.so.conf.d/local.conf 
-echo "/usr/local/lib" | sudo tee -a /etc/ld.so.conf.d/local.conf 
-```
-Echo library paths into .bashrc file and source it.
-
-```bash
-echo "export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"" >> ~/.bashrc
-echo "export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"" >> ~/.bashrc
-. ~/.bashrc
-```
-
-Update link cache for shared libraries and confirm.
-
-```bash
-sudo ldconfig; ldconfig -p | grep libsodium
-```
-
 ## Prometheus
 
 Install Prometheus and Prometheus-node-exporter
@@ -215,9 +184,67 @@ sudo systemctl disable dhcpcd
 sudo reboot
 ```
 
-## LLVM9
+## Build Libsodium
 
+This is IOHK's fork of Libsodium. It is needed for the dynamic build binary of cardano-node.
 
+```bash
+cd; cd git/
+git clone https://github.com/input-output-hk/libsodium
+cd libsodium
+git checkout 66f017f1
+./autogen.sh
+./configure
+make
+sudo make install
+```
+
+Add library path to ldconfig.
+
+```
+sudo touch /etc/ld.so.conf.d/local.conf 
+echo "/usr/local/lib" | sudo tee -a /etc/ld.so.conf.d/local.conf 
+```
+Echo library paths into .bashrc file and source it.
+
+```bash
+echo "export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"" >> ~/.bashrc
+echo "export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"" >> ~/.bashrc
+. ~/.bashrc
+```
+
+Update link cache for shared libraries and confirm.
+
+```bash
+sudo ldconfig; ldconfig -p | grep libsodium
+```
+
+## LLVM 9.0.1
+
+```
+wget https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.1/clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
+tar -xf clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
+export PATH=~/git/clang+llvm-9.0.1-aarch64-linux-gnu/bin/:$PATH
+git clone https://aur.archlinux.org/ncurses5-compat-libs.git
+gpg --recv-key CC2AF4472167BE03
+nano PKGBUILD
+```
+Change target archetecture to aarch64.
+
+```
+arch=(aarch64)
+```
+and build it.
+
+```
+makepkg -si
+```
+
+Confirm.
+
+```
+clang --version
+```
 
 ## GHCUP, GHC & Cabal
 
@@ -254,9 +281,8 @@ cabal configure -O0 -w ghc-8.10.4
 
 echo -e "package cardano-crypto-praos\n flags: -external-libsodium-vrf" > cabal.project.local
 sed -i $HOME/.cabal/config -e "s/overwrite-policy:/overwrite-policy: always/g"
+rm -rf dist-newstyle/build/aarch64-linux/ghc-8.10.4
 
-
-####### rm -rf $HOME/git/cardano-node/dist-newstyle/build/x86_64-linux/ghc-8.10.4
 ```
 
 Build them.
@@ -268,9 +294,10 @@ cabal build cardano-cli cardano-node cardano-submit-api
 Add them to your PATH.
 
 ```
-sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-cli") $HOME/.local/bin/cardano-cli
-sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-node") $HOME/.local/bin/cardano-node
-sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-submit-api") $HOME/.local/bin/cardano-submit-api
+cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-cli-1.34.1/x/cardano-cli/build/cardano-cli $HOME/.local/bin/cardano-cli
+cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-node-1.34.1/x/cardano-node/build/cardano-node/cardano-node $HOME/.local/bin/
+cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-submit-api-3.1.2/x/cardano-submit-api/build/cardano-submit-api/cardano-submit-api $HOME/.local/bin/
+
 ```
 
 Check
