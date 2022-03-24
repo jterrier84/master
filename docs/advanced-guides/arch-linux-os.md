@@ -146,9 +146,10 @@ sudo systemctl enable grafana.service
 
 ```
 
-## Wiregaurd
+## Wireguard
 ```
-sudo pacman -S wireguard-tools
+sudo pacman -Ss wireguard-tools
+
 ```
 
 ## Static ip
@@ -222,6 +223,7 @@ sudo ldconfig; ldconfig -p | grep libsodium
 ## LLVM 9.0.1
 
 ```
+cd ~/git
 wget https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.1/clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
 tar -xf clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
 export PATH=~/git/clang+llvm-9.0.1-aarch64-linux-gnu/bin/:$PATH
