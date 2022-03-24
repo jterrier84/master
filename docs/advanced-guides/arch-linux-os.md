@@ -231,6 +231,8 @@ cd ~/git
 git clone https://aur.archlinux.org/ncurses5-compat-libs.git
 cd ncurses5-compat-libs/
 gpg --recv-key CC2AF4472167BE03
+## If this fails it is probly due to your DNS service(Google). 
+## Use https://www.quad9.net/
 nano PKGBUILD
 ```
 Change target archetecture to aarch64.
