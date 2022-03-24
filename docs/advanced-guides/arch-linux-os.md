@@ -1,4 +1,6 @@
-Install Asahi Arch
+# Asahi Arch Linux, Apple Silicon
+
+Install Asahi Arch, minimal or Desktop
 
 log in to both alarm and root. Change the passwords.
 
@@ -8,7 +10,7 @@ Update as root
 pacman -Syu
 ```
 
-Start and enable sshd, pw auth is disabled for root, login with alarm user.
+Start and enable sshd. pw auth is disabled for root, login with alarm user.
 
 ```
 systemctl start sshd.service
@@ -270,7 +272,7 @@ ghcup install ghc 8.10.4
 ghcup set ghc 8.10.4
 ```
 
-Compile cardano-node
+build cardano-node
 
 ```
 cd $HOME/git
@@ -300,8 +302,10 @@ cabal build cardano-cli cardano-node cardano-submit-api
 Add them to your PATH.
 
 ```
-cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-cli-1.34.1/x/cardano-cli/build/cardano-cli $HOME/.local/bin/cardano-cli
+cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-cli-1.34.1/x/cardano-cli/build/cardano-cli/cardano-cli $HOME/.local/bin/
+
 cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-node-1.34.1/x/cardano-node/build/cardano-node/cardano-node $HOME/.local/bin/
+
 cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-submit-api-3.1.2/x/cardano-submit-api/build/cardano-submit-api/cardano-submit-api $HOME/.local/bin/
 
 ```
