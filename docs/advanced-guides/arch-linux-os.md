@@ -181,14 +181,14 @@ sudo cp /etc/netctl/examples/ethernet-static /etc/netctl/enp3s0
 sudo nano /etc/netctl/enp3s0
 ```
 
-Edit the interface name to match and add one static ip like below for Mac Mini
+Edit the interface name and IP address' to your network. 
 
 ```bash
 Description='A basic static ethernet connection'
 Interface=enp3s0
 Connection=ethernet
 IP=static
-Address=('192.168.1.152/24')
+Address=('192.168.1.xxx/24')
 Gateway='192.168.1.1'
 DNS=('192.168.1.1')
 ```
@@ -245,18 +245,23 @@ cd ~/git
 wget https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.1/clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
 tar -xf clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
 export PATH=~/git/clang+llvm-9.0.1-aarch64-linux-gnu/bin/:$PATH
+```
+
+## ncurses5 compat libs
+
+```bash
 cd ~/git
 git clone https://aur.archlinux.org/ncurses5-compat-libs.git
 cd ncurses5-compat-libs/
 gpg --recv-key CC2AF4472167BE03
 ## If this fails it is probly due to your DNS service(Google). 
 ## Use https://www.quad9.net/
-nano PKGBUILD
 ```
 
-Change target archetecture to aarch64.
+Change target architecture to aarch64 in the build file.
 
 ```bash
+nano PKGBUILD
 arch=(aarch64)
 ```
 and build it.
@@ -289,7 +294,7 @@ ghcup install ghc 8.10.4
 ghcup set ghc 8.10.4
 ```
 
-build cardano-node
+### Obtain cardano-node
 
 ```bash
 cd $HOME/git
