@@ -1,4 +1,4 @@
-# Asahi Arch Linux, Apple Silicon
+# cardano-node on Asahi Arch Linux, Apple Silicon
 
 Install Asahi Arch, minimal or Desktop
 
