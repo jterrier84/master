@@ -132,9 +132,22 @@ Install Prometheus and Prometheus-node-exporter
 sudo pacman -S prometheus prometheus-node-exporter
 ```
 
-## Build Grafana from AUR
+## Grafana
 
-No arm64 candidate in repos.
+Two ways to install Grafana. From AUR or with snap. Pros and cons. Cannot install additional plugins with AUR. Snap is controversial security wise. I need additional plugin so built snap and installed grafana with it.
+
+### snap
+
+```
+cd ~/git
+git clone https://aur.archlinux.org/snapd.git
+cd snapd/
+makepkg -si
+reboot
+sudo snap install grafana --channel=rock/edge
+```
+
+### AUR Grafan-bin
 
 ```
 mkdir ~/git
