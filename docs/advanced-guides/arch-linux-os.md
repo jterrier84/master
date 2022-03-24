@@ -214,6 +214,11 @@ sudo systemctl stop dhcpcd
 sudo systemctl disable dhcpcd
 sudo reboot
 ```
+
+## LLVM9
+
+
+
 ## GHCUP, GHC & Cabal
 
 Install ghcup use defaults when asked.
@@ -249,7 +254,9 @@ cabal configure -O0 -w ghc-8.10.4
 
 echo -e "package cardano-crypto-praos\n flags: -external-libsodium-vrf" > cabal.project.local
 sed -i $HOME/.cabal/config -e "s/overwrite-policy:/overwrite-policy: always/g"
-rm -rf $HOME/git/cardano-node/dist-newstyle/build/x86_64-linux/ghc-8.10.4
+
+
+####### rm -rf $HOME/git/cardano-node/dist-newstyle/build/x86_64-linux/ghc-8.10.4
 ```
 
 Build them.
@@ -263,7 +270,7 @@ Add them to your PATH.
 ```
 sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-cli") $HOME/.local/bin/cardano-cli
 sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-node") $HOME/.local/bin/cardano-node
-sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-submit-api") $HOME/.local/bin/cardano-node
+sudo cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-submit-api") $HOME/.local/bin/cardano-submit-api
 ```
 
 Check
