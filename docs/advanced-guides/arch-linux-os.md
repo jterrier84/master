@@ -225,7 +225,9 @@ sudo ldconfig; ldconfig -p | grep libsodium
 wget https://github.com/llvm/llvm-project/releases/download/llvmorg-9.0.1/clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
 tar -xf clang+llvm-9.0.1-aarch64-linux-gnu.tar.xz
 export PATH=~/git/clang+llvm-9.0.1-aarch64-linux-gnu/bin/:$PATH
+cd ~/git
 git clone https://aur.archlinux.org/ncurses5-compat-libs.git
+cd ncurses5-compat-libs/
 gpg --recv-key CC2AF4472167BE03
 nano PKGBUILD
 ```
