@@ -654,6 +654,73 @@ cardano-monitor() {
 }
 ```
 
+## Choose testnet or mainnet.
+
+{% hint style="danger" %}
+There is a 500 ₳ Registration deposit and another 5 ₳ in registration costs to start a pool on mainnet. First time users are strongly reccomended to use testnet. You can get tada (test ada) from the testnet faucet. [tada faucet link](https://testnets.cardano.org/en/testnets/cardano/tools/faucet/)
+{% endhint %}
+
+Create the directories for our project.
+
+```bash
+mkdir -p ${HOME}/.local/bin
+mkdir -p ${HOME}/pi-pool/files
+mkdir -p ${HOME}/pi-pool/scripts
+mkdir -p ${HOME}/pi-pool/logs
+mkdir ${HOME}/git
+mkdir ${HOME}/tmp
+```
+
+Create an .adaenv file, choose which network you want to be on and source the file. This file will hold the variables/settings for operating a Pi-Node. /home/ada/.adaenv
+
+```shell
+echo -e NODE_CONFIG=testnet >> ${HOME}/.adaenv; source ${HOME}/.adaenv
+```
+
+### Create bash variables & add \~/.local/bin to our $PATH 🏃
+
+{% hint style="info" %}
+[Environment Variables in Linux/Unix](https://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells/247769#247769).
+{% endhint %}
+
+{% hint style="warning" %}
+You must reload environment files after updating them. Same goes for cardano-node, changes to the topology or config files require a cardano-service restart.
+{% endhint %}
+
+```bash
+echo . ~/.adaenv >> ${HOME}/.bashrc
+cd .local/bin; echo "export PATH=\"$PWD:\$PATH\"" >> $HOME/.adaenv
+echo export NODE_HOME=${HOME}/pi-pool >> ${HOME}/.adaenv
+echo export NODE_PORT=3003 >> ${HOME}/.adaenv
+echo export NODE_FILES=${HOME}/pi-pool/files >> ${HOME}/.adaenv
+echo export TOPOLOGY='${NODE_FILES}'/'${NODE_CONFIG}'-topology.json >> ${HOME}/.adaenv
+echo export DB_PATH='${NODE_HOME}'/db >> ${HOME}/.adaenv
+echo export CONFIG='${NODE_FILES}'/'${NODE_CONFIG}'-config.json >> ${HOME}/.adaenv
+echo export NODE_BUILD_NUM=$(curl https://hydra.iohk.io/job/Cardano/iohk-nix/cardano-deployment/latest-finished/download/1/index.html | grep -e "build" | sed 's/.*build\/\([0-9]*\)\/download.*/\1/g') >> ${HOME}/.adaenv
+echo export CARDANO_NODE_SOCKET_PATH="${HOME}/pi-pool/db/socket" >> ${HOME}/.adaenv
+source ${HOME}/.bashrc; source ${HOME}/.adaenv
+```
+
+### Retrieve node files
+
+```bash
+cd $NODE_FILES
+wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-config.json
+wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-byron-genesis.json
+wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-shelley-genesis.json
+wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-alonzo-genesis.json
+wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-topology.json
+wget -N https://raw.githubusercontent.com/input-output-hk/cardano-node/master/cardano-submit-api/config/tx-submit-mainnet-config.yaml
+```
+
+Run the following to modify ${NODE\_CONFIG}-config.json and update TraceBlockFetchDecisions to "true" & listen on all interfaces with Prometheus Node Exporter.
+
+```bash
+sed -i ${NODE_CONFIG}-config.json \
+    -e "s/TraceBlockFetchDecisions\": false/TraceBlockFetchDecisions\": true/g" \
+    -e "s/127.0.0.1/0.0.0.0/g"
+```
+
 Save & exit.
 
 ```bash
