@@ -1,6 +1,8 @@
 # cardano-node on Asahi Arch Linux, Apple Silicon
 
-Install Asahi Arch, minimal or desktop
+## Prerequisites 
+
+Asahi Arch, minimal or desktop installed.
 
 log in to both alarm and root. Change the passwords.
 
@@ -21,6 +23,13 @@ Install pacman-contrib which includes sudo and some other useful packages and op
 ```bash
 pacman -S pacman-contrib git curl wget htop rsync
 sudo EDITOR=nano visudo
+```
+Like below.
+
+```bash
+## Uncomment to allow members of group wheel to execute any command
+%wheel ALL=(ALL:ALL) ALL
+
 ```
 
 Add a new user to the wheel group, give it a password.
