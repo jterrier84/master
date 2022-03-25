@@ -1,6 +1,6 @@
 # cardano-node on Asahi Arch Linux, Apple Silicon
 
-Install Asahi Arch, minimal or Desktop
+Install Asahi Arch, minimal or desktop
 
 log in to both alarm and root. Change the passwords.
 
@@ -16,10 +16,10 @@ Start and enable sshd. pw auth is disabled for root, login with alarm user.
 systemctl start sshd.service
 systemctl enable sshd.service
 ```
-Install the sudo package and open the sudoers file with visudo and enable the wheel group.
+Install pacman-contrib which includes sudo and some other useful packages and open the sudoers file with visudo and enable the wheel group.
 
 ```bash
-pacman -S sudo git curl wget htop rsync
+pacman -S pacman-contrib git curl wget htop rsync
 sudo EDITOR=nano visudo
 ```
 
@@ -117,13 +117,14 @@ sudo pacman -S zram-generator
 sudo nano /usr/lib/systemd/zram-generator.conf
 ```
 
-Add and save.
+You may want to read up on zram. I always set 1.5 times the amount of system ram. [github](https://github.com/systemd/zram-generator/blob/main/man/zram-generator.conf.md) | [Hayden James](https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/) |
+[lubuntu mailing list](https://lists.ubuntu.com/archives/lubuntu-users/2013-October/005831.html)
 
 ```bash
 [zram0]
-zram-size =  min(ram / 1)
+zram-size = min(24 * 1024)
 ```
-Reboot and check htop to confirm.
+This will give you 24gb zram swap and will absorb the brunt of running the built in leaderlogs. Reboot and check htop to confirm.
 
 ## Prometheus
 
@@ -135,9 +136,9 @@ sudo pacman -S prometheus prometheus-node-exporter
 
 ## Grafana
 
-Two ways to install Grafana. From AUR or with snap. Pros and cons. Cannot install additional plugins with AUR version (looking into it). Snap is controversial security wise. I need additional plugin so built snap and installed grafana with it.
+Two ways to install Grafana. From AUR or with snap. Pros and cons. Cannot install additional plugins with AUR version (looking into it). Snap is controversial security wise. I need additional pluginse so built snap and installed grafana with it.
 
-### snap
+### With Snap
 
 ```bash
 mkdir ~/git
@@ -149,7 +150,7 @@ reboot
 sudo snap install grafana --channel=rock/edge
 ```
 
-### AUR Grafan-bin
+### Grafan-bin AUR
 
 ```bash
 mkdir ~/git
@@ -166,7 +167,7 @@ sudo systemctl enable grafana.service
 ## Wireguard
 
 ```bash
-sudo pacman -Ss wireguard-tools
+sudo pacman -S wireguard-tools
 
 ```
 
@@ -338,6 +339,386 @@ Check
 cardano-node version
 cardano-cli version
 ```
+
+### Systemd unit startup scripts
+
+Create the systemd unit file and startup script so systemd can manage cardano-node.
+
+```bash
+nano ${HOME}/.local/bin/cardano-service
+```
+
+Paste the following, save & exit.
+
+```bash
+#!/bin/bash
+. /home/ada/.adaenv
+
+## +RTS -N4 -RTS = Multicore(4)
+cardano-node run +RTS -N4 -RTS \
+  --topology ${TOPOLOGY} \
+  --database-path ${DB_PATH} \
+  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
+  --port ${NODE_PORT} \
+  --config ${CONFIG}
+```
+
+Allow execution of our new cardano-node service file.
+
+```bash
+chmod +x ${HOME}/.local/bin/cardano-service
+```
+
+Open /etc/systemd/system/cardano-node.service.
+
+```bash
+sudo nano /etc/systemd/system/cardano-node.service
+```
+
+Paste the following, You will need to edit the username here if you chose to not use ada. Save & exit.
+
+```bash
+# The Cardano Node Service (part of systemd)
+# file: /etc/systemd/system/cardano-node.service
+
+[Unit]
+Description     = Cardano node service
+Wants           = network-online.target
+After           = network-online.target
+
+[Service]
+User            = ada
+Type            = simple
+WorkingDirectory= /home/ada/pi-pool
+ExecStart       = /bin/bash -c "PATH=/home/ada/.local/bin:$PATH exec /home/ada/.local/bin/cardano-service"
+KillSignal=SIGINT
+RestartKillSignal=SIGINT
+TimeoutStopSec=10
+LimitNOFILE=32768
+Restart=always
+RestartSec=10
+EnvironmentFile=-/home/ada/.adaenv
+
+[Install]
+WantedBy= multi-user.target
+```
+
+Create the systemd unit file and startup script so systemd can manage cardano-submit-api.
+
+```bash
+nano ${HOME}/.local/bin/cardano-submit-service
+```
+
+```bash
+#!/bin/bash
+. /home/ada/.adaenv
+
+cardano-submit-api \
+  --socket-path ${CARDANO_NODE_SOCKET_PATH} \
+  --port 8090 \
+  --config /home/ada/pi-pool/files/tx-submit-mainnet-config.yaml \
+  --listen-address 0.0.0.0 \
+  --mainnet
+```
+
+Allow execution of our new cardano-submit-api service script.
+
+```bash
+chmod +x ${HOME}/.local/bin/cardano-submit-service
+```
+
+Create /etc/systemd/system/cardano-submit.service.
+
+```bash
+sudo nano /etc/systemd/system/cardano-submit.service
+```
+
+Paste the following, You will need to edit the username here if you chose to not use ada. save & exit.
+
+```bash
+# The Cardano Submit Service (part of systemd)
+# file: /etc/systemd/system/cardano-submit.service
+
+[Unit]
+Description     = Cardano submit service
+Wants           = network-online.target
+After           = network-online.target
+
+[Service]
+User            = ada
+Type            = simple
+WorkingDirectory= /home/ada/pi-pool
+ExecStart       = /bin/bash -c "PATH=/home/ada/.local/bin:$PATH exec /home/ada/.local/bin/cardano-submit-service"
+KillSignal=SIGINT
+RestartKillSignal=SIGINT
+TimeoutStopSec=10
+LimitNOFILE=32768
+Restart=always
+RestartSec=10
+EnvironmentFile=-/home/ada/.adaenv
+
+[Install]
+WantedBy= multi-user.target
+```
+
+Reload systemd so it picks up our new service files.
+
+```bash
+sudo systemctl daemon-reload
+```
+
+Let's add a couple functions to the bottom of our .adaenv file to make life a little easier.
+
+```bash
+nano ${HOME}/.adaenv
+```
+
+```bash
+cardano-service() {
+    #do things with parameters like $1 such as
+    sudo systemctl "$1" cardano-node.service
+}
+
+cardano-submit() {
+    #do things with parameters like $1 such as
+    sudo systemctl "$1" cardano-submit.service
+}
+
+cardano-monitor() {
+    #do things with parameters like $1 such as
+    sudo systemctl "$1" prometheus.service
+    sudo systemctl "$1" prometheus-node-exporter.service
+    sudo systemctl "$1" grafana-server
+}
+```
+
+Save & exit.
+
+```bash
+source ${HOME}/.adaenv
+```
+
+What we just did there was add a couple functions to control our cardano-service and cardano-submit without having to type out
+
+> > sudo systemctl enable cardano-node.service
+> >
+> > sudo systemctl start cardano-node.service
+> >
+> > sudo systemctl stop cardano-node.service
+> >
+> > sudo systemctl status cardano-node.service
+
+Now we just have to:
+
+* cardano-service enable (enables cardano-node.service auto start at boot)
+* cardano-service start (starts cardano-node.service)
+* cardano-service stop (stops cardano-node.service)
+* cardano-service status (shows the status of cardano-node.service)
+
+Or
+
+* cardano-submit enable (enables cardano-submit.service auto start at boot)
+* cardano-submit start (starts cardano-submit.service)
+* cardano-submit stop (stops cardano-submit.service)
+* cardano-submit status (shows the status of cardano-submit.service)
+
+The submit service listens on port 8090. You can connect your Nami wallet like below to submit tx's yourself in Nami's settings.
+
+```bash
+http://<node lan ip>:8090/api/submit/tx
+```
+
+## gLiveView.sh
+
+Guild operators scripts has a couple useful tools for operating a pool. We do not want the project as a whole, though there are a couple scripts we are going to use.
+
+{% embed url="https://github.com/cardano-community/guild-operators/tree/master/scripts/cnode-helper-scripts" %}
+
+```bash
+cd $NODE_HOME/scripts
+wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/env
+wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/gLiveView.sh
+```
+
+{% hint style="info" %}
+You can change the port cardano-node runs on in the .adaenv file in your home directory. Open the file edit the port number. Load the change into your shell & restart the cardano-node service.
+
+```bash
+nano /home/ada/.adaenv
+source /home/ada/.adaenv
+cardano-service restart
+```
+{% endhint %}
+
+Add a line sourcing our .adaenv file to the top of the env file and adjust some paths.
+
+```bash
+sed -i env \
+    -e "/#CNODEBIN/i. ${HOME}/.adaenv" \
+    -e "s/\#CNODE_HOME=\"\/opt\/cardano\/cnode\"/CNODE_HOME=\"\${HOME}\/pi-pool\"/g" \
+    -e "s/\#CNODE_PORT=6000"/CNODE_PORT=\"'${NODE_PORT}'\""/g" \
+    -e "s/\#CONFIG=\"\${CNODE_HOME}\/files\/config.json\"/CONFIG=\"\${NODE_FILES}\/"'${NODE_CONFIG}'"-config.json\"/g" \
+    -e "s/\#TOPOLOGY=\"\${CNODE_HOME}\/files\/topology.json\"/TOPOLOGY=\"\${NODE_FILES}\/"'${NODE_CONFIG}'"-topology.json\"/g" \
+    -e "s/\#LOG_DIR=\"\${CNODE_HOME}\/logs\"/LOG_DIR=\"\${CNODE_HOME}\/logs\"/g"
+```
+
+Allow execution of gLiveView.sh.
+
+```bash
+chmod +x gLiveView.sh
+```
+
+## topologyUpdater.sh
+
+Until peer to peer is enabled on the network operators need a way to get a list of relays/peers to connect to. The topology updater service runs in the background with cron. Every hour the script will run and tell the service you are a relay and want to be a part of the network. It will add your relay to it's directory after four hours you should see in connections in gLiveView.
+
+{% hint style="info" %}
+The list generated will show you the distance & a clue as to where the relay is located.
+{% endhint %}
+
+Download the topologyUpdater script and have a look at it. Here is where you will enter your block producer or any other custom peers you would like to always be connected to.
+
+```bash
+wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/topologyUpdater.sh
+```
+
+
+```bash
+nano topologyUpdater.sh
+```
+
+Save, exit and make it executable.
+
+```bash
+chmod +x topologyUpdater.sh
+```
+
+{% hint style="warning" %}
+You will not be able to successfully execute ./topologyUpdater.sh until you are fully synced up to the tip of the chain.
+{% endhint %}
+
+## Install Cronie
+
+Arch does not use cron. You can set up a systemd timer or install some other cron like scheduler.
+
+Add cronjob for topologyupdater.sh that runs once an hour.
+
+```
+sudo pacman -S cronie
+EDITOR=nano crontab -e
+```
+```bash
+SHELL=/bin/bash
+33 * * * * . $HOME/.adaenv; $HOME/pi-pool/scripts/topologyUpdater.sh
+```
+
+### Add save and exit
+
+```bash
+SHELL=/bin/bash
+* * * * * /home/ada/custom-metrics/peers_in.sh
+```
+Enable & start.
+
+```bash
+sudo systemctl enable cronie.service
+sudo systemctl start cronie.service
+```
+
+After four hours you can open ${NODE\_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
+
+```bash
+nano $NODE_FILES/${NODE_CONFIG}-topology.json
+```
+
+{% hint style="info" %}
+You can use gLiveView.sh to view ping times in relation to the peers in your {NODE\_CONFIG}-topology file. Use Ping to resolve hostnames to IP's.
+{% endhint %}
+
+Changes to this file will take affect upon restarting the cardano-service.
+
+## Display inbound connections in Grafana
+
+```bash
+mkdir -p $HOME/custom-metrics/tmp
+nano $HOME/custom-metrics/peers_in.sh
+```
+Add following, update port # to match cardano-node port.
+
+```bash
+INCOMING_PEERS="$(ss -tnp state established | grep "cardano-node" | awk -v port=":3003" '$3 ~ port {print}' | wc -l)"
+echo "peers_in ${INCOMING_PEERS}" > /home/ada/custom-metrics/tmp/peers_in.prom.tmp
+mv /home/ada/custom-metrics/tmp/peers_in.prom.tmp /var/lib/node_exporter/peers_in.prom
+```
+Make it executable.
+
+```bash
+chmod +x $HOME/custom-metrics/peers_in.sh
+```
+Open node-exporter configuration file and add..
+
+```bash
+sudo nano /etc/conf.d/prometheus-node-exporter
+```
+Make it look like this.
+
+```bash
+NODE_EXPORTER_ARGS='--collector.textfile.directory=/var/lib/node_exporter'
+```
+
+Create that directory.
+
+```bash
+sudo mkdir /var/lib/node_exporter
+```
+Create a cron job as root to run our script every minute.
+
+```bash
+sudo EDITOR=nano crontab -e
+```
+
+```bash
+SHELL=/bin/bash
+* * * * * /home/ada/custom-metrics/peers_in.sh
+```
+
+After a minute you should be able to find a metric in Grafana called 'peers_in'.
+
+## System updates
+
+Track available system upgrades(pacman)
+
+```bash
+nano $HOME/custom-metrics/pacman_upgrades.sh
+```
+
+Add following.
+
+```bash
+UPDATES="$(/usr/bin/checkupdates | wc -l)"
+echo "pacman_upgrades_pending ${UPDATES}" > /home/ada/custom-metrics/tmp/pacman_available_updates.prom.tmp
+mv /home/ada/custom-metrics/tmp/pacman_available_updates.prom.tmp /var/lib/node_exporter/pacman_available_updates.prom
+```
+
+Make it executable.
+
+```bash
+chmod +x $HOME/custom-metrics/pacman_upgrades.sh
+```
+
+Create a cron job as root to run our script once a day at 1 am.
+
+```bash
+sudo EDITOR=nano crontab -e
+```
+
+```bash
+SHELL=/bin/bash
+0 1 * * * /home/ada/custom-metrics/pacman_upgrades.sh
+```
+
+In Grafana find the 'pacman_upgrades_pending' metric.
+
 
 
 
