@@ -4,7 +4,7 @@ Install Asahi Arch, minimal or desktop
 
 log in to both alarm and root. Change the passwords.
 
-Update as root.
+Update the system as root.
 
 ```bash
 pacman -Syu
@@ -124,7 +124,7 @@ You may want to read up on zram. I always set 1.5 times the amount of system ram
 [zram0]
 zram-size = min(24 * 1024)
 ```
-This will give you 24gb zram swap and will absorb the brunt of running the built in leaderlogs. Reboot and check htop to confirm.
+This will give you 24gb of zram swap and will absorb the brunt of running the built in leaderlogs. Reboot and check htop to confirm.
 
 
 
@@ -204,6 +204,118 @@ sudo netctl start enp3s0
 sudo systemctl stop dhcpcd
 sudo systemctl disable dhcpcd
 sudo reboot
+```
+
+## Hostname
+
+[Set the Hostname](https://wiki.archlinux.org/title/Network_configuration#Set_the_hostname)
+
+Edit /etc/hostname
+
+```bash
+sudo nano /etc/hostname
+```
+and /etc/hosts
+
+```bash
+sudo nano /etc/hosts
+```
+
+```bash
+127.0.0.1        localhost
+::1              localhost
+127.0.1.1        myhostname
+```
+
+## Server setup
+
+Tweak/Harden system to our needs.
+
+## sysctl
+[sysctl](https://wiki.archlinux.org/title/sysctl)
+
+```bash
+sudo nano /etc/sysctl.d/98-cardano-node.conf
+```
+
+Add the following.
+
+```bash
+## Asahi Node ##
+
+# swap more to zram
+vm.vfs_cache_pressure = 500
+vm.swappiness = 100
+vm.dirty_background_ratio = 1
+vm.dirty_ratio = 50
+
+fs.file-max = 10000000
+fs.nr_open = 10000000
+
+# enable forwarding if using wireguard
+net.ipv4.ip_forward = 0
+
+# ignore ICMP redirects
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+
+# disable IPv6
+#net.ipv6.conf.all.disable_ipv6 = 1
+#net.ipv6.conf.default.disable_ipv6 = 1
+
+# block SYN attacks
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_max_syn_backlog = 2048
+net.ipv4.tcp_synack_retries = 3
+#net.ipv4.netfilter.ip_conntrack_tcp_timeout_syn_recv=45
+
+# in progress tasks
+net.ipv4.tcp_keepalive_time = 240
+net.ipv4.tcp_keepalive_intvl = 4
+net.ipv4.tcp_keepalive_probes = 5
+
+# reboot if we run out of memory
+vm.panic_on_oom = 1
+kernel.panic = 10
+```
+
+### Disable the root user
+
+Use sudo to become root..
+```
+sudo passwd -l root
+```
+
+### Secure shared memory
+
+Mount shared memory as read only. Open /etc/fstab.
+
+```
+sudo nano /etc/fstab
+```
+
+Add this line at the bottom, save & exit.
+
+```
+tmpfs    /run/shm    tmpfs    ro,noexec,nosuid    0 0
+```
+
+### Increase open file limit for $USER
+
+Add a couple lines to the bottom of /etc/security/limits.conf
+
+```bash
+sudo bash -c "echo -e '${USER} soft nofile 800000\n${USER} hard nofile 1048576\n' >> /etc/security/limits.conf"
+```
+
+Confirm it was added to the bottom.
+
+```bash
+cat /etc/security/limits.conf
 ```
 
 ## Build Libsodium
