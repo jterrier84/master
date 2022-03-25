@@ -1,9 +1,4 @@
 # cardano-node on Asahi Arch Linux, Apple Silicon
-[custom-metrics](https://nsrc.org/workshops/2021/sanog37/nmm/netmgmt/en/prometheus/ex-custom-metrics.htm)
-
-[arch prometheus monitoring](https://vdwaa.nl/arch-prometheus-monitoring.html)
-
-
 
 ## Prerequisites 
 
@@ -854,6 +849,13 @@ sudo systemctl restart prometheus-node-exporter
 ```
 
 In Grafana find the 'pacman_upgrades_pending' metric. It will read N/A until you fire off the script or cron runs it.
+
+
+## Usefull links
+
+[custom-metrics](https://nsrc.org/workshops/2021/sanog37/nmm/netmgmt/en/prometheus/ex-custom-metrics.htm)
+
+[arch prometheus monitoring](https://vdwaa.nl/arch-prometheus-monitoring.html)
 
 
 
