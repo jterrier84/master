@@ -126,6 +126,8 @@ zram-size = min(24 * 1024)
 ```
 This will give you 24gb zram swap and will absorb the brunt of running the built in leaderlogs. Reboot and check htop to confirm.
 
+
+
 ## Prometheus
 
 Install Prometheus and Prometheus-node-exporter
@@ -568,7 +570,23 @@ Allow execution of gLiveView.sh.
 chmod +x gLiveView.sh
 ```
 
-## topologyUpdater.sh
+## Install Cronie
+
+Arch does not use cron. You can set up a systemd timer or install some other cron like scheduler.
+
+
+```
+sudo pacman -S cronie
+```
+
+Enable & start.
+
+```bash
+sudo systemctl enable cronie.service
+sudo systemctl start cronie.service
+```
+
+## topologyUpdater.sh (not needed on block producer)
 
 Until peer to peer is enabled on the network operators need a way to get a list of relays/peers to connect to. The topology updater service runs in the background with cron. Every hour the script will run and tell the service you are a relay and want to be a part of the network. It will add your relay to it's directory after four hours you should see in connections in gLiveView.
 
@@ -581,7 +599,6 @@ Download the topologyUpdater script and have a look at it. Here is where you wil
 ```bash
 wget https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/topologyUpdater.sh
 ```
-
 
 ```bash
 nano topologyUpdater.sh
@@ -597,35 +614,18 @@ chmod +x topologyUpdater.sh
 You will not be able to successfully execute ./topologyUpdater.sh until you are fully synced up to the tip of the chain.
 {% endhint %}
 
-## Install Cronie
+Create a cron job that will run once an hour.
 
-Arch does not use cron. You can set up a systemd timer or install some other cron like scheduler.
-
-Add cronjob for topologyupdater.sh that runs once an hour.
-
-```
-sudo pacman -S cronie
+111bash
 EDITOR=nano crontab -e
-```
-```bash
-SHELL=/bin/bash
-33 * * * * . $HOME/.adaenv; $HOME/pi-pool/scripts/topologyUpdater.sh
 ```
 
 ### Add save and exit
 
 ```bash
 SHELL=/bin/bash
-* * * * * /home/ada/custom-metrics/peers_in.sh
+33 * * * * . $HOME/.adaenv; $HOME/pi-pool/scripts/topologyUpdater.sh
 ```
-Enable & start.
-
-```bash
-sudo systemctl enable cronie.service
-sudo systemctl start cronie.service
-```
-
-After four hours you can open ${NODE\_CONFIG}-topology.json and inspect the list of out peers the service suggested for you. Remove anything more than 7k distance(or less). IOHK recently suggested 8 out peers. The more out peers the more system resources it uses. You can also add any peers you wish to connect to manualy inside the script. This is where you would add your block producer or any friends nodes.
 
 ```bash
 nano $NODE_FILES/${NODE_CONFIG}-topology.json
@@ -681,6 +681,11 @@ sudo EDITOR=nano crontab -e
 SHELL=/bin/bash
 * * * * * /home/ada/custom-metrics/peers_in.sh
 ```
+Restart prometheus-node-xporter.
+
+```bash
+sudo systemctl restart prometheus-node-exporter
+```
 
 After a minute you should be able to find a metric in Grafana called 'peers_in'.
 
@@ -713,11 +718,20 @@ sudo EDITOR=nano crontab -e
 ```
 
 ```bash
-SHELL=/bin/bash
 0 1 * * * /home/ada/custom-metrics/pacman_upgrades.sh
 ```
 
-In Grafana find the 'pacman_upgrades_pending' metric.
+Restart prometheus-node-xporter.
+
+```bash
+sudo systemctl restart prometheus-node-exporter
+```
+
+In Grafana find the 'pacman_upgrades_pending' metric. It will read N/A until you fire off the script or cron runs it.
+
+
+
+
 
 
 
