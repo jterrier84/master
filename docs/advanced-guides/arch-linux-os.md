@@ -1,4 +1,9 @@
 # cardano-node on Asahi Arch Linux, Apple Silicon
+[custom-metrics](https://nsrc.org/workshops/2021/sanog37/nmm/netmgmt/en/prometheus/ex-custom-metrics.htm)
+
+[arch prometheus monitoring](https://vdwaa.nl/arch-prometheus-monitoring.html)
+
+
 
 ## Prerequisites 
 
