@@ -927,8 +927,8 @@ Add following.
 
 ```bash
 UPDATES="$(/usr/bin/checkupdates | wc -l)"
-echo "pacman_upgrades_pending ${UPDATES}" > /home/ada/custom-metrics/tmp/pacman_available_updates.prom.tmp
-mv /home/ada/custom-metrics/tmp/pacman_available_updates.prom.tmp /var/lib/node_exporter/pacman_available_updates.prom
+echo "pacman_upgrades_pending ${UPDATES}" > /home/ada/custom-metrics/tmp/pacman_upgrades_pending.prom.tmp
+mv /home/ada/custom-metrics/tmp/pacman_upgrades_pending.prom.tmp /var/lib/node_exporter/pacman_upgrades_pending.prom
 ```
 
 Make it executable.
