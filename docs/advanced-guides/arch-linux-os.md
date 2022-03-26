@@ -18,12 +18,14 @@ Start and enable sshd. pw auth is disabled for root, login with alarm user.
 systemctl start sshd.service
 systemctl enable sshd.service
 ```
+
 Install pacman-contrib which includes sudo and some other useful packages and open the sudoers file with visudo and enable the wheel group.
 
 ```bash
 pacman -S pacman-contrib git curl wget htop rsync
 sudo EDITOR=nano visudo
 ```
+
 Like below.
 
 ```bash
@@ -62,7 +64,7 @@ echo complete -cf sudo >> ${HOME}/.bash_profile; . $HOME/.bash_profile
 
 ## Locales
 
-Generate the [locales](https://wiki.archlinux.org/title/locale) you need by uncommenting what you want(en_US.UTF-8 UTF-8 for example) and generating.
+Generate the [locales](https://wiki.archlinux.org/title/locale) by uncommenting (en_US.UTF-8 UTF-8 for example) and generating.
 
 ```bash
 sudo nano /etc/locale.gen
@@ -94,7 +96,6 @@ While we are messing with time.. Install and open chrony.conf and replace conten
 sudo pacman -S chrony
 sudo nano /etc/chrony.conf
 ```
-
 
 ```bash
 pool time.google.com       iburst minpoll 2 maxpoll 2 maxsources 3 maxdelay 0.3
@@ -175,7 +176,6 @@ zram-size = min(24 * 1024)
 This will give you 24gb of zram swap and will absorb the brunt of running the built in leaderlogs. Reboot and check htop to confirm.
 
 
-
 ## Prometheus
 
 Install Prometheus and Prometheus-node-exporter
@@ -186,7 +186,7 @@ sudo pacman -S prometheus prometheus-node-exporter
 
 ## Grafana
 
-Two ways to install Grafana. From AUR or with snap. Pros and cons. Cannot install additional plugins with AUR version (looking into it). Snap is controversial security wise. I need additional pluginse so built snap and installed grafana with it.
+Two ways to install Grafana. From AUR or with snap. Pros and cons. Cannot install additional plugins with AUR version (looking into it). Snap is controversial security wise. I need additional plugins so built snap and installed grafana with it.
 
 ### With Snap
 
@@ -953,7 +953,7 @@ Restart prometheus-node-xporter.
 sudo systemctl restart prometheus-node-exporter
 ```
 
-In Grafana find the 'pacman_upgrades_pending' metric. It will read N/A until you fire off the script or cron runs it.
+In Grafana find the 'pacman_upgrades_pending' metric. It will not be available until you fire off the script or cron runs it.
 
 
 ## Usefull links
