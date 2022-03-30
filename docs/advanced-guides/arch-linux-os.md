@@ -592,8 +592,8 @@ Paste the following, save & exit.
 #!/bin/bash
 . /home/ada/.adaenv
 
-## +RTS -N4 -RTS = Multicore(4)
-cardano-node run +RTS -N4 -RTS \
+## +RTS -N6 -RTS = Multicore(4)
+cardano-node run +RTS -N6 -RTS \
   --topology ${TOPOLOGY} \
   --database-path ${DB_PATH} \
   --socket-path ${CARDANO_NODE_SOCKET_PATH} \
