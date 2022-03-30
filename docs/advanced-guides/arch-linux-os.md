@@ -566,12 +566,9 @@ cabal build cardano-cli cardano-node cardano-submit-api
 Add them to your PATH.
 
 ```bash
-cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-cli-1.34.1/x/cardano-cli/build/cardano-cli/cardano-cli $HOME/.local/bin/
-
-cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-node-1.34.1/x/cardano-node/build/cardano-node/cardano-node $HOME/.local/bin/
-
-cp ~/git/cardano-node/dist-newstyle/build/aarch64-linux/ghc-8.10.4/cardano-submit-api-3.1.2/x/cardano-submit-api/build/cardano-submit-api/cardano-submit-api $HOME/.local/bin/
-
+cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-cli") $HOME/.local/bin/
+cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-node") $HOME/.local/bin/
+cp $(find $HOME/git/cardano-node/dist-newstyle/build -type f -name "cardano-submit-api") $HOME/.local/bin/
 ```
 
 Check
