@@ -79,7 +79,7 @@ cat R1-pubkey
 {% tab title="C1" %}
 ```bash
 [Interface]
-Address = 10.220.0.1/22
+Address = 10.220.0.1/32
 SaveConfig = true
 ListenPort = 51820
 PostUp = wg set %i private-key <path to private key>
@@ -87,7 +87,7 @@ PostUp = wg set %i private-key <path to private key>
 
 [Peer]
 PublicKey = <result of cat R1-pubkey>
-AllowedIPs = 10.220.0.2/22
+AllowedIPs = 10.220.0.2/32
 Endpoint = <R1 nodes public ip or hostname>:51820
 PersistentKeepalive = 21
 ```
@@ -96,14 +96,14 @@ PersistentKeepalive = 21
 {% tab title="R1" %}
 ```bash
 [Interface]
-Address = 10.220.0.2/22
+Address = 10.220.0.2/32
 SaveConfig = true
 ListenPort = 51820
 PostUp = wg set %i private-key <path to private key>
 
 [Peer]
 PublicKey = <result of cat C1-pubkey>
-AllowedIPs = 10.220.0.1/22
+AllowedIPs = 10.220.0.1/32
 #Endpoint = endpoint is not needed on the listening side
 PersistentKeepalive = 21
 ```
@@ -112,14 +112,14 @@ PersistentKeepalive = 21
 {% tab title="Example" %}
 ```bash
 [Interface]
-Address = 10.220.0.1/22
+Address = 10.220.0.1/32
 SaveConfig = true
 ListenPort = 51820
 PostUp = wg set %i private-key /etc/wireguard/C1-privkey
 
 [Peer]
 PublicKey = FnXP9t17JXTCf3kyuTBh/z83NeJsE8Ar2HtOCy2VPyw=
-AllowedIPs = 10.220.0.2/22
+AllowedIPs = 10.220.0.2/32
 Endpoint = r1.armada-alliance.com:51820
 PersistentKeepalive = 21
 ```
@@ -186,6 +186,13 @@ nano /etc/wireguard/wg0.conf
 # start the service
 systemctl start wg-quick@wg0
 ```
+
+There is a shortcut you can use instead of the steps above if you are adding or updating peers. The following will reload the config file without affecting peer connections:
+
+```bash
+sudo wg syncconf wg0 <(wg-quick strip wg0)
+```
+
 {% endhint %}
 
 #### Topology
@@ -229,7 +236,7 @@ sudo ufw allow in on wg0 to any port 9090 proto tcp
 
 **Bring up ufw**
 
-When you're sure you are not going to lock yourself out and that all the ports for your pool that need to be open are you can bring up the firewall. Don't forget 80 & 443 if you have nginx proxying Grafana.
+When you're sure you are not going to lock yourself out and that all the ports for your pool that need to be open are open you can bring up the firewall. Don't forget 80 & 443 if you have nginx proxying Grafana.
 
 ```c
 sudo ufw enable
@@ -245,10 +252,4 @@ PostUp = resolvectl domain %i "~."; resolvectl dns %i 192.0.2.1; resolvectl dnss
 
 ```c
 PostUp = wg set %i private-key /etc/wireguard/wg0.key <(cat /some/path/%i/privkey)
-```
-
-Reload conf without taking VPN down.
-
-```
-alias wgstrip='wg syncconf wg0 <(wg-quick strip wg0)'
 ```

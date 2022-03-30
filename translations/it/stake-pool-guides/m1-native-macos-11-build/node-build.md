@@ -25,29 +25,11 @@ Once on the command prompt, lets brew install a few things.
 # Stop snooping on me!
 brew analytics off
 
-# Installs the modern bash shell into /opt/homebrew/bin/bash
-brew install bash
+# Install some necessary GNU stuff for MacOS
+brew install bash coreutils gnu-sed htop wget chrony prometheus node_exporter wireguard-tools
+
 # Change the shell for your user to the newer shell
 chsh -s /opt/homebrew/bin/bash
-
-# If you want to export node metrics to your grafana instance
-brew install prometheus
-brew install node_exporter
-
-# A more powerful time keeper
-brew install chrony
-
-# Replacement for top
-brew install htop
-
-# Web content retriever
-brew install wget
-
-# Replacement for the unavailable sha256sum used in the guild operators env file
-brew install sha3sum
-
-# Who doesn't love wireguard?
-brew install wireguard-tools
 ```
 
 ### Build the Node

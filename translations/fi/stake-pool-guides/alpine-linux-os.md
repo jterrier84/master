@@ -1,6 +1,6 @@
 # Alpine Linux OS
 
-![](../../.gitbook/assets/image (1).png)
+![](../.gitbook/assets/image (1).png)
 
 ## Miksi käyttää AlpineOS Raspberry Pi:ssä? Tässä muutamia syitä:
 
@@ -85,7 +85,7 @@ cat /etc/alpine-release
 
 ## AlpineOS: ensiasennus Raspberry Pi 4B 8GB koneeseen:
 
-1\) Download the AlpineOS for RPi 4 aarch64 [here](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-rpi-3.15.0-aarch64.tar.gz).&#x20;
+1\) Download the AlpineOS for RPi 4 aarch64 [here](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-rpi-3.15.0-aarch64.tar.gz).
 
 2) Pura .tar.gz tiedosto ja kopioi sen sisältö SSD/SD kortille
 
@@ -234,14 +234,14 @@ Korvaa `<tag>` uusimmalla tunnisteella seuraavassa komennossa.
 ## Asenna Armada Alliancen Alpine Linux Cardano node -palvelu
 
 {% hint style="success" %}
-#### Jos olet päättänyt käyttää AlpineOS käyttöjärjestelmää Cardano stake poolissasi, saatat löytää tästä skripti ja palvelu kokoelmasta hyödyllisiä työkaluja.
+**Jos olet päättänyt käyttää AlpineOS käyttöjärjestelmää Cardano stake poolissasi, saatat löytää tästä skripti ja palvelu kokoelmasta hyödyllisiä työkaluja.**
 {% endhint %}
 
 {% hint style="info" %}
-#### Asentaaksesi skriptit ja palvelut oikein, älä ohita vaiheita 🏴‍☠️😎
+**Asentaaksesi skriptit ja palvelut oikein, älä ohita vaiheita 🏴‍☠️😎**
 {% endhint %}
 
-1) Kloonaa tämä repo saadaksesi tarvittavat kansiot ja skriptit cardano noden nopeaan käynnistämiseen. Voit ohittaa tämän vaiheen, jos olet jo kloonannut tämän repon vaiheesta 12 AlpineOS:n perustamisen yhteydessä.
+1\) Clone this repo to obtain the neccessary folder and scripts to quickly start your cardano node. You may skip this step if you have already clonned this repo from step 12 when setting up AlpineOS.
 
 ```
     cd ~
@@ -261,7 +261,7 @@ Korvaa `<tag>` uusimmalla tunnisteella seuraavassa komennossa.
     git checkout tags/<tag>
 ```
 
-2) Suorita seuraavat komennot ja asenna sitten **cnode** -kansio, skriptit ja palvelut oikeisiin kansioihin. **cnode** kansio sisältää kaiken mitä **Cardano node** tarvitsee käynnistyäkseen toiminnallisena relay nodena.
+2) Suorita seuraavat komennot ja asenna sitten **cnode** -kansio, skriptit ja palvelut oikeisiin kansioihin. The **cnode** folder contains everything a **Cardano node** needs to start as a functional relay node.
 
 ```
     cd ~
