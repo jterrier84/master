@@ -223,32 +223,39 @@ sudo pacman -S wireguard-tools
 
 ## Static ip
 
-[netctl](https://wiki.archlinux.org/title/netctl)
+[systemd](https://wiki.archlinux.org/title/Systemd-networkd#Wired_adapter_using_a_static_IP)
 
-Copy the ethernet-static template into place with your interface's name and edit.
+Create a network service file, make sure edit it to your needs.
 
 ```bash
-sudo cp /etc/netctl/examples/ethernet-static /etc/netctl/enp3s0
-sudo nano /etc/netctl/enp3s0
+sudo nano /etc/systemd/network/20-wired.network
 ```
 
-Edit the interface name and IP address' to your network. 
-
 ```bash
-Description='A basic static ethernet connection'
-Interface=enp3s0
-Connection=ethernet
-IP=static
-Address=('192.168.1.xxx/24')
-Gateway='192.168.1.1'
-DNS=('192.168.1.1')
+[Match]
+Name=enp3s0
+
+[Network]
+Address=192.168.1.151/24
+Gateway=192.168.1.1
+DNS=192.168.1.1
 ```
 
-Enable/start the profile and disable/stop dhcp. It will complain when you try and start it. Don't worry, be happy.
+Make sure no other network service is running like netctl, then enable and start the service. If there is a network service running stop and disable it.
 
 ```bash
-sudo netctl enable enp3s0
-sudo netctl start enp3s0
+sudo systemctl --type=service
+```
+
+```bash
+sudo systemctl enable systemd-networkd.service
+sudo systemctl start systemd-networkd.service
+```
+
+Disable/stop dhcp.
+
+```bash
+
 sudo systemctl stop dhcpcd
 sudo systemctl disable dhcpcd
 sudo reboot
