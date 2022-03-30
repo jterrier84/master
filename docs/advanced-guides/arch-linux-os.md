@@ -846,7 +846,7 @@ You will not be able to successfully execute ./topologyUpdater.sh until you are 
 
 Create a cron job that will run once an hour.
 
-111bash
+```bash
 EDITOR=nano crontab -e
 ```
 
