@@ -260,8 +260,8 @@ Although P2P can be enabled on Node version 1.34.1, IOHK does not yet recommend 
 {% endhint %}
 
 In order for a node to connect to other peers in the network, a mechanism must be set in place. On Cardano the actual official mechanism
-forsees the use of a static network topology file, where the IP adress and port number of known peers can be configured. To make this process automized, a tool
-named TopologyUpdater exists. IOHK is working on a more decentralized mechanism, called [peer-to-peer networking.](https://docs.cardano.org/explore-cardano/cardano-network/p2p-networking)
+forsees the use of a static network topology file, where the IP adress and port number of known peers can be configured. To automate this process, a tool
+called [TopologyUpdater](https://github.com/cardano-community/guild-operators/blob/alpha/docs/Scripts/topologyupdater.md) exists. IOHK is working on a more decentralized mechanism, called [peer-to-peer networking.](https://docs.cardano.org/explore-cardano/cardano-network/p2p-networking)
 The P2P networking doesn't require the configuration of a static network topology file anymore. 
 
 To configure P2P on a relay node, we need to make some changes in the *-topology.json and *-config.json files:
