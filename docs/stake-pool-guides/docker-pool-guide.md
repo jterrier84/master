@@ -268,7 +268,7 @@ To configure P2P on a relay node, we need to make some changes in the *-topology
 
 ```bash
 cd ${HOME}/Cardano-node-docker/node/files
-sed -i 's+"TurnOnLogging": true,+"TurnOnLogging": true,\n "TestEnableDevelopmentNetworkProtocols": true,\n "EnableP2P": true,\n "MaxConcurrencyBulkSync": 2,\n "MaxConcurrencyDeadline": 4,\n "TargetNumberOfRootPeers": 50,\n "TargetNumberOfKnownPeers": 50,\n "TargetNumberOfEstablishedPeers": 25,\n "TargetNumberOfActivePeers": 10,+' *-config.json
+sed -i 's+"TurnOnLogging": true,+"TurnOnLogging": true,\n  "TestEnableDevelopmentNetworkProtocols": true,\n  "EnableP2P": true,\n  "MaxConcurrencyBulkSync": 2,\n  "MaxConcurrencyDeadline": 4,\n  "TargetNumberOfRootPeers": 50,\n  "TargetNumberOfKnownPeers": 50,\n  "TargetNumberOfEstablishedPeers": 25,\n  "TargetNumberOfActivePeers": 10,+' *-config.json
 ```
  
 Open the *-topology.json file with the nano editor and replace the entire content with:
