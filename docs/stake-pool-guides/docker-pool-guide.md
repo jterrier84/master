@@ -2,7 +2,7 @@
 description: Running a Cardano full node with a Docker image
 ---
 
-# Cardano Node Docker Image (for ARM64 devices) 🐳 
+# Cardano Node Docker Image (for ARM64 devices) 
 
 In this project you will find the files to build a docker image on Linux containing all the needed files to run a Cardano full node.
 The docker image can run on any arm64 device (such as a RaspberryPi, Mac Mini M1, etc.). The node can be configured as a relay or block production node.
@@ -57,7 +57,9 @@ sudo wget -N https://raw.githubusercontent.com/jterrier84/Cardano-node-docker/ma
 sudo chmod +x build.sh
 cd files
 sudo wget -N https://raw.githubusercontent.com/jterrier84/Cardano-node-docker/master/dockerfiles/files/run.sh
+sudo wget -N https://raw.githubusercontent.com/jterrier84/Cardano-node-docker/master/dockerfiles/files/tx-submit-service
 sudo chmod +x run.sh
+sudo chmod +x tx-submit-service
 cd ${HOME}/Cardano-node-docker/node
 sudo wget -N https://raw.githubusercontent.com/jterrier84/Cardano-node-docker/master/node/run-node.sh
 sudo chmod +x run-node.sh
@@ -84,6 +86,7 @@ sudo wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CON
 sudo wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-shelley-genesis.json
 sudo wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-alonzo-genesis.json
 sudo wget -N https://hydra.iohk.io/build/${NODE_BUILD_NUM}/download/1/${NODE_CONFIG}-topology.json
+sudo wget -O tx-submit-mainnet-config.yaml https://raw.githubusercontent.com/input-output-hk/cardano-node/master/cardano-submit-api/config/tx-submit-mainnet-config.yaml
 ```
 
 {% hint style="info" %}
@@ -101,6 +104,7 @@ At this point it's time to build the docker image. The image will include:
 1. cardano-node & cardano-cli v1.34.1 - Cardano binaries to run the node (Download compiled binaries from [Armada Alliance GitHub](https://github.com/armada-alliance/cardano-node-binaries)) 
 2. gLiveView - Monitoring tool for the Cardano node
 3. ScheduledBlocks - Tool to query the scheduled slots for a block production node. (Credits for this tool goes to [SNAKE POOL](https://github.com/asnakep/ScheduledBlocks))
+4. Cardano Submit Transaction API - API to connect with a Cardano wallet (e.g. Nami) to send transactions via your own full node
 
 ```bash
 cd ${HOME}/Cardano-node-docker/dockerfiles
