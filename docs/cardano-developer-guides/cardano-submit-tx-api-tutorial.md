@@ -12,6 +12,11 @@ In order to follow this guide you need:
 3. You need to install the Nami Wallet google chrome extension from the google app store.
 {% endhint %}
 
+{% hint style="warning" %}
+If you've set up your node using our [docker image guide](https://docs.armada-alliance.com/learn/stake-pool-guides/docker-pool-guide), you can skip the first part of this guide and jump directly to chapter **Connect the Cardano Submit API with Nami Wallet** below, because the docker image already includes the tx-submit-service.
+{% endhint %}
+
+
 ## Download and Install Cardano Submit API
 
 Download the latest version of the Cardano node, cli, and tx-submit-api from the [Armada Alliance Github repository](https://github.com/armada-alliance/cardano-node-binaries).
