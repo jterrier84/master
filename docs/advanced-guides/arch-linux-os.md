@@ -22,7 +22,7 @@ systemctl enable sshd.service
 Install pacman-contrib which includes sudo and some other useful packages and open the sudoers file with visudo and enable the wheel group.
 
 ```bash
-pacman -S pacman-contrib sudo git curl wget htop rsync
+pacman -S pacman-contrib sudo git curl wget htop rsync numactl
 sudo EDITOR=nano visudo
 ```
 
