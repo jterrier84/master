@@ -92,7 +92,7 @@ If you would like to disable ipv6 or turn on forwarding you can below.
 Add the following to the bottom of /etc/sysctl.conf. Save and exit.
 
 ```bash
-sudo nano /etc/sysctl.conf
+sudo nano /etc/sysctl.d/99-sysctl.conf
 ```
 
 ```
