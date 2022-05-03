@@ -596,13 +596,14 @@ sudo systemctl start prometheus.service
 Add Grafana's gpg key to Ubuntu.
 
 ```bash
-wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+sudo su
+wget -O- https://packages.grafana.com/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/grafana-archive-keyring.gpg
 ```
 
 Add latest stable repo to apt sources.
 
 ```bash
-echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+echo "deb [arch=arm64 signed-by=/usr/share/keyrings/grafana-archive-keyring.gpg] https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 ```
 
 Update your package lists & install Grafana.
