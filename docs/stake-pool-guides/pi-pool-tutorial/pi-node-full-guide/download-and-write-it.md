@@ -24,10 +24,10 @@ Older models of the Pi4B 8GB need to have their boot loader updated to boot from
 
 Plug the Pi into a monitor, insert the sd card and power up. Once you see a green screen you should be good to boot from your USB3 drive. Newer versions are shipping with a USB boot capable boot loader. **Feeling lucky?**
 
-**Choose OS -> Misc utility images -> Raspberry Pi 4 EEPROM boot recovery** [https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md](https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md)
+**Choose OS -> Misc utility images -> Bootloader -> USB Boot** [https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md](https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md)
 {% endhint %}
 
-![](<../../../../.gitbook/assets/otgpoltut (1) (1) (3) (1) (1).png>)
+![](<../../../../.gitbook/assets/otgpoltut (1) (1) (3) (1) (4).png>)
 
 {% tabs %}
 {% tab title="Pre configured Pi-Node.img.gz" %}
@@ -51,7 +51,7 @@ Locate your target drive & write it to disk.
 
 **Download Ubuntu Server 22.04 (RPI 3/4/400)**
 
-[Raspberry Pi Generic (64-bit ARM) preinstalled server image](https://cdimage.ubuntu.com/ubuntu-server/daily-preinstalled/current/jammy-preinstalled-server-arm64+raspi.img.xz)
+[Raspberry Pi Generic (64-bit ARM) preinstalled server image](https://cdimage.ubuntu.com/ubuntu-server/jammy/daily-preinstalled/current/jammy-preinstalled-server-arm64+raspi.img.xz)
 
 **Choose OS -> Use custom** Locate the .img.gz file you downloaded & wish to flash. Locate your target drive & write it to disk.
 {% endtab %}
