@@ -480,7 +480,7 @@ Update link cache for shared libraries and confirm.
 sudo ldconfig; ldconfig -p | grep libsodium
 ```
 
-Download and install secp256k1
+## Build secp256k1
 
 ```
 git clone https://github.com/bitcoin-core/secp256k1.git
