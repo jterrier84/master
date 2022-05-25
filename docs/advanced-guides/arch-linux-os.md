@@ -480,6 +480,34 @@ Update link cache for shared libraries and confirm.
 sudo ldconfig; ldconfig -p | grep libsodium
 ```
 
+Download and install secp256k1
+
+```
+git clone https://github.com/bitcoin-core/secp256k1.git
+
+cd secp256k1
+
+git reset --hard $SECP256K1_REF
+
+./autogen.sh
+
+./configure  --enable-module-schnorrsig --enable-experimental
+
+make
+
+sudo make install
+```
+
+For those who run cardano-node as a systemd service, run the following:
+
+
+Update link cache for shared libraries and confirm.
+
+```bash
+sudo ldconfig; ldconfig -p | grep secp256k1
+```
+
+
 ## LLVM 9.0.1
 
 ```bash
