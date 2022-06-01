@@ -187,6 +187,9 @@ tmux attach -t cardano
 ```
 tmux new -s cardano
 ```
+
+Continue
+
 ```
 mkdir git
 cd git
