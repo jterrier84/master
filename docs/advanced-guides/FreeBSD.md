@@ -189,13 +189,11 @@ tmux new -s cardano
 ```
 ```
 mkdir git
-
+cd git
 git clone -b cardano https://github.com/freebsd/freebsd-ports-haskell.git
 ```
 ```
 sudo su
-mkdir -p /usr/ports/net-p2p/cardano-node
-
 cp -r freebsd-ports-haskell/net-p2p/cardano-node /usr/ports/net-p2p/cardano-node
  
 cd /usr/ports/ports-mgmt/portmaster && make install clean
