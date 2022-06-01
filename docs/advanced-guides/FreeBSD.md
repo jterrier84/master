@@ -17,6 +17,8 @@ pw group mod wheel -m ada
 ## SSH
 is listening, set password auth to yes in sshd_config.
 
+
+## Install packages for this
 ```
 pkg install sudo git nano htop bash bash-completion chrony libedit jq wget tmux
 ```
@@ -80,6 +82,7 @@ test -f ~/.bashrc && . ~/.bashrc
 # The following section should be pretty minimal, if present at all.
 mesg y >/dev/null 2>&1
 /usr/bin/true
+
 ```
 
 https://bash-it.readthedocs.io/en/latest/installation/
@@ -91,15 +94,26 @@ git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
 ```
 ### use it
 
+```
+cd
+nano .bashrc
+```
+
+Add to bottom
+
+```
+[[ $PS1 && -f /usr/local/share/bash-completion/bash_completion.sh ]] && \
+	. /usr/local/share/bash-completion/bash_completion.sh
+```
+Then
+```
 chsh -s /usr/local/bin/bash ada
 chsh -s bash
-
+```
 
 ## Chrony
 
 ```
-sudo nano /usr/local/etc/chrony.conf
-
 sudo nano /etc/rc.conf
 
 ```
@@ -108,7 +122,12 @@ Add to bottom
 ```
 chronyd_enable="YES"
 ```
+Then open
 
+```
+sudo nano /usr/local/etc/chrony.conf
+```
+Replace everything in there with following.
 ```
 pool time.google.com       iburst minpoll 2 maxpoll 2 maxsources 3 maxdelay 0.3
 pool time.euro.apple.com   iburst minpoll 2 maxpoll 2 maxsources 3 maxdelay 0.3
