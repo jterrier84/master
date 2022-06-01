@@ -98,7 +98,6 @@ chsh -s bash
 ## Chrony
 
 ```
-
 sudo nano /usr/local/etc/chrony.conf
 
 sudo nano /etc/rc.conf
@@ -168,6 +167,7 @@ tmux attach -t cardano
 
 ```
 tmux new -s cardano
+```
 ```
 mkdir git
 
