@@ -118,7 +118,6 @@ Pull the image with:
 
 ```bash
 docker pull armadaalliance/armada-cn:1.35.0
-sudo ./build.sh
 ```
 
 You should see your Cardano node docker image in the list:
